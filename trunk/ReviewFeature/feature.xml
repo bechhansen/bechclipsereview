@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="ReviewFeature"
-      label="ReviewFeature"
+      id="org.bechclipse.review"
+      label="BechClipse"
       version="1.0.0.qualifier"
       provider-name="Peer Bech Hansen">
 
