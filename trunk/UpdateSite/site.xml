@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/ReviewFeature_1.0.0.201003041748.jar" id="ReviewFeature" version="1.0.0.201003041748"/>
+   <feature url="features/org.bechclipse.review_1.0.0.201003041826.jar" id="org.bechclipse.review" version="1.0.0.201003041826"/>
+   <category-def name="org.bechclipse.review" label="BechClipse">
+      <description>
+         Tool for codereview
+      </description>
+   </category-def>
 </site>
