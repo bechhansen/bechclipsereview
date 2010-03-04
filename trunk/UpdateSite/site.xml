@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/org.bechclipse.review_1.0.0.201003041949.jar" id="org.bechclipse.review" version="1.0.0.201003041949">
+   <feature url="features/org.bechclipse.review_1.0.0.201003041951.jar" id="org.bechclipse.review" version="1.0.0.201003041951">
       <category name="org.bechclipse.review"/>
    </feature>
    <category-def name="org.bechclipse.review" label="BechClipse Review">
