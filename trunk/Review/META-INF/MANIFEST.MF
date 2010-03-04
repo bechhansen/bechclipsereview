@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: org.bechclipse.Review
-Bundle-SymbolicName: org.bech.EclipseCodeReview;singleton:=true
+Bundle-SymbolicName: org.bechclipse.Review;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: org.bech.review.Activator
 Bundle-Vendor: Peer Bech Hansen
