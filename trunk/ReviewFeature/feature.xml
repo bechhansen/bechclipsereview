@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.bechclipse.review"
+      id="org.bechclipse.review.feature"
       label="BechClipse Review"
       version="1.0.0.qualifier"
       provider-name="Peer Bech Hansen">
