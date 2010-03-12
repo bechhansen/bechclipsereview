@@ -10,7 +10,7 @@ import org.osgi.framework.BundleContext;
 public class CoreActivator extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "EclipseCodeReview";
+	public static final String PLUGIN_ID = "org.bechclipse.review.core";
 
 	// The shared instance
 	private static CoreActivator plugin;
