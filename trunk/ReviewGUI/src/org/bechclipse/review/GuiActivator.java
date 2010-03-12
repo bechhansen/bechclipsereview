@@ -12,7 +12,7 @@ import org.osgi.framework.BundleContext;
 public class GuiActivator extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "EclipseCodeReview";
+	public static final String PLUGIN_ID = "org.bechclipse.review.gui";
 
 	// The shared instance
 	private static GuiActivator plugin;
