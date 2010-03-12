@@ -2,6 +2,8 @@ package org.bechclipse.review.model;
 
 import java.util.List;
 
+import org.eclipse.core.resources.IProject;
+
 public interface IReview {
 
 	public void setName(String name);
@@ -17,5 +19,8 @@ public interface IReview {
 	public String getDescription();
 	
 	public ReviewState getReviewState();
+	
+	public IProject getProject();
+	
 
 }

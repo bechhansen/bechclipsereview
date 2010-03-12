@@ -11,6 +11,7 @@ public class ReviewRemark {
 	private final String solution;
 	private final String user;
 	private final ReviewRemarkScope scope;
+	private Review parent;
 
 	public ReviewRemark(ReviewRemarkType type, ReviewRemarkSeverityType severity, String description, String solution, ReviewRemarkScope scope, String user, String file, int offset, int length) {
 		this.type = type;
@@ -58,5 +59,13 @@ public class ReviewRemark {
 
 	public ReviewRemarkScope getScope() {
 		return scope;
+	}
+
+	public void setParent(Review parent) {
+		this.parent = parent;
+	}
+
+	public Review getParent() {
+		return parent;
 	}
 }
