@@ -13,7 +13,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jdt;bundle-version="3.5.1",
  org.eclipse.jdt.core;bundle-version="3.5.1",
  org.eclipse.jface.text;bundle-version="3.5.1",
- org.eclipse.birt;bundle-version="2.5.2"
+ org.eclipse.birt;bundle-version="2.5.2",
+ javax.xml;bundle-version="1.3.4"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: org.bechclipse.review.facade,

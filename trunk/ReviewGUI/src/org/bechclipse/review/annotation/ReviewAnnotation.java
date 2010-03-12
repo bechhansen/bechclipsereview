@@ -11,16 +11,9 @@ package org.bechclipse.review.annotation;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.Annotation;
 
-/**
- * Annotation object that includes its position information to avoid internal
- * mappings.
- * 
- * @author  Marc R. Hoffmann
- * @version $Revision: 12 $
- */
 public class ReviewAnnotation extends Annotation {
   
-  private static final String REVIEW_ANNOTATION = "org.bech.EclipseReview.ReviewAnnotation";
+  private static final String REVIEW_ANNOTATION = "org.bechclipse.review.gui.ReviewAnnotation";
   
   private final Position position;
   

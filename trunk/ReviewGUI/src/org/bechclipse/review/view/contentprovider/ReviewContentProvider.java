@@ -1,24 +1,20 @@
 package org.bechclipse.review.view.contentprovider;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bechclipse.review.model.IReview;
+import org.bechclipse.review.facade.ReviewDataListener;
+import org.bechclipse.review.facade.ReviewFacade;
+import org.bechclipse.review.facade.ReviewFacadeFactory;
 import org.bechclipse.review.model.Review;
-import org.bechclipse.review.model.ReviewState;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
-public class ReviewContentProvider implements IStructuredContentProvider {
-
-	private List<IReview> reviews = new ArrayList<IReview>();
+public class ReviewContentProvider implements IStructuredContentProvider, ReviewDataListener {
+	
 	private Viewer v;
+	
+	private ReviewFacade facade = ReviewFacadeFactory.getFacade();
 
-	public ReviewContentProvider() {
-
-		reviews.add(new Review("Review1", "Desc", ReviewState.CLOSED));
-		reviews.add(new Review("Review2", "Desc", ReviewState.STARTED));
-		reviews.add(new Review("Review3", "Desc", ReviewState.EXECUTED));
+	public ReviewContentProvider() {		
+		facade.addDataListener(Review.class, this);		
 	}
 
 	public void inputChanged(Viewer v, Object oldInput, Object newInput) {
@@ -29,16 +25,12 @@ public class ReviewContentProvider implements IStructuredContentProvider {
 	}
 
 	public Object[] getElements(Object parent) {		
-		return reviews.toArray();
-	}
-
-	public void addReview(IReview review) {
-		reviews.add(review);
-		v.refresh();
-	}
-
-	public void deleteReview(IReview review) {
-		reviews.remove(review);
-		v.refresh();
+		return facade.getReviews().toArray();
+	}	
+	
+	public void update() {
+		if (v != null) {
+			v.refresh();
+		}
 	}
 }

@@ -8,7 +8,7 @@ public enum ReviewRemarkType {
 	public String toString() {
 
 		if (this.equals(SECURITY)) {
-			return "SSecurity";
+			return "Security";
 		} else if (this.equals(NULLPOINTER)) {
 			return "NullPointer";
 		} else if (this.equals(CODESTYLE)) {

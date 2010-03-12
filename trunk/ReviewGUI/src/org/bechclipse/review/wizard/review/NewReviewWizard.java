@@ -1,5 +1,6 @@
 package org.bechclipse.review.wizard.review;
 
+import org.bechclipse.review.facade.ReviewFacadeFactory;
 import org.bechclipse.review.model.Review;
 import org.bechclipse.review.view.contentprovider.ContentproviderFactory;
 import org.eclipse.core.resources.IProject;
@@ -17,9 +18,11 @@ public class NewReviewWizard extends Wizard implements INewWizard {
 	private IStructuredSelection selection;
 	private NewReviewWizardInitPage initPage;
 	private NewReviewWizardReviewersPage reviewsPage;
+	private final IProject project;
 
-	public NewReviewWizard() {
+	public NewReviewWizard(IProject project) {
 		super();
+		this.project = project;
 		setNeedsProgressMonitor(true);
 		setWindowTitle("Opret nyt Code Review");
 	}
@@ -67,12 +70,12 @@ public class NewReviewWizard extends Wizard implements INewWizard {
 
 		// monitor.beginTask("Creating review", 2);
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-
-		ContentproviderFactory.getReviewContentProvider().addReview(
-				new Review(name, description));
-
-		IProject[] projects = root.getProjects();
-
+		
+		Review review = new Review(name, description);		
+		
+		review.setProject(project);		
+		ReviewFacadeFactory.getFacade().addReview(review);		
+		
 		/*
 		 * String folderName = ".review"; IFolder folder =
 		 * projects[0].getFolder(folderName); if (!folder.exists()) {

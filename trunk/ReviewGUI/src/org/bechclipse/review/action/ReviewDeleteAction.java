@@ -1,7 +1,7 @@
 package org.bechclipse.review.action;
 
-import org.bechclipse.review.model.IReview;
-import org.bechclipse.review.view.contentprovider.ContentproviderFactory;
+import org.bechclipse.review.facade.ReviewFacadeFactory;
+import org.bechclipse.review.model.Review;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -32,7 +32,7 @@ public class ReviewDeleteAction implements IObjectActionDelegate {
 	public void run(IAction action) {		
 		if(selection instanceof IStructuredSelection) {			
 			IStructuredSelection sSelection = (IStructuredSelection)selection;			
-			ContentproviderFactory.getReviewContentProvider().deleteReview((IReview) sSelection.getFirstElement());
+			ReviewFacadeFactory.getFacade().deleteReview((Review) sSelection.getFirstElement());
 		}
 	}
 
