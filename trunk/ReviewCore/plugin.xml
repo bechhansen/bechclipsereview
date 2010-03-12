@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            category="CodeReviewCategory"
+            class="org.bechclipse.review.view.ReviewList"
+            icon="icons/sample.gif"
+            id="EclipseCodeReview.ReviewList"
+            name="Reviews"
+            restorable="true">
+         <description>
+            Shows reviews
+         </description>
+      </view>
+      <view
+            category="CodeReviewCategory"
+            class="org.bechclipse.review.view.ReviewRemarks"
+            icon="icons/sample.gif"
+            id="EclipseCodeReview.RevireRemarks"
+            name="Review remarks"
+            restorable="true">
+         <description>
+            Dette view viser alle reviewbemærkninger
+         </description>
+      </view>
+      <category
+            name="Code Review"
+            id="CodeReviewCategory">
+      </category>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.eclipse.jdt.ui.JavaPerspective">
+         <view
+               id="EclipseCodeReview.ReviewList"
+               minimized="false"
+               ratio="1"
+               relationship="bottom"
+               relative="org.eclipse.jdt.ui.PackagesView">
+         </view>
+      </perspectiveExtension>
+   </extension>
+   <extension
+         point="org.eclipse.help.contexts">
+      <contexts
+            file="contexts.xml">
+      </contexts>
+   </extension>
+   <extension
+         point="org.eclipse.ui.exportWizards">
+   </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            id="EclipseCodeReview.newReview"
+            name="Code review">
+      </category>
+      <wizard
+            category="EclipseCodeReview.newReview"
+            class="org.bechclipse.review.wizard.review.NewReviewWizard"
+            icon="icons/sample.gif"
+            id="EclipseCodeReview.wizard1"
+            name="Review">
+      </wizard>
+   </extension>
+   <extension
+         point="org.eclipse.ui.exportWizards">
+      <category
+            id="EclipseCodeReview.exportReview"
+            name="Code review">
+      </category>
+     
+      <wizard
+            category="EclipseCodeReview.exportReview"
+            class="org.bechclipse.review.wizard.export.ExportReviewWordWizard"
+            id="EclipseCodeReview.wizardexportpdf"
+            name="Export review as PDF document">
+         <description>
+            Export as PDF document
+         </description>
+      </wizard> <wizard
+            category="EclipseCodeReview.exportReview"
+            class="org.bechclipse.review.wizard.export.ExportReviewWordWizard"
+            id="EclipseCodeReview.wizardexportword"
+            name="Export review as Word document">
+                   <description>
+                      Export as Word document
+                   </description>
+      </wizard>ard>
+   </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            adaptable="false"
+            id="EclipseCodeReview.Review"
+            objectClass="org.bechclipse.review.model.IReview">
+         <action
+               class="org.bechclipse.review.action.ReviewDeleteAction"
+               icon="icons/delete_edit.gif"
+               id="EclipseCodeReview.DeleteReviewAction"
+               label="Slet">
+         </action>
+         <action
+               class="org.bechclipse.review.action.ReviewEndAction"
+               enablesFor="1"
+               icon="icons/taskmrk_tsk.gif"
+               id="EclipseCodeReview.EndReviewAction"
+               label="Afslut">
+               <enablement>
+               <objectState
+                     name="startable"
+                     value="true">
+               </objectState>
+            </enablement>
+         </action>
+         <action
+               class="org.bechclipse.review.action.ReviewStopAction"
+               enablesFor="1"
+               icon="icons/stop.gif"
+               id="EclipseCodeReview.StopReviewAction"
+               label="Stop">
+         </action>
+         <action
+               class="org.bechclipse.review.action.ReviewStartAction"
+               enablesFor="1"
+               icon="icons/nav_go.gif"
+               id="EclipseCodeReview.StartReviewAction"
+               label="Start">
+            <enablement>
+               <objectState
+                     name="startable"
+                     value="true">
+               </objectState>
+            </enablement>
+         </action>
+      </objectContribution>
+      <viewerContribution
+            id="EclipseCodeReview.viewerContribution1"
+            targetID="EclipseCodeReview.ReviewList">
+         <action
+               class="org.bechclipse.review.action.ReviewAddAction"
+               enablesFor="1"
+               icon="icons/sample2.gif"
+               id="EclipseCodeReview.AddReviewAction"
+               label="Tilføj review"
+               menubarPath="additions">
+         </action>
+      </viewerContribution>
+      <objectContribution
+            adaptable="true"
+            id="EclipseCodeReview.objectContribution2"
+            objectClass="org.eclipse.core.resources.IFile">
+         <action
+               class="org.bechclipse.review.action.AddFileToReview"
+               icon="icons/sample2.gif"
+               id="EclipseCodeReview.action4"
+               label="Tilføj fil til review"
+               menubarPath="additions">
+         </action>
+         <action
+               class="org.bechclipse.review.action.AddReviewRemark"
+               icon="icons/sample2.gif"
+               id="EclipseCodeReview.action1"
+               label="Opret review kommentar"
+               menubarPath="additions">
+         </action>
+      </objectContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors.markerAnnotationSpecification">
+      <specification
+            annotationType="org.bech.EclipseReview.ReviewAnnotation"
+            colorPreferenceKey="fullcoverage_color"
+            colorPreferenceValue="200, 0, 0"
+            contributesToHeader="false"
+            highlightPreferenceKey="fullcoverage_highlight"
+            highlightPreferenceValue="true"
+            icon="$nl$/icons/full/obj16/markerfull.gif"
+            includeOnPreferencePage="true"
+            isGoToNextNavigationTarget="false"
+            isGoToNextNavigationTargetKey="fullcoverage_isGoToNextNavigationTargetKey"
+            isGoToPreviousNavigationTarget="false"
+            isGoToPreviousNavigationTargetKey="fullcoverage_isGoToPreviousNavigationTargetKey"
+            label="Review"
+            overviewRulerPreferenceKey="fullcoverage_overviewRuler"
+            overviewRulerPreferenceValue="false"
+            presentationLayer="0"
+            showInNextPrevDropdownToolbarAction="false"
+            showInNextPrevDropdownToolbarActionKey="fullcoverage_showInNextPrevDropdownToolbarAction"
+            textPreferenceKey="fullcoverage_text"
+            textPreferenceValue="true"
+            textStylePreferenceKey="fullcoverage_stylePreferences"
+            textStylePreferenceValue="DASHED_BOX"
+            verticalRulerPreferenceKey="fullcoverage_verticalRuler"
+            verticalRulerPreferenceValue="false"/>
+      
+   </extension>
+
+</plugin>
