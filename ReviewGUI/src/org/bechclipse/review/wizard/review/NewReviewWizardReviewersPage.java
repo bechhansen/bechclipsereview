@@ -10,13 +10,13 @@ import org.eclipse.swt.widgets.Composite;
 
 public class NewReviewWizardReviewersPage extends WizardPage {
 
-	private IStructuredSelection selection;
+	//private IStructuredSelection selection;
 
 	public NewReviewWizardReviewersPage(IStructuredSelection selection) {
 		super("Reviewers");
 		setTitle("Code Reviewers");
 		setDescription("Who is beeing revied and who will perform the review");
-		this.selection = selection;
+		//this.selection = selection;
 	}
 
 	/**

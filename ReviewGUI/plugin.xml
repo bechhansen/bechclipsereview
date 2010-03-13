@@ -19,7 +19,7 @@
             category="CodeReviewCategory"
             class="org.bechclipse.review.view.ReviewRemarks"
             icon="icons/sample.gif"
-            id="EclipseCodeReview.RevireRemarks"
+            id="EclipseCodeReview.ReviewRemarks"
             name="Review remarks"
             restorable="true">
          <description>
@@ -38,9 +38,15 @@
          <view
                id="EclipseCodeReview.ReviewList"
                minimized="false"
-               ratio="1"
+               ratio="0.7"
                relationship="bottom"
-               relative="org.eclipse.jdt.ui.PackagesView">
+               relative="org.eclipse.ui.views.ResourceNavigator">
+         </view>
+         <view
+               id="EclipseCodeReview.ReviewRemarks"
+               relationship="stack"
+               
+               relative="org.eclipse.ui.views.ProblemView">
          </view>
       </perspectiveExtension>
    </extension>
@@ -178,6 +184,18 @@
             verticalRulerPreferenceKey="fullcoverage_verticalRuler"
             verticalRulerPreferenceValue="false"/>
       
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors.annotationTypes">
+      <type
+            markerSeverity="0"
+            name="org.bechclipse.review.gui.ReviewAnnotation">
+      </type>
+   </extension>
+   <extension
+         id="org.bechclipse.review.gui.ReviewAnnotationMarker"
+         name="Reviewcomment"
+         point="org.eclipse.core.resources.markers">
    </extension>
 
 </plugin>

@@ -40,12 +40,12 @@ public class ReviewAnnotationModel implements IAnnotationModel, ReviewDataListen
 
 	private Collection<IAnnotationModelListener> annotationModelListeners = new ArrayList<IAnnotationModelListener>();
 
-	private int openConnections;
+	// private int openConnections;
 
 	private ReviewAnnotationModel(ITextEditor editor, IDocument document) {
 		this.editor = editor;
 		this.document = document;
-		
+
 		ReviewFacadeFactory.getFacade().addDataListener(ReviewRemark.class, this);
 	}
 
@@ -87,8 +87,8 @@ public class ReviewAnnotationModel implements IAnnotationModel, ReviewDataListen
 
 		event.markSealed();
 		if (!event.isEmpty()) {
-			for (Iterator i = annotationModelListeners.iterator(); i.hasNext();) {
-				IAnnotationModelListener l = (IAnnotationModelListener) i.next();
+
+			for (IAnnotationModelListener l : annotationModelListeners) {
 				if (l instanceof IAnnotationModelListenerExtension) {
 					((IAnnotationModelListenerExtension) l).modelChanged(event);
 				} else {
@@ -103,8 +103,8 @@ public class ReviewAnnotationModel implements IAnnotationModel, ReviewDataListen
 			throw new RuntimeException("Can't connect to different document."); //$NON-NLS-1$
 
 		Iterator<ReviewAnnotation> annotations = getAnnotationIterator();
-		
-		for (Iterator i = annotations; i.hasNext();) {
+
+		for (Iterator<ReviewAnnotation> i = annotations; i.hasNext();) {
 			ReviewAnnotation ca = (ReviewAnnotation) i.next();
 			try {
 				document.addPosition(ca.getPosition());
@@ -120,14 +120,16 @@ public class ReviewAnnotationModel implements IAnnotationModel, ReviewDataListen
 			throw new RuntimeException("Can't disconnect from different document."); //$NON-NLS-1$
 
 		Iterator<ReviewAnnotation> annotations = getAnnotationIterator();
-		
-		for (Iterator i = annotations; i.hasNext();) {
+
+		for (Iterator<ReviewAnnotation> i = annotations; i.hasNext();) {
 			ReviewAnnotation ca = (ReviewAnnotation) i.next();
 			document.removePosition(ca.getPosition());
 		}
-		/*if (--openConnections == 0) { // CoverageTools.removeJavaCoverageListener(coverageListener);
-			document.removeDocumentListener(documentListener);
-		}*/
+		/*
+		 * if (--openConnections == 0) { //
+		 * CoverageTools.removeJavaCoverageListener(coverageListener);
+		 * document.removeDocumentListener(documentListener); }
+		 */
 
 	}
 
@@ -188,7 +190,7 @@ public class ReviewAnnotationModel implements IAnnotationModel, ReviewDataListen
 	@Override
 	public void update() {
 		fireModelChanged(new AnnotationModelEvent(this));
-		
+
 	}
 
 }

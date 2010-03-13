@@ -2,10 +2,7 @@ package org.bechclipse.review.wizard.review;
 
 import org.bechclipse.review.facade.ReviewFacadeFactory;
 import org.bechclipse.review.model.Review;
-import org.bechclipse.review.view.contentprovider.ContentproviderFactory;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -69,7 +66,7 @@ public class NewReviewWizard extends Wizard implements INewWizard {
 			String description) throws CoreException {
 
 		// monitor.beginTask("Creating review", 2);
-		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+		//IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		
 		Review review = new Review(name, description);		
 		

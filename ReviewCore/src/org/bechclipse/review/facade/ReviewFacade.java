@@ -9,6 +9,7 @@ import org.bechclipse.review.model.ReviewRemarkScope;
 import org.bechclipse.review.model.ReviewRemarkSeverityType;
 import org.bechclipse.review.model.ReviewRemarkType;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.text.ITextSelection;
 
 public interface ReviewFacade {
@@ -26,5 +27,7 @@ public interface ReviewFacade {
 	public Collection<IReview> getReviews();
 
 	public void deleteReview(Review review);
+
+	public void reload(IProject project);
 
 }
