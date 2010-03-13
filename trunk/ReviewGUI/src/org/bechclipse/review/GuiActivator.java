@@ -2,6 +2,10 @@ package org.bechclipse.review;
 
 
 import org.bechclipse.review.annotation.EditorTracker;
+import org.bechclipse.review.facade.ReviewFacadeFactory;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -18,6 +22,8 @@ public class GuiActivator extends AbstractUIPlugin {
 	private static GuiActivator plugin;
 
 	private EditorTracker editorTracker;
+	
+	private ProjectResourceListener prl = new ProjectResourceListener();
 
 	/**
 	 * The constructor
@@ -30,11 +36,21 @@ public class GuiActivator extends AbstractUIPlugin {
 		plugin = this;
 
 		editorTracker = new EditorTracker(getWorkbench());
+		
+		ResourcesPlugin.getWorkspace().addResourceChangeListener(prl);
+		
+		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+		
+		for (IProject project : root.getProjects()) {
+			ReviewFacadeFactory.getFacade().reload(project);
+		}
 
 	}
 
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
+		
+		ResourcesPlugin.getWorkspace().addResourceChangeListener(prl);
 		editorTracker.dispose();
 		super.stop(context);
 	}

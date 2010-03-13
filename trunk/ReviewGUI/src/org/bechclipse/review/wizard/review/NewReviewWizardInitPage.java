@@ -16,13 +16,13 @@ public class NewReviewWizardInitPage extends WizardPage {
 
 	Text nameText;
 	Text descriptionText;
-	private IStructuredSelection selection;
+	//private IStructuredSelection selection;
 	
 	public NewReviewWizardInitPage(IStructuredSelection selection) {
 		super("NewReview");
 		setTitle("Code Review");
 		setDescription("This wizard creates a new Coderevew for the project");
-		this.selection = selection;
+		//this.selection = selection;
 	}
 
 	
