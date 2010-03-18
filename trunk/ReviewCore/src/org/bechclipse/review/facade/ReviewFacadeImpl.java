@@ -114,6 +114,7 @@ public class ReviewFacadeImpl implements ReviewFacade {
 			String username = System.getenv("USERNAME");
 
 			ReviewRemark remark = new ReviewRemark(type, severity, description, solution, scope, username, file.getProjectRelativePath().toString(), textSelection.getOffset(), textSelection.getLength());
+			getReviewModel().getReviewRemarks().add(remark);
 			pFacade.persistReviewRemark(remark);
 			fireUpdate(remark);
 		} catch (Exception e) {
