@@ -145,14 +145,15 @@
          </action>
       </objectContribution>
       <objectContribution
-            adaptable="false"
+            adaptable="true"
             id="EclipseCodeReview.AddReview"
             objectClass="org.eclipse.core.resources.IProject">
          <action
                class="org.bechclipse.review.action.ReviewAddAction"
                icon="icons/new_wiz.gif"
                id="Review Gui.action1"
-               label="Tilføj review">
+               label="Tilføj review"
+               menubarPath="additions">
          </action>
       </objectContribution>
    </extension>
