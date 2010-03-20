@@ -12,7 +12,9 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jdt;bundle-version="3.5.1",
  org.eclipse.jdt.core;bundle-version="3.5.1",
  org.eclipse.jface.text;bundle-version="3.5.1",
- org.bechclipse.review.core;bundle-version="1.0.0"
+ org.bechclipse.review.core;bundle-version="1.0.0",
+ org.eclipse.ui.console,
+ org.eclipse.jdt.ui
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: Peer Bech Hansen
