@@ -7,7 +7,7 @@
       <view
             category="CodeReviewCategory"
             class="org.bechclipse.review.view.ReviewList"
-            icon="icons/sample.gif"
+            icon="icons/perspective.gif"
             id="EclipseCodeReview.ReviewList"
             name="Reviews"
             restorable="true">
@@ -18,23 +18,42 @@
       <view
             category="CodeReviewCategory"
             class="org.bechclipse.review.view.ReviewRemarks"
-            icon="icons/sample.gif"
+            icon="icons/perspective.gif"
             id="EclipseCodeReview.ReviewRemarks"
             name="Review remarks"
             restorable="true">
          <description>
-            Dette view viser alle reviewbemærkninger
+            Shows review comments
          </description>
       </view>
       <category
             name="Code Review"
             id="CodeReviewCategory">
       </category>
+      <view
+            category="CodeReviewCategory"
+            class="org.bechclipse.review.view.ReviewGuide"
+            icon="icons/perspective.gif"
+            id="EclipseCodeReview.ReviewGuide"
+            name="Review Guide"
+            restorable="true">
+         <description>
+            Guide for performing a review
+         </description>
+      </view>
+      <view
+            category="CodeReviewCategory"
+            class="org.bechclipse.review.view.ReviewChecklist"
+            icon="icons/perspective.gif"
+            id="EclipseCodeReview.ReviewChecklist"
+            name="Review Checklist"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
       <perspectiveExtension
-            targetID="org.eclipse.jdt.ui.JavaPerspective">
+            targetID="org.bechclipse.review.gui.perspectives.ReviewPerspective">
          <view
                id="EclipseCodeReview.ReviewList"
                minimized="false"
@@ -49,6 +68,7 @@
                relative="org.eclipse.ui.views.ProblemView">
          </view>
       </perspectiveExtension>
+      
    </extension>
   
    <extension
@@ -197,6 +217,15 @@
          id="org.bechclipse.review.gui.ReviewAnnotationMarker"
          name="Reviewcomment"
          point="org.eclipse.core.resources.markers">
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="org.eclipse.jdt.internal.ui.JavaPerspectiveFactory"
+            icon="icons/perspective.gif"
+            id="org.bechclipse.review.gui.perspectives.ReviewPerspective"
+            name="Code review">
+      </perspective>
    </extension>
 
 </plugin>
