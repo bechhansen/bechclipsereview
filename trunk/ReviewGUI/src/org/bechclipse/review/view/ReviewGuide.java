@@ -1,9 +1,17 @@
 package org.bechclipse.review.view;
 
-import org.bechclipse.review.view.contentprovider.ReviewFilesContentProvider;
+import org.bechclipse.review.view.contentprovider.ReviewGuideFilesContentProvider;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.DecoratingLabelProvider;
+import org.eclipse.jface.viewers.IOpenListener;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ITreeSelection;
+import org.eclipse.jface.viewers.OpenEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
@@ -18,7 +26,11 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.ide.IDE;
+import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.part.ViewPart;
 
 public class ReviewGuide extends ViewPart {
@@ -31,20 +43,20 @@ public class ReviewGuide extends ViewPart {
 	private Composite composite = null;
 
 	private Action startAction;
-	
+
 	private Action stepBackFile;
 	private Action stepBack;
 
 	private Action stepForwardFile;
 	private Action stepForward;
-	
+
 	private Label scopeLabel = null;
 	private Text scopeText = null;
 	private Label featureLabel = null;
 	private Text featureText = null;
 	private Label progressLabel = null;
 	private Text progressText = null;
-	
+
 	private Text questionText = null;
 
 	@Override
@@ -55,17 +67,40 @@ public class ReviewGuide extends ViewPart {
 
 		makeActions();
 		contributeToActionBars();
-		
-		TableViewer viewer = new TableViewer(table);		
-		
-		viewer.setContentProvider(new ReviewFilesContentProvider());
-		//viewer.setLabelProvider(new ReviewRemarkLabelProvider());
-		
+
+		TableViewer viewer = new TableViewer(table);
+
+		viewer.setContentProvider(new ReviewGuideFilesContentProvider());
+		viewer.setLabelProvider(new DecoratingLabelProvider(
+				new WorkbenchLabelProvider(), PlatformUI.getWorkbench()
+						.getDecoratorManager().getLabelDecorator()));
+
 		viewer.setInput(getViewSite());
+
+		viewer.addOpenListener(new IOpenListener() {
+
+			@Override
+			public void open(OpenEvent event) {
+
+				try {
+					ISelection selection = event.getSelection();
+
+					if (selection instanceof StructuredSelection) {
+						StructuredSelection sSelection = (StructuredSelection) selection;
+						IFile file = (IFile) sSelection.getFirstElement();
+						IWorkbenchPage page = getSite().getPage();
+						IDE.openEditor(page, file, true);
+
+					}
+				} catch (PartInitException e) {
+					MessageDialog.openError(null, "Unable to open file", e.getMessage());
+				}
+			}
+		});
 	}
 
 	@Override
-	public void setFocus() {		
+	public void setFocus() {
 
 	}
 
@@ -75,18 +110,18 @@ public class ReviewGuide extends ViewPart {
 	}
 
 	private void fillLocalToolBar(IToolBarManager manager) {
-		
+
 		manager.add(startAction);
-		manager.add(new Separator());		
+		manager.add(new Separator());
 		manager.add(stepBack);
 		manager.add(stepBackFile);
 		manager.add(stepForwardFile);
 		manager.add(stepForward);
-		
+
 	}
 
 	private void makeActions() {
-		
+
 		startAction = new Action() {
 			public void run() {
 
@@ -94,9 +129,10 @@ public class ReviewGuide extends ViewPart {
 		};
 		startAction.setText("Start");
 		startAction.setToolTipText("Start");
-		startAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages()
-				.getImageDescriptor(org.eclipse.ui.ide.IDE.SharedImages.IMG_OBJS_TASK_TSK));
-		
+		startAction.setImageDescriptor(PlatformUI.getWorkbench()
+				.getSharedImages().getImageDescriptor(
+						org.eclipse.ui.ide.IDE.SharedImages.IMG_OBJS_TASK_TSK));
+
 		stepBack = new Action() {
 			public void run() {
 
@@ -179,13 +215,13 @@ public class ReviewGuide extends ViewPart {
 		progressLabel = new Label(composite, SWT.NONE);
 		progressLabel.setText("  Progress:");
 		progressText = new Text(composite, SWT.BORDER | SWT.READ_ONLY);
-		
+
 		questionText = new Text(composite, SWT.BORDER | SWT.READ_ONLY);
 
 		scopeText.setText("Class");
 		featureText.setText("Inheritance");
 		progressText.setText("7/23");
-		
+
 		questionText.setText("Are all parameters used withing a method?");
 
 		StyledText styledText = new StyledText(composite, SWT.BORDER
@@ -196,9 +232,7 @@ public class ReviewGuide extends ViewPart {
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		questionText.setLayoutData(gridData);
-		
-		
-		
+
 		gridData = new GridData();
 		gridData.horizontalSpan = 6;
 		gridData.grabExcessVerticalSpace = true;
@@ -207,9 +241,8 @@ public class ReviewGuide extends ViewPart {
 		gridData.verticalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		styledText.setLayoutData(gridData);
-		
+
 		styledText.setText("Her skal stå en vejledning af hvad der er galt");
-		
 
 	}
 

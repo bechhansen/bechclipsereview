@@ -43,7 +43,8 @@ public class PersistenceFacadeImpl implements PersistenceFacade {
 				}
 			}
 		} catch (Exception e) {
-			throw new Exception("Unable to save review");
+			e.printStackTrace();
+			throw new Exception("Unable to read review XML");
 		}
 
 		return result;
@@ -77,7 +78,8 @@ public class PersistenceFacadeImpl implements PersistenceFacade {
 			m.marshal(review, new File(xmlFile.getAbsolutePath() + "\\" + Constants.reviewFileName));
 
 		} catch (Exception e) {
-			throw new Exception("Unable to save review");
+			e.printStackTrace();
+			throw new Exception("Unable to save review XML");
 		}
 
 		return isNew;

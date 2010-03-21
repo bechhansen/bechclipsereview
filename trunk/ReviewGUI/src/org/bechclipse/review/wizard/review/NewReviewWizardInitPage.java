@@ -14,15 +14,13 @@ import org.eclipse.swt.widgets.Text;
 
 public class NewReviewWizardInitPage extends WizardPage {
 
-	Text nameText;
-	Text descriptionText;
-	//private IStructuredSelection selection;
+	private Text nameText;
+	private Text descriptionText;
 	
 	public NewReviewWizardInitPage(IStructuredSelection selection) {
 		super("NewReview");
 		setTitle("Code Review");
 		setDescription("This wizard creates a new Coderevew for the project");
-		//this.selection = selection;
 	}
 
 	
@@ -79,7 +77,7 @@ public class NewReviewWizardInitPage extends WizardPage {
 		return nameText.getText();
 	}
 	
-	public String getDescription() {
+	public String getDescriptionText() {
 		return descriptionText.getText();
 	}
 
