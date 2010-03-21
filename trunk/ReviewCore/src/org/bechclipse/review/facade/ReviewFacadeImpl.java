@@ -19,11 +19,10 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.text.ITextSelection;
 
-public class ReviewFacadeImpl implements ReviewFacade {
-
-	private ReviewMemoryModel reviewmodel;
+public class ReviewFacadeImpl implements ReviewFacade {	
 
 	private PersistenceFacade pFacade = new PersistenceFacadeImpl();
+	ReviewMemoryModel reviewmodel;
 
 	private Map<Class<?>, Collection<ReviewDataListener>> listeners = new HashMap<Class<?>, Collection<ReviewDataListener>>();
 
@@ -144,5 +143,10 @@ public class ReviewFacadeImpl implements ReviewFacade {
 			MessageDialog.openError(null, "Error deleting", e.getMessage());
 		}
 
+	}
+
+	@Override
+	public void selectReview(Review review) {
+		getReviewModel().selectReview(review);
 	}
 }

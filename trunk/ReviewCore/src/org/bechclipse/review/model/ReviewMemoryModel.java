@@ -13,6 +13,8 @@ public class ReviewMemoryModel {
 	
 	private Collection<ReviewRemark> reviewRemark = new ArrayList<ReviewRemark>();
 
+	private Review selectedReview;
+
 	public ReviewMemoryModel() {
 		
 	}
@@ -56,5 +58,13 @@ public class ReviewMemoryModel {
 
 	public void setReviewsForProjectproject(IProject project, Collection<IReview> reviews) {
 		reviewsMap.put(project, reviews);		
+	}
+
+	public void selectReview(Review review) {
+		this.selectedReview = review;		
+	}	
+
+	public Review getSelectedReview() {
+		return selectedReview;
 	}
 }
