@@ -81,15 +81,11 @@ public class ReviewRemarks extends ViewPart {
 							}
 						}
 					}
-
 					// IEditorPart editor = IDE.openEditor(page, , true);
-
 					// System.out.println("Open");
 
 				}
-
 			}
-
 		});
 
 		TreeColumn tc1 = new TreeColumn(viewer.getTree(), SWT.LEFT, 0);

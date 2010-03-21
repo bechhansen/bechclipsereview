@@ -22,7 +22,7 @@ import org.eclipse.jface.text.ITextSelection;
 public class ReviewFacadeImpl implements ReviewFacade {	
 
 	private PersistenceFacade pFacade = new PersistenceFacadeImpl();
-	ReviewMemoryModel reviewmodel;
+	private ReviewMemoryModel reviewmodel;
 
 	private Map<Class<?>, Collection<ReviewDataListener>> listeners = new HashMap<Class<?>, Collection<ReviewDataListener>>();
 
@@ -37,13 +37,8 @@ public class ReviewFacadeImpl implements ReviewFacade {
 	}
 
 	private ReviewMemoryModel getReviewModel() {
-		if (reviewmodel == null) {
-			try {
-				reviewmodel = new ReviewMemoryModel();
-			} catch (Exception e) {
-				MessageDialog.openError(null, "Error deleting", e.getMessage());
-			}
-
+		if (reviewmodel == null) {			
+			reviewmodel = new ReviewMemoryModel();
 		}
 		return reviewmodel;
 	}
@@ -102,7 +97,7 @@ public class ReviewFacadeImpl implements ReviewFacade {
 			fireUpdate(review);
 
 		} catch (Exception e) {
-			MessageDialog.openError(null, "Error", e.getMessage());
+			MessageDialog.openError(null, "Error adding review", e.getMessage());
 		}
 	}
 
@@ -117,7 +112,7 @@ public class ReviewFacadeImpl implements ReviewFacade {
 			pFacade.persistReviewRemark(remark);
 			fireUpdate(remark);
 		} catch (Exception e) {
-			MessageDialog.openError(null, "Error", e.getMessage());
+			MessageDialog.openError(null, "Error adding review remark", e.getMessage());
 		}
 
 	}
@@ -140,7 +135,7 @@ public class ReviewFacadeImpl implements ReviewFacade {
 			getReviewModel().setReviewsForProjectproject(project, pFacade.loadReviews(project));
 			fireUpdate();
 		} catch (Exception e) {
-			MessageDialog.openError(null, "Error deleting", e.getMessage());
+			MessageDialog.openError(null, "Error loding reviews", e.getMessage());
 		}
 
 	}
@@ -148,5 +143,10 @@ public class ReviewFacadeImpl implements ReviewFacade {
 	@Override
 	public void selectReview(Review review) {
 		getReviewModel().selectReview(review);
+		fireUpdate(review);
+	}
+	
+	public Review getSelectedReview() {
+		return getReviewModel().getSelectedReview();
 	}
 }

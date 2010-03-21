@@ -32,4 +32,8 @@ public interface ReviewFacade {
 	
 	public void selectReview(Review review);
 
+	public Review getSelectedReview();
+	
+	
+
 }

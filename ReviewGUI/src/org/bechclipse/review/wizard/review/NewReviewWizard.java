@@ -1,7 +1,10 @@
 package org.bechclipse.review.wizard.review;
 
+import java.util.Set;
+
 import org.bechclipse.review.facade.ReviewFacadeFactory;
 import org.bechclipse.review.model.Review;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -15,6 +18,7 @@ public class NewReviewWizard extends Wizard implements INewWizard {
 	private IStructuredSelection selection;
 	private NewReviewWizardInitPage initPage;
 	private NewReviewWizardReviewersPage reviewsPage;
+	private NewReviewWizardFilesPage filesPage;
 	private final IProject project;
 
 	public NewReviewWizard(IProject project) {
@@ -30,15 +34,19 @@ public class NewReviewWizard extends Wizard implements INewWizard {
 
 		reviewsPage = new NewReviewWizardReviewersPage(selection);
 		addPage(reviewsPage);
+
+		filesPage = new NewReviewWizardFilesPage(selection);
+		addPage(filesPage);
 	}
 
 	@Override
 	public boolean performFinish() {
 		final String name = initPage.getName();
-		final String description = initPage.getDescription();
+		final String description = initPage.getDescriptionText();
+		final Set<IFile> selectedFiles = filesPage.getSelectedFiles();
 
 		try {
-			doFinish(name, description);
+			doFinish(name, description, selectedFiles);
 		} catch (CoreException e) {
 
 			MessageDialog.openError(getShell(), "Error", e.getMessage());
@@ -63,16 +71,17 @@ public class NewReviewWizard extends Wizard implements INewWizard {
 	}
 
 	private void doFinish(/* IProgressMonitor monitor, */String name,
-			String description) throws CoreException {
+			String description, Set<IFile> selectedFiles) throws CoreException {
 
 		// monitor.beginTask("Creating review", 2);
-		//IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-		
-		Review review = new Review(name, description);		
-		
-		review.setProject(project);		
-		ReviewFacadeFactory.getFacade().addReview(review);		
-		
+		// IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+
+		Review review = new Review(name, description);
+
+		review.setProject(project);
+		review.setFiles(selectedFiles);
+		ReviewFacadeFactory.getFacade().addReview(review);
+
 		/*
 		 * String folderName = ".review"; IFolder folder =
 		 * projects[0].getFolder(folderName); if (!folder.exists()) {
