@@ -29,5 +29,7 @@ public interface ReviewFacade {
 	public void deleteReview(Review review);
 
 	public void reload(IProject project);
+	
+	public void selectReview(Review review);
 
 }

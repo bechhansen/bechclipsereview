@@ -1,14 +1,10 @@
 package org.bechclipse.review.view;
 
-import org.bechclipse.review.view.contentprovider.ReviewContentProvider;
 import org.bechclipse.review.view.contentprovider.ReviewFilesContentProvider;
-import org.bechclipse.review.view.contentprovider.ReviewRemarkContentProvider;
-import org.bechclipse.review.view.labelprovider.ReviewRemarkLabelProvider;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.StyledText;
