@@ -6,10 +6,10 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.DecoratingLabelProvider;
 import org.eclipse.jface.viewers.IOpenListener;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.OpenEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
@@ -43,6 +43,7 @@ public class ReviewGuide extends ViewPart {
 	private Composite composite = null;
 
 	private Action startAction;
+	private Action syncAction;
 
 	private Action stepBackFile;
 	private Action stepBack;
@@ -110,8 +111,9 @@ public class ReviewGuide extends ViewPart {
 	}
 
 	private void fillLocalToolBar(IToolBarManager manager) {
-
+		
 		manager.add(startAction);
+		manager.add(syncAction);
 		manager.add(new Separator());
 		manager.add(stepBack);
 		manager.add(stepBackFile);
@@ -132,6 +134,15 @@ public class ReviewGuide extends ViewPart {
 		startAction.setImageDescriptor(PlatformUI.getWorkbench()
 				.getSharedImages().getImageDescriptor(
 						org.eclipse.ui.ide.IDE.SharedImages.IMG_OBJS_TASK_TSK));
+		
+		syncAction = new Action() {
+			public void run() {
+
+			}
+		};
+		syncAction.setText("Select current step");
+		syncAction.setToolTipText("Select current step");
+		syncAction.setImageDescriptor(getImage(ISharedImages.IMG_ELCL_SYNCED));
 
 		stepBack = new Action() {
 			public void run() {
@@ -140,8 +151,7 @@ public class ReviewGuide extends ViewPart {
 		};
 		stepBack.setText("Step back to previous check");
 		stepBack.setToolTipText("Step back to previous check");
-		stepBack.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages()
-				.getImageDescriptor(ISharedImages.IMG_TOOL_BACK));
+		stepBack.setImageDescriptor(getImage(ISharedImages.IMG_TOOL_BACK));
 
 		stepForward = new Action() {
 			public void run() {
@@ -150,9 +160,7 @@ public class ReviewGuide extends ViewPart {
 		};
 		stepForward.setText("Step forwared to next check");
 		stepForward.setToolTipText("Step forwared to next check");
-		stepForward.setImageDescriptor(PlatformUI.getWorkbench()
-				.getSharedImages().getImageDescriptor(
-						ISharedImages.IMG_TOOL_FORWARD));
+		stepForward.setImageDescriptor(getImage(ISharedImages.IMG_TOOL_FORWARD));
 
 		stepBackFile = new Action() {
 			public void run() {
@@ -161,9 +169,7 @@ public class ReviewGuide extends ViewPart {
 		};
 		stepBackFile.setText("Step back to previous file");
 		stepBackFile.setToolTipText("Step back to previous file");
-		stepBackFile.setImageDescriptor(PlatformUI.getWorkbench()
-				.getSharedImages().getImageDescriptor(
-						ISharedImages.IMG_TOOL_BACK));
+		stepBackFile.setImageDescriptor(getImage(ISharedImages.IMG_TOOL_BACK));
 
 		stepForwardFile = new Action() {
 			public void run() {
@@ -172,10 +178,12 @@ public class ReviewGuide extends ViewPart {
 		};
 		stepForwardFile.setText("Step forwared to next file");
 		stepForwardFile.setToolTipText("Step forwared to next file");
-		stepForwardFile.setImageDescriptor(PlatformUI.getWorkbench()
-				.getSharedImages().getImageDescriptor(
-						ISharedImages.IMG_TOOL_FORWARD));
+		stepForwardFile.setImageDescriptor(getImage(ISharedImages.IMG_TOOL_FORWARD));
 
+	}
+
+	private ImageDescriptor getImage(String image) {
+		return PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(image);
 	}
 
 	/**

@@ -5,12 +5,7 @@ import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.swt.graphics.Image;
 
-public class ReviewRemarkLabelProvider implements ITableLabelProvider {
-
-	@Override
-	public Image getColumnImage(Object element, int columnIndex) {
-		return null;
-	}
+public class ReviewRemarkLabelProvider implements ITableLabelProvider {	
 
 	@Override
 	public String getColumnText(Object element, int columnIndex) {
@@ -62,7 +57,6 @@ public class ReviewRemarkLabelProvider implements ITableLabelProvider {
 
 	@Override
 	public boolean isLabelProperty(Object element, String property) {
-
 		return false;
 	}
 
@@ -72,4 +66,9 @@ public class ReviewRemarkLabelProvider implements ITableLabelProvider {
 
 	}
 
+
+	@Override
+	public Image getColumnImage(Object element, int columnIndex) {		
+		return null;
+	}
 }
