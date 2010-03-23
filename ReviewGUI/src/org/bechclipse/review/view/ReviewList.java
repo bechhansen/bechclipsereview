@@ -12,6 +12,7 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
+import org.eclipse.ui.IWorkbenchPartSite;
 import org.eclipse.ui.part.ViewPart;
 
 public class ReviewList extends ViewPart implements ISelectionChangedListener {
@@ -42,7 +43,10 @@ public class ReviewList extends ViewPart implements ISelectionChangedListener {
 		MenuManager menuMgr = new MenuManager("#PopupMenu");
 		Menu menu = menuMgr.createContextMenu(viewer.getControl());
 		viewer.getControl().setMenu(menu);
-		getSite().registerContextMenu(menuMgr, viewer);
+		IWorkbenchPartSite site = getSite();
+		if(site != null) {
+			site.registerContextMenu(menuMgr, viewer);
+		}
 	}
 
 	@Override

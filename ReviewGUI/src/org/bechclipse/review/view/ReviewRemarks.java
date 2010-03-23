@@ -10,15 +10,15 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.IOpenListener;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.OpenEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jface.viewers.TreePathViewerSorter;
-import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Tree;
-import org.eclipse.swt.widgets.TreeColumn;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
@@ -28,7 +28,7 @@ import org.eclipse.ui.texteditor.AbstractTextEditor;
 
 public class ReviewRemarks extends ViewPart {
 
-	private TreeViewer viewer;
+	private TableViewer viewer;
 
 	public ReviewRemarks() {
 
@@ -37,8 +37,8 @@ public class ReviewRemarks extends ViewPart {
 	@Override
 	public void createPartControl(Composite parent) {
 
-		viewer = new TreeViewer(createTree(parent));
-		viewer.getTree().setHeaderVisible(true);
+		viewer = new TableViewer(createTable(parent));
+		viewer.getTable().setHeaderVisible(true);
 		
 		viewer.setContentProvider(new ReviewRemarkContentProvider());
 		viewer.setLabelProvider(new ReviewRemarkLabelProvider());
@@ -52,10 +52,10 @@ public class ReviewRemarks extends ViewPart {
 
 				ISelection selection = event.getSelection();
 
-				if (selection instanceof ITreeSelection) {
-					ITreeSelection treeSelection = (ITreeSelection) selection;
+				if (selection instanceof StructuredSelection) {
+					StructuredSelection sSelection = (StructuredSelection) selection;
 
-					ReviewRemark rRemark = (ReviewRemark) treeSelection.getFirstElement();
+					ReviewRemark rRemark = (ReviewRemark) sSelection.getFirstElement();
 
 					IWorkbenchPage page = getSite().getPage();
 
@@ -81,45 +81,42 @@ public class ReviewRemarks extends ViewPart {
 							}
 						}
 					}
-					// IEditorPart editor = IDE.openEditor(page, , true);
-					// System.out.println("Open");
-
 				}
 			}
 		});
 
-		TreeColumn tc1 = new TreeColumn(viewer.getTree(), SWT.LEFT, 0);
+		TableColumn tc1 = new TableColumn(viewer.getTable(), SWT.LEFT, 0);
 		tc1.setText("Type");
 		tc1.setWidth(100);
 		
-		viewer.getTree().setSortColumn(tc1);
+		viewer.getTable().setSortColumn(tc1);
 
-		TreeColumn tc2 = new TreeColumn(viewer.getTree(), SWT.LEFT, 1);
+		TableColumn tc2 = new TableColumn(viewer.getTable(), SWT.LEFT, 1);
 		tc2.setText("Scope");
 		tc2.setWidth(100);
 
-		TreeColumn tc3 = new TreeColumn(viewer.getTree(), SWT.LEFT, 2);
+		TableColumn tc3 = new TableColumn(viewer.getTable(), SWT.LEFT, 2);
 		tc3.setText("File");
 		tc3.setWidth(100);
 
-		TreeColumn tc4 = new TreeColumn(viewer.getTree(), SWT.LEFT, 3);
+		TableColumn tc4 = new TableColumn(viewer.getTable(), SWT.LEFT, 3);
 		tc4.setText("Description");
 		tc4.setWidth(150);
 
-		TreeColumn tc5 = new TreeColumn(viewer.getTree(), SWT.LEFT, 4);
+		TableColumn tc5 = new TableColumn(viewer.getTable(), SWT.LEFT, 4);
 		tc5.setText("Solution");
 		tc5.setWidth(165);
 
-		TreeColumn tc6 = new TreeColumn(viewer.getTree(), SWT.LEFT, 5);
+		TableColumn tc6 = new TableColumn(viewer.getTable(), SWT.LEFT, 5);
 		tc6.setText("User");
 		tc6.setWidth(100);
 
-		TreeColumn tc7 = new TreeColumn(viewer.getTree(), SWT.LEFT, 6);
+		TableColumn tc7 = new TableColumn(viewer.getTable(), SWT.LEFT, 6);
 		tc7.setText("Severity");
 		tc7.setWidth(100);
 
-		CellEditor cellEditors[] = new CellEditor[viewer.getTree().getColumnCount()];
-		CellEditor descriptionCellEditor = new TextCellEditor(viewer.getTree());
+		CellEditor cellEditors[] = new CellEditor[viewer.getTable().getColumnCount()];
+		CellEditor descriptionCellEditor = new TextCellEditor(viewer.getTable());
 		cellEditors[0] = descriptionCellEditor;
 		// viewer.setCellEditors(cellEditors);
 		// viewer.setCellModifier(cellModifier);
@@ -133,16 +130,14 @@ public class ReviewRemarks extends ViewPart {
 	 * @param parent
 	 * @return Tree
 	 */
-	protected Tree createTree(Composite parent) {
-		Tree tree = new Tree(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI | SWT.FULL_SELECTION);
-		tree.setLinesVisible(true);
-		return tree;
+	protected Table createTable(Composite parent) {
+		Table table = new Table(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI | SWT.FULL_SELECTION);
+		table.setLinesVisible(true);
+		return table;
 	}
 
 	@Override
 	public void setFocus() {
 		viewer.getControl().setFocus();
-
 	}
-
 }
