@@ -170,7 +170,7 @@ public class ReviewAnnotationModel implements IAnnotationModel, ReviewDataListen
 			Collection<ReviewRemark> remarks = ReviewFacadeFactory.getFacade().getReviewRemarks();
 			for (ReviewRemark reviewRemark : remarks) {
 
-				if (reviewRemark.getFile().equalsIgnoreCase(fileName)) {
+				if (reviewRemark.getFile() != null && reviewRemark.getFile().equalsIgnoreCase(fileName)) {
 
 					list.add(new ReviewAnnotation(reviewRemark.getOffset(), reviewRemark.getLenght()));
 				}

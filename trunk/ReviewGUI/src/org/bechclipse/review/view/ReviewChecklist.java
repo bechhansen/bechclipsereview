@@ -2,7 +2,6 @@ package org.bechclipse.review.view;
 
 import org.bechclipse.review.view.contentprovider.ReviewChecklistContentProvider;
 import org.bechclipse.review.view.labelprovider.ReviewChecklistLabelProvider;
-import org.eclipse.jface.viewers.TreePathViewerSorter;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -24,10 +23,8 @@ public class ReviewChecklist extends ViewPart {
 		viewer.getTree().setHeaderVisible(false);
 		
 		viewer.setContentProvider(new ReviewChecklistContentProvider());
-		viewer.setLabelProvider(new ReviewChecklistLabelProvider());
-		viewer.setSorter(new TreePathViewerSorter());		
-		viewer.setInput(getViewSite());
-
+		viewer.setLabelProvider(new ReviewChecklistLabelProvider());	
+		viewer.setInput(getViewSite());		
 	}
 
 	/**
@@ -46,4 +43,6 @@ public class ReviewChecklist extends ViewPart {
 	public void setFocus() {
 		viewer.getControl().setFocus();
 	}
+	
+	
 }

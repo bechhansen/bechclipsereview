@@ -30,6 +30,8 @@ public class Review implements IReview, IActionFilter {
 	private String description;
 	private ReviewState reviewState;
 	private Set<String> files;
+	private ReviewChecklist checklist;
+	private ReviewProgress progress;
 
 	public Review() {
 	}
@@ -118,10 +120,10 @@ public class Review implements IReview, IActionFilter {
 	public Set<IFile> getFiles() {
 		Set<IFile> iFiles = new HashSet<IFile>();
 
-		if(files != null) {
+		if (files != null) {
 			for (String string : files) {
 				IPath path = Path.fromPortableString(string);
-	
+
 				IFile file = getProject().getFile(path);
 				iFiles.add(file);
 			}
@@ -150,5 +152,23 @@ public class Review implements IReview, IActionFilter {
 		for (String string : filenames) {
 			files.add(string);
 		}
-	}	
+	}
+
+	public void setChecklist(ReviewChecklist checklist) {
+		this.checklist = checklist;
+	}
+
+	@XmlTransient
+	public ReviewChecklist getChecklist() {
+		return checklist;
+	}
+
+	public void setProgress(ReviewProgress progress) {
+		this.progress = progress;
+	}
+
+	@XmlTransient
+	public ReviewProgress getProgress() {
+		return progress;
+	}
 }

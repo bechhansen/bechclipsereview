@@ -8,6 +8,7 @@ import java.util.Map;
 import org.bechclipse.review.model.IReview;
 import org.bechclipse.review.model.Review;
 import org.bechclipse.review.model.ReviewMemoryModel;
+import org.bechclipse.review.model.ReviewProgress;
 import org.bechclipse.review.model.ReviewRemark;
 import org.bechclipse.review.model.ReviewRemarkScope;
 import org.bechclipse.review.model.ReviewRemarkSeverityType;
@@ -59,16 +60,7 @@ public class ReviewFacadeImpl implements ReviewFacade {
 		if (collection != null) {
 			collection.remove(dataListener);
 		}
-	}
-
-	private void fireUpdate(ReviewRemark remark) {
-		Collection<ReviewDataListener> collection = listeners.get(remark.getClass());
-		if (collection != null) {
-			for (ReviewDataListener reviewDataListener : collection) {
-				reviewDataListener.update();
-			}
-		}
-	}
+	}	
 
 	private void fireUpdate() {
 		Collection<Collection<ReviewDataListener>> values = listeners.values();
@@ -79,15 +71,17 @@ public class ReviewFacadeImpl implements ReviewFacade {
 		}
 
 	}
+	
+	
 
-	private void fireUpdate(Review review) {
-		Collection<ReviewDataListener> collection = listeners.get(review.getClass());
+	private void fireUpdate(Object object) {
+		Collection<ReviewDataListener> collection = listeners.get(object.getClass());
 		if (collection != null) {
 			for (ReviewDataListener reviewDataListener : collection) {
 				reviewDataListener.update();
 			}
 		}
-	}
+	}	
 
 	@Override
 	public void addReview(Review review) {
@@ -107,7 +101,7 @@ public class ReviewFacadeImpl implements ReviewFacade {
 		try {
 			String username = System.getenv("USERNAME");
 
-			ReviewRemark remark = new ReviewRemark(type, severity, description, solution, scope, username, file.getProjectRelativePath().toString(), textSelection.getOffset(), textSelection.getLength());
+			ReviewRemark remark = new ReviewRemark(type, severity, description, solution, scope, username, file != null ? file.getProjectRelativePath().toString() : null, textSelection.getOffset(), textSelection.getLength());
 			getReviewModel().getReviewRemarks().add(remark);
 			pFacade.persistReviewRemark(remark);
 			fireUpdate(remark);
@@ -132,16 +126,20 @@ public class ReviewFacadeImpl implements ReviewFacade {
 	@Override
 	public void reload(IProject project) {
 		try {
-			getReviewModel().setReviewsForProjectproject(project, pFacade.loadReviews(project));
+			getReviewModel().setReviewsForProject(project, pFacade.loadReviews(project));
 			fireUpdate();
 		} catch (Exception e) {
-			MessageDialog.openError(null, "Error loding reviews", e.getMessage());
+			MessageDialog.openError(null, "Error loading reviews", e.getMessage());
+			e.printStackTrace();
 		}
 
 	}
 
 	@Override
 	public void selectReview(Review review) {
+		if (review == null) {
+			return;
+		}
 		getReviewModel().selectReview(review);
 		fireUpdate(review);
 	}
@@ -149,4 +147,49 @@ public class ReviewFacadeImpl implements ReviewFacade {
 	public Review getSelectedReview() {
 		return getReviewModel().getSelectedReview();
 	}
+	
+	@Override
+	public void startGuide() {
+		ReviewProgress progress = ReviewFacadeFactory.getFacade().getSelectedReview().getProgress();
+		progress.start();
+		fireUpdate(progress);
+		
+	}
+
+	@Override
+	public void stepGuideForwardFile() {
+		ReviewProgress progress = ReviewFacadeFactory.getFacade().getSelectedReview().getProgress();
+		progress.stepForwardFile();
+		fireUpdate(progress);
+	}
+
+	@Override
+	public void stepGuideBackwards() {
+		ReviewProgress progress = ReviewFacadeFactory.getFacade().getSelectedReview().getProgress();
+		progress.stepBackwards();
+		fireUpdate(progress);
+		
+	}
+
+	@Override
+	public void stepGuideBackwardsFile() {
+		ReviewProgress progress = ReviewFacadeFactory.getFacade().getSelectedReview().getProgress();
+		progress.stepBackwardsFile();
+		fireUpdate(progress);		
+	}
+
+	@Override
+	public void stepGuideForward() {
+		ReviewProgress progress = ReviewFacadeFactory.getFacade().getSelectedReview().getProgress();
+		progress.stepForward();
+		fireUpdate(progress);		
+	}
+
+	@Override
+	public void syncGuide() {
+		ReviewProgress progress = ReviewFacadeFactory.getFacade().getSelectedReview().getProgress();
+		fireUpdate(progress);
+	}
+
+	
 }

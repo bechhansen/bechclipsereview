@@ -9,7 +9,7 @@ import org.eclipse.core.resources.IProject;
 
 public class ReviewMemoryModel {
 
-	private Map<IProject, Collection<IReview>> reviewsMap = new HashMap<IProject, Collection<IReview>>();
+	private Map<IProject, Collection<Review>> reviewsMap = new HashMap<IProject, Collection<Review>>();
 	
 	private Collection<ReviewRemark> reviewRemark = new ArrayList<ReviewRemark>();
 
@@ -27,11 +27,11 @@ public class ReviewMemoryModel {
 		this.reviewRemark = reviewRemark;
 	}
 
-	public void addReview(IReview review) {
-		Collection<IReview> col = reviewsMap.get(review.getProject());
+	public void addReview(Review review) {
+		Collection<Review> col = reviewsMap.get(review.getProject());
 		
 		if (col == null) {
-			col = new ArrayList<IReview>();			
+			col = new ArrayList<Review>();			
 		}
 		col.add(review);
 		reviewsMap.put(review.getProject(), col);
@@ -40,24 +40,30 @@ public class ReviewMemoryModel {
 	public Collection<IReview> getReviews() {
 		Collection<IReview> result = new ArrayList<IReview>();
 		
-		Collection<Collection<IReview>> values = reviewsMap.values();
-		for (Collection<IReview> reviewCollection : values) {
+		Collection<Collection<Review>> values = reviewsMap.values();
+		for (Collection<Review> reviewCollection : values) {
 			result.addAll(reviewCollection);
 		}
 		return result;
 	}
 
 	public void removeReview(IReview review) {
-		Collection<IReview> col = reviewsMap.get(review.getProject());
+		Collection<Review> col = reviewsMap.get(review.getProject());
 		
 		if (col != null) {
 			col.remove(review);
-		}
-		
+		}		
 	}
 
-	public void setReviewsForProjectproject(IProject project, Collection<IReview> reviews) {
-		reviewsMap.put(project, reviews);		
+	public void setReviewsForProject(IProject project, Collection<Review> reviews) {
+		reviewsMap.put(project, reviews);
+		
+		for (Review review : reviews) {
+			ReviewProgress rp = new ReviewProgress(review);
+			review.setProgress(rp);		
+		}
+		
+		
 	}
 
 	public void selectReview(Review review) {

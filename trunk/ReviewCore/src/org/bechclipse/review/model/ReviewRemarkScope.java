@@ -1,7 +1,7 @@
 package org.bechclipse.review.model;
 
 public enum ReviewRemarkScope {
-	CLASS, METHOD, SELECTION;
+	GENEREL, CLASS, METHOD, SELECTION;
 
 	public String toString() {
 
@@ -11,6 +11,8 @@ public enum ReviewRemarkScope {
 			return "Method";
 		} else if (this.equals(SELECTION)) {
 			return "Selection";
+		} else if (this.equals(GENEREL)) {
+			return "Generel";
 		}
 		throw new UnsupportedOperationException();
 	}
