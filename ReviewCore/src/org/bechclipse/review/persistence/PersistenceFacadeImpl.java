@@ -5,27 +5,33 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import org.bechclipse.review.model.Constants;
-import org.bechclipse.review.model.IReview;
 import org.bechclipse.review.model.Review;
+import org.bechclipse.review.model.ReviewChecklist;
 import org.bechclipse.review.model.ReviewRemark;
+import org.bechclipse.review.model.checklist.Checklist;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 
 public class PersistenceFacadeImpl implements PersistenceFacade {
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public Collection<IReview> loadReviews(IProject project) throws Exception {
+	public Collection<Review> loadReviews(IProject project) throws Exception {
 
-		ArrayList<IReview> result = new ArrayList<IReview>();
+		ArrayList<Review> result = new ArrayList<Review>();
 
 		try {
 			JAXBContext jc = JAXBContext.newInstance(Review.class);
-
 			Unmarshaller um = jc.createUnmarshaller();
+			
+			JAXBContext jcChecklist = JAXBContext.newInstance("org.bechclipse.review.model.checklist");
+			Unmarshaller umChecklist = jcChecklist.createUnmarshaller();
 
 			IFolder folder = project.getFolder(Constants.rootFolderName);
 			if (folder.exists()) {
@@ -39,6 +45,19 @@ public class PersistenceFacadeImpl implements PersistenceFacade {
 						Review review = (Review) um.unmarshal(file);
 						review.setProject(project);
 						result.add(review);
+						
+						File checklistFile = new File(f.getAbsolutePath() + "\\" + fileName + "\\" + Constants.checklistFileName);
+						if(checklistFile.exists()) {
+							
+							try {							
+								JAXBElement<Checklist> element = (JAXBElement<Checklist>) umChecklist.unmarshal(checklistFile);
+								Checklist value = element.getValue();
+								review.setChecklist(new ReviewChecklist(value));
+							} catch (JAXBException e) {
+								
+							}
+						}
+						
 					}
 				}
 			}

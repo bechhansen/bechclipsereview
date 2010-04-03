@@ -9,6 +9,8 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -26,6 +28,7 @@ public class NewReviewRemarkInitPage extends WizardPage {
 	private Button classButton;
 	private Button methodButton;
 	private Button selectionButton;
+	private Button generelButton;
 
 	public NewReviewRemarkInitPage(IFile file) {
 		super("New Review remark");
@@ -44,7 +47,7 @@ public class NewReviewRemarkInitPage extends WizardPage {
 		layout.numColumns = 2;
 		layout.verticalSpacing = 9;
 		Label label = new Label(container, SWT.NULL);
-		label.setText("&Name:");
+		label.setText("&File:");
 
 		fileName = new Text(container, SWT.BORDER | SWT.SINGLE);
 		fileName.setEditable(false);
@@ -100,15 +103,40 @@ public class NewReviewRemarkInitPage extends WizardPage {
 		buttonLayout.numColumns = 1;
 		buttonLayout.verticalSpacing = 9;
 
+		
+		SelectionListener buttonSelectionListener = new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				Object source = e.getSource();				
+				if (source == generelButton) {
+					fileName.setText("");
+				} else {
+					fileName.setText(file.getProjectRelativePath().toString());
+				}
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
+		};
+		
 		classButton = new Button(buttonContainer, SWT.RADIO);
 		classButton.setText(ReviewRemarkScope.CLASS.toString());
 		classButton.setSelection(true);
+		classButton.addSelectionListener(buttonSelectionListener);
 
 		methodButton = new Button(buttonContainer, SWT.RADIO);
 		methodButton.setText(ReviewRemarkScope.METHOD.toString());
+		methodButton.addSelectionListener(buttonSelectionListener);
 
 		selectionButton = new Button(buttonContainer, SWT.RADIO);
 		selectionButton.setText(ReviewRemarkScope.SELECTION.toString());
+		selectionButton.addSelectionListener(buttonSelectionListener);
+		
+		generelButton = new Button(buttonContainer, SWT.RADIO);
+		generelButton.setText(ReviewRemarkScope.GENEREL.toString());		
+		generelButton.addSelectionListener(buttonSelectionListener);
 
 		initialize();
 		dialogChanged();
@@ -172,6 +200,8 @@ public class NewReviewRemarkInitPage extends WizardPage {
 			return ReviewRemarkScope.METHOD;
 		} else if (selectionButton.getSelection()) {
 			return ReviewRemarkScope.SELECTION;
+		} else if (generelButton.getSelection()) {
+			return ReviewRemarkScope.GENEREL;
 		}
 
 		throw new UnsupportedOperationException();

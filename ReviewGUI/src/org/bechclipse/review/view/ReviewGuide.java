@@ -1,5 +1,14 @@
 package org.bechclipse.review.view;
 
+import org.bechclipse.review.facade.ReviewDataListener;
+import org.bechclipse.review.facade.ReviewFacade;
+import org.bechclipse.review.facade.ReviewFacadeFactory;
+import org.bechclipse.review.model.Review;
+import org.bechclipse.review.model.ReviewChecklist;
+import org.bechclipse.review.model.ReviewProgress;
+import org.bechclipse.review.model.checklist.Checkpoint;
+import org.bechclipse.review.model.checklist.Feature;
+import org.bechclipse.review.model.checklist.Scope;
 import org.bechclipse.review.view.contentprovider.ReviewGuideFilesContentProvider;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.action.Action;
@@ -33,10 +42,9 @@ import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.part.ViewPart;
 
-public class ReviewGuide extends ViewPart {
+public class ReviewGuide extends ViewPart implements ReviewDataListener {
 
-	public static final String ID = "TestGui"; // TODO Needs to be whatever is
-	// mentioned in plugin.xml
+	public static final String ID = "EclipseCodeReview.ReviewGuide";
 	private Composite top = null;
 	private SashForm sashForm = null;
 	private Table table = null;
@@ -58,7 +66,14 @@ public class ReviewGuide extends ViewPart {
 	private Label progressLabel = null;
 	private Text progressText = null;
 
+	private Label stepProgressLabel = null;
+	private Text stepProgressText = null;
+
 	private Text questionText = null;
+
+	StyledText problemText = null;
+
+	private ReviewFacade facade = ReviewFacadeFactory.getFacade();
 
 	@Override
 	public void createPartControl(Composite parent) {
@@ -72,9 +87,7 @@ public class ReviewGuide extends ViewPart {
 		TableViewer viewer = new TableViewer(table);
 
 		viewer.setContentProvider(new ReviewGuideFilesContentProvider());
-		viewer.setLabelProvider(new DecoratingLabelProvider(
-				new WorkbenchLabelProvider(), PlatformUI.getWorkbench()
-						.getDecoratorManager().getLabelDecorator()));
+		viewer.setLabelProvider(new DecoratingLabelProvider(new WorkbenchLabelProvider(), PlatformUI.getWorkbench().getDecoratorManager().getLabelDecorator()));
 
 		viewer.setInput(getViewSite());
 
@@ -98,6 +111,9 @@ public class ReviewGuide extends ViewPart {
 				}
 			}
 		});
+
+		facade.addDataListener(ReviewProgress.class, this);
+		facade.addDataListener(Review.class, this);
 	}
 
 	@Override
@@ -111,7 +127,7 @@ public class ReviewGuide extends ViewPart {
 	}
 
 	private void fillLocalToolBar(IToolBarManager manager) {
-		
+
 		manager.add(startAction);
 		manager.add(syncAction);
 		manager.add(new Separator());
@@ -126,56 +142,61 @@ public class ReviewGuide extends ViewPart {
 
 		startAction = new Action() {
 			public void run() {
-
+				ReviewFacadeFactory.getFacade().startGuide();
 			}
 		};
+		startAction.setEnabled(false);
 		startAction.setText("Start");
 		startAction.setToolTipText("Start");
-		startAction.setImageDescriptor(PlatformUI.getWorkbench()
-				.getSharedImages().getImageDescriptor(
-						org.eclipse.ui.ide.IDE.SharedImages.IMG_OBJS_TASK_TSK));
-		
+		startAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(org.eclipse.ui.ide.IDE.SharedImages.IMG_OBJS_TASK_TSK));
+
 		syncAction = new Action() {
 			public void run() {
+				ReviewFacadeFactory.getFacade().syncGuide();
 
 			}
 		};
+		syncAction.setEnabled(false);
 		syncAction.setText("Select current step");
 		syncAction.setToolTipText("Select current step");
 		syncAction.setImageDescriptor(getImage(ISharedImages.IMG_ELCL_SYNCED));
 
 		stepBack = new Action() {
 			public void run() {
-
+				ReviewFacadeFactory.getFacade().stepGuideBackwards();
 			}
 		};
+		stepBack.setEnabled(false);
 		stepBack.setText("Step back to previous check");
 		stepBack.setToolTipText("Step back to previous check");
 		stepBack.setImageDescriptor(getImage(ISharedImages.IMG_TOOL_BACK));
 
 		stepForward = new Action() {
 			public void run() {
-
+				ReviewFacadeFactory.getFacade().stepGuideForward();
 			}
 		};
+		stepForward.setEnabled(false);
 		stepForward.setText("Step forwared to next check");
 		stepForward.setToolTipText("Step forwared to next check");
 		stepForward.setImageDescriptor(getImage(ISharedImages.IMG_TOOL_FORWARD));
 
 		stepBackFile = new Action() {
 			public void run() {
-
+				ReviewFacadeFactory.getFacade().stepGuideBackwardsFile();
 			}
 		};
+		stepBackFile.setEnabled(false);
 		stepBackFile.setText("Step back to previous file");
 		stepBackFile.setToolTipText("Step back to previous file");
 		stepBackFile.setImageDescriptor(getImage(ISharedImages.IMG_TOOL_BACK));
 
 		stepForwardFile = new Action() {
 			public void run() {
-
+				ReviewFacadeFactory.getFacade().stepGuideForwardFile();
 			}
 		};
+		stepForwardFile.setEnabled(false);
 		stepForwardFile.setText("Step forwared to next file");
 		stepForwardFile.setToolTipText("Step forwared to next file");
 		stepForwardFile.setImageDescriptor(getImage(ISharedImages.IMG_TOOL_FORWARD));
@@ -211,7 +232,7 @@ public class ReviewGuide extends ViewPart {
 	 */
 	private void createComposite() {
 		GridLayout gridLayout1 = new GridLayout();
-		gridLayout1.numColumns = 6;
+		gridLayout1.numColumns = 8;
 		composite = new Composite(sashForm, SWT.NONE);
 		composite.setLayout(gridLayout1);
 		scopeLabel = new Label(composite, SWT.NONE);
@@ -219,39 +240,108 @@ public class ReviewGuide extends ViewPart {
 		scopeText = new Text(composite, SWT.BORDER | SWT.READ_ONLY);
 		featureLabel = new Label(composite, SWT.NONE);
 		featureLabel.setText("  Feature:");
-		featureText = new Text(composite, SWT.BORDER | SWT.READ_ONLY);
+		
+		featureText = new Text(composite, SWT.BORDER | SWT.READ_ONLY);		
 		progressLabel = new Label(composite, SWT.NONE);
 		progressLabel.setText("  Progress:");
 		progressText = new Text(composite, SWT.BORDER | SWT.READ_ONLY);
+		stepProgressLabel = new Label(composite, SWT.NONE);
+		stepProgressLabel.setText("  Step:");
+		stepProgressText = new Text(composite, SWT.BORDER | SWT.READ_ONLY);
 
 		questionText = new Text(composite, SWT.BORDER | SWT.READ_ONLY);
+		problemText = new StyledText(composite, SWT.BORDER | SWT.READ_ONLY);
+		
+		GridData gridData = new GridData();		
+		gridData.widthHint = 100;
+		featureText.setLayoutData(gridData);
+		
+		gridData = new GridData();		
+		gridData.widthHint = 25;
+		progressText.setLayoutData(gridData);
+		
+		gridData = new GridData();		
+		gridData.widthHint = 25;
+		stepProgressText.setLayoutData(gridData);
 
-		scopeText.setText("Class");
-		featureText.setText("Inheritance");
-		progressText.setText("7/23");
-
-		questionText.setText("Are all parameters used withing a method?");
-
-		StyledText styledText = new StyledText(composite, SWT.BORDER
-				| SWT.READ_ONLY);
-
-		GridData gridData = new GridData();
-		gridData.horizontalSpan = 6;
+		gridData = new GridData();
+		gridData.horizontalSpan = 8;
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		questionText.setLayoutData(gridData);
 
 		gridData = new GridData();
-		gridData.horizontalSpan = 6;
+		gridData.horizontalSpan = 8;
 		gridData.grabExcessVerticalSpace = true;
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
-		styledText.setLayoutData(gridData);
-
-		styledText.setText("Her skal stå en vejledning af hvad der er galt");
-
+		problemText.setLayoutData(gridData);
 	}
 
+	@Override
+	public void update() {
+		Review selectedReview = facade.getSelectedReview();
+		if(selectedReview != null) {
+			ReviewProgress progress = selectedReview.getProgress();
+			
+			if (progress != null) {
+				
+								
+				
+				if(progress.getCurrentCheckpointIndex() == -1) {
+					startAction.setEnabled(true);
+					
+					stepBackFile.setEnabled(false);
+					stepBack.setEnabled(false);
+					stepForwardFile.setEnabled(false);
+					stepForward.setEnabled(false);
+				} else {
+					startAction.setEnabled(false);					
+					
+					stepBack.setEnabled(!progress.isFirst());					
+					stepBackFile.setEnabled(!(progress.isFirst() && progress.isFirstFile()));					
+					stepForwardFile.setEnabled(!(progress.isLast() && progress.isLastFile()));
+					stepForward.setEnabled(!progress.isLast());
+				}
+				
+			}
+			
+			
+			
+			if (progress != null && progress.getCurrentCheckpoint() != null) {
+				Checkpoint checkpoint = progress.getCurrentCheckpoint();
+				
+				ReviewChecklist checklist = selectedReview.getChecklist();
+				if(checklist != null) {
+					Feature feature = (Feature) checklist.getParent(checkpoint);
+					Scope scope = (Scope) checklist.getParent(feature);
+					scopeText.setText(scope.getName());
+					featureText.setText(feature.getName());			
+				}			
+				
+				progressText.setText((progress.getStep() + 1) + "/" + progress.getMaxSteps());
+				stepProgressText.setText((progress.getCurrentCheckpointIndex() + 1) + "/" + progress.getMaxCheckpoint());
+
+				questionText.setText(checkpoint.getQuestion());
+				problemText.setText(checkpoint.getProblem());
+				
+				try {					
+					IWorkbenchPage page = getSite().getPage();
+					IDE.openEditor(page, progress.getCurrentFile(), true);					
+				} catch (PartInitException e) {
+					MessageDialog.openError(null, "Unable to open file", e.getMessage());
+				}
+				
+			} else {
+				scopeText.setText("");
+				featureText.setText("");				
+				progressText.setText("");
+				stepProgressText.setText("");
+				questionText.setText("");
+				problemText.setText("");										
+			}
+		}		
+	}
 } // @jve:decl-index=0:visual-constraint="112,48"

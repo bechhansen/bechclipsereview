@@ -7,7 +7,7 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
 public class SelectedFilesContentProvider implements ITreeContentProvider {
-	
+
 	private final Set<IFile> selectedFiles;
 
 	public SelectedFilesContentProvider(Set<IFile> selectedFiles) {
@@ -21,7 +21,7 @@ public class SelectedFilesContentProvider implements ITreeContentProvider {
 
 	@Override
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-		
+
 	}
 
 	public Object[] getElements(Object parent) {

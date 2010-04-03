@@ -56,6 +56,10 @@ public class ReviewRemarks extends ViewPart {
 					StructuredSelection sSelection = (StructuredSelection) selection;
 
 					ReviewRemark rRemark = (ReviewRemark) sSelection.getFirstElement();
+					
+					if(rRemark.getFile() == null) {
+						return;
+					}
 
 					IWorkbenchPage page = getSite().getPage();
 

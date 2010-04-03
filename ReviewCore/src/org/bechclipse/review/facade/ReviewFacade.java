@@ -33,6 +33,18 @@ public interface ReviewFacade {
 	public void selectReview(Review review);
 
 	public Review getSelectedReview();
+
+	public void stepGuideForwardFile();
+
+	public void startGuide();
+
+	public void stepGuideBackwards();
+
+	public void stepGuideForward();
+
+	public void stepGuideBackwardsFile();
+
+	public void syncGuide();
 	
 	
 

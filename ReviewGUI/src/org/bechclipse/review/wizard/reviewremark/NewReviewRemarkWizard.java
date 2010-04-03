@@ -44,9 +44,9 @@ public class NewReviewRemarkWizard extends Wizard implements INewWizard {
 		final ReviewRemarkScope scope = initPage.getScope();
 		final String reviewDescription = commentPage.getReviewDescription();
 		final String reviewSolution = commentPage.getReviewSolution();
-
+				
 		try {
-			doFinish(file, textSelection, type, severity, reviewDescription, reviewSolution, scope);
+			doFinish(ReviewRemarkScope.GENEREL.equals(scope) ? null : file, textSelection, type, severity, reviewDescription, reviewSolution, scope);
 		} catch (CoreException e) {
 
 			MessageDialog.openError(getShell(), "Error", e.getMessage());

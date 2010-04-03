@@ -153,16 +153,23 @@
                class="org.bechclipse.review.action.AddFileToReview"
                icon="icons/sample2.gif"
                id="EclipseCodeReview.action4"
-               label="Tilføj fil til review"
+               label="Add file to review"
+               menubarPath="additions">
+         </action>
+         <action
+               class="org.bechclipse.review.action.AddReviewRemarkFromGuide"
+               icon="icons/sample2.gif"
+               id="EclipseCodeReview.actionfrom"
+               label="Create reviewcomment from guide"
                menubarPath="additions">
          </action>
          <action
                class="org.bechclipse.review.action.AddReviewRemark"
                icon="icons/sample2.gif"
                id="EclipseCodeReview.action1"
-               label="Opret review kommentar"
+               label="Create reviewcomment"
                menubarPath="additions">
-         </action>
+         </action>         
       </objectContribution>
       <objectContribution
             adaptable="true"
@@ -172,7 +179,7 @@
                class="org.bechclipse.review.action.ReviewAddAction"
                icon="icons/new_wiz.gif"
                id="Review Gui.action1"
-               label="Tilføj review"
+               label="Add review"
                menubarPath="additions">
          </action>
       </objectContribution>
