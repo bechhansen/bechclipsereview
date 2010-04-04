@@ -44,8 +44,4 @@ public interface ReviewFacade {
 
 	public void stepGuideBackwardsFile();
 
-	public void syncGuide();
-	
-	
-
 }

@@ -28,6 +28,36 @@
 				<severity>HIGH</severity>
 				<type>MISSING</type>
 			</checkpoint>
+			
+			<checkpoint>
+				<question>If a call to super is required in the constructor, is it present?</question>
+				<problem>Not every constructor calls supers constructor</problem>
+				<solution>Make sure every super constructor is called</solution>
+				<severity>HIGH</severity>
+				<type>MISSING</type>
+			</checkpoint>
+
+		</feature>
+
+	</scope>
+	
+	<scope name="Method">
+		<feature name="Data referencing">
+			<checkpoint>
+				<question>Are all parameters used within a method?</question>
+				<problem>Not every parameter from the method is used</problem>
+				<solution>If method parameters are not used the should bee removed from the method signatur</solution>
+				<severity>HIGH</severity>
+				<type>MISSING</type>
+			</checkpoint>
+			
+			<checkpoint>
+				<question>Are the correct class constants used?</question>
+				<problem>Not every parameter from the method is used</problem>
+				<solution>If method parameters are not used the should bee removed from the method signatur</solution>
+				<severity>HIGH</severity>
+				<type>MISSING</type>
+			</checkpoint>
 
 		</feature>
 

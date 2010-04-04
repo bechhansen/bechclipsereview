@@ -5,8 +5,6 @@ import org.bechclipse.review.facade.ReviewFacade;
 import org.bechclipse.review.facade.ReviewFacadeFactory;
 import org.bechclipse.review.model.Review;
 import org.bechclipse.review.model.ReviewProgress;
-import org.bechclipse.review.view.selection.EmptySelection;
-import org.bechclipse.review.view.selection.ObjectSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
@@ -22,8 +20,10 @@ public class ReviewGuideFilesContentProvider implements ITreeContentProvider, Re
 		facade.addDataListener(ReviewProgress.class, new ReviewDataListener() {
 
 			@Override
-			public void update() {	
-				Review selectedReview = facade.getSelectedReview();
+			public void update(Object object) {	
+				
+				viewer.refresh();
+				/*Review selectedReview = facade.getSelectedReview();
 				if(selectedReview != null) {
 					ReviewProgress progress = selectedReview.getProgress();
 					if (progress != null && progress.getCurrentCheckpoint() != null) {
@@ -31,7 +31,7 @@ public class ReviewGuideFilesContentProvider implements ITreeContentProvider, Re
 					} else {
 						viewer.setSelection(new EmptySelection(), true);						
 					}
-				}				
+				}	*/			
 			}			
 		});
 	}	
@@ -71,7 +71,7 @@ public class ReviewGuideFilesContentProvider implements ITreeContentProvider, Re
 		return false;
 	}
 
-	public void update() {
+	public void update(Object object) {
 		if (viewer != null) {
 			viewer.refresh();
 		}

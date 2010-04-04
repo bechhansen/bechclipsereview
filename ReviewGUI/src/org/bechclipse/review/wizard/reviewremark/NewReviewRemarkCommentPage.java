@@ -1,5 +1,6 @@
 package org.bechclipse.review.wizard.reviewremark;
 
+import org.bechclipse.review.model.ReviewProgress;
 import org.eclipse.jface.dialogs.IDialogPage;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -15,9 +16,11 @@ public class NewReviewRemarkCommentPage extends WizardPage {
 
 	private Text description;
 	private Text solution;
+	private final ReviewProgress progress;
 
-	public NewReviewRemarkCommentPage() {
+	public NewReviewRemarkCommentPage(ReviewProgress progress) {
 		super("Comment");
+		this.progress = progress;
 		setTitle("Review comment");
 		setDescription("Comment on the code");
 	}
@@ -49,13 +52,19 @@ public class NewReviewRemarkCommentPage extends WizardPage {
 		solution = new Text(container, SWT.BORDER | SWT.MULTI);
 		gd = new GridData(GridData.FILL_BOTH);
 		solution.setLayoutData(gd);
-		solution.addModifyListener(new ModifyListener() {
+		/*solution.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				// dialogChanged();
 			}
-		});
+		});*/
 		// initialize();
 		// dialogChanged();
+
+		if(progress != null && progress.getCurrentCheckpoint() != null) {
+			description.setText(progress.getCurrentCheckpoint().getProblem());
+			solution.setText(progress.getCurrentCheckpoint().getSolution());
+		}
+		
 		setControl(container);
 	}
 

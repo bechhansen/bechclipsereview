@@ -11,8 +11,6 @@ import org.bechclipse.review.model.ReviewProgress;
 import org.bechclipse.review.model.checklist.Checkpoint;
 import org.bechclipse.review.model.checklist.Feature;
 import org.bechclipse.review.model.checklist.Scope;
-import org.bechclipse.review.view.selection.EmptySelection;
-import org.bechclipse.review.view.selection.ObjectSelection;
 import org.eclipse.jface.viewers.AbstractTreeViewer;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -30,16 +28,8 @@ public class ReviewChecklistContentProvider implements ITreeContentProvider, Rev
 		facade.addDataListener(ReviewProgress.class, new ReviewDataListener() {
 
 			@Override
-			public void update() {	
-				Review selectedReview = facade.getSelectedReview();
-				if(selectedReview != null) {
-					ReviewProgress progress = selectedReview.getProgress();
-					if (progress != null && progress.getCurrentCheckpoint() != null) {
-						viewer.setSelection(new ObjectSelection(progress.getCurrentCheckpoint()), true);
-					} else {
-						viewer.setSelection(new EmptySelection(), true);						
-					}
-				}				
+			public void update(Object object) {				
+				viewer.refresh();							
 			}			
 		});
 	}
@@ -123,7 +113,7 @@ public class ReviewChecklistContentProvider implements ITreeContentProvider, Rev
 		return false;
 	}
 
-	public void update() {
+	public void update(Object object) {
 		if (viewer != null) {			
 			viewer.refresh();	
 			

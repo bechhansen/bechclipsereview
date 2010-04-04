@@ -188,7 +188,7 @@ public class ReviewAnnotationModel implements IAnnotationModel, ReviewDataListen
 	}
 
 	@Override
-	public void update() {
+	public void update(Object object) {
 		fireModelChanged(new AnnotationModelEvent(this));
 
 	}
