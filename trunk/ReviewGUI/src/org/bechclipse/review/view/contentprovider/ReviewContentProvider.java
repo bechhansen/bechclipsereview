@@ -28,7 +28,7 @@ public class ReviewContentProvider implements IStructuredContentProvider, Review
 		return facade.getReviews().toArray();
 	}	
 	
-	public void update() {
+	public void update(Object object) {
 		if (v != null) {
 			v.refresh();
 		}

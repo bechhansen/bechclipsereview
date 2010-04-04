@@ -1,5 +1,6 @@
 package org.bechclipse.review.wizard.reviewremark;
 
+import org.bechclipse.review.model.ReviewProgress;
 import org.bechclipse.review.model.ReviewRemarkScope;
 import org.bechclipse.review.model.ReviewRemarkSeverityType;
 import org.bechclipse.review.model.ReviewRemarkType;
@@ -29,10 +30,12 @@ public class NewReviewRemarkInitPage extends WizardPage {
 	private Button methodButton;
 	private Button selectionButton;
 	private Button generelButton;
+	private final ReviewProgress progress;
 
-	public NewReviewRemarkInitPage(IFile file) {
+	public NewReviewRemarkInitPage(IFile file, ReviewProgress progress) {
 		super("New Review remark");
 		this.file = file;
+		this.progress = progress;
 		setTitle("Code Review remark");
 		setDescription("This wizard creates a new reviewremark for the active review");
 	}

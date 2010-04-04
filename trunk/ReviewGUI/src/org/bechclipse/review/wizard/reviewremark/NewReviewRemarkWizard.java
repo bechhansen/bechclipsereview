@@ -1,6 +1,7 @@
 package org.bechclipse.review.wizard.reviewremark;
 
 import org.bechclipse.review.facade.ReviewFacadeFactory;
+import org.bechclipse.review.model.ReviewProgress;
 import org.bechclipse.review.model.ReviewRemarkScope;
 import org.bechclipse.review.model.ReviewRemarkSeverityType;
 import org.bechclipse.review.model.ReviewRemarkType;
@@ -20,20 +21,26 @@ public class NewReviewRemarkWizard extends Wizard implements INewWizard {
 
 	private final IFile file;
 	private final ITextSelection textSelection;
+	private ReviewProgress progress;
 
 	public NewReviewRemarkWizard(IFile file, ITextSelection textSelection) {
 		super();
 		this.file = file;
 		this.textSelection = textSelection;
 		setNeedsProgressMonitor(true);
-		setWindowTitle("Opret nyt Code Review");
+		setWindowTitle("Create review comment");
+	}
+
+	public NewReviewRemarkWizard(IFile file, ITextSelection textSelection, ReviewProgress progress) {
+		this(file, textSelection);
+		this.progress = progress;
 	}
 
 	public void addPages() {
-		initPage = new NewReviewRemarkInitPage(file);
+		initPage = new NewReviewRemarkInitPage(file, progress);
 		addPage(initPage);
 
-		commentPage = new NewReviewRemarkCommentPage();
+		commentPage = new NewReviewRemarkCommentPage(progress);
 		addPage(commentPage);
 	}
 

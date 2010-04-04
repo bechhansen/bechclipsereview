@@ -46,10 +46,9 @@ public class ReviewRemarkContentProvider implements ITreeContentProvider, Review
 		return false;
 	}
 
-	public void update() {
+	public void update(Object object) {
 		if (viewer != null) {
 			viewer.refresh();
 		}
 	}
-
 }

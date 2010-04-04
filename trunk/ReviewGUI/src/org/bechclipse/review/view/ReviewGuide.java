@@ -10,13 +10,14 @@ import org.bechclipse.review.model.checklist.Checkpoint;
 import org.bechclipse.review.model.checklist.Feature;
 import org.bechclipse.review.model.checklist.Scope;
 import org.bechclipse.review.view.contentprovider.ReviewGuideFilesContentProvider;
+import org.bechclipse.review.view.labelprovider.ReviewGuideFilesLabelProvider;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.viewers.DecoratingLabelProvider;
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.IOpenListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.OpenEvent;
@@ -39,7 +40,6 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
-import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.part.ViewPart;
 
 public class ReviewGuide extends ViewPart implements ReviewDataListener {
@@ -51,8 +51,7 @@ public class ReviewGuide extends ViewPart implements ReviewDataListener {
 	private Composite composite = null;
 
 	private Action startAction;
-	private Action syncAction;
-
+	
 	private Action stepBackFile;
 	private Action stepBack;
 
@@ -87,7 +86,9 @@ public class ReviewGuide extends ViewPart implements ReviewDataListener {
 		TableViewer viewer = new TableViewer(table);
 
 		viewer.setContentProvider(new ReviewGuideFilesContentProvider());
-		viewer.setLabelProvider(new DecoratingLabelProvider(new WorkbenchLabelProvider(), PlatformUI.getWorkbench().getDecoratorManager().getLabelDecorator()));
+		//viewer.setLabelProvider(new DecoratingLabelProvider(new WorkbenchLabelProvider(), PlatformUI.getWorkbench().getDecoratorManager().getLabelDecorator()));
+		viewer.setLabelProvider(new ReviewGuideFilesLabelProvider());
+		JFaceResources.getFontRegistry().put("GUIDEFILES", viewer.getControl().getFont().getFontData());
 
 		viewer.setInput(getViewSite());
 
@@ -128,8 +129,7 @@ public class ReviewGuide extends ViewPart implements ReviewDataListener {
 
 	private void fillLocalToolBar(IToolBarManager manager) {
 
-		manager.add(startAction);
-		manager.add(syncAction);
+		manager.add(startAction);		
 		manager.add(new Separator());
 		manager.add(stepBack);
 		manager.add(stepBackFile);
@@ -148,18 +148,7 @@ public class ReviewGuide extends ViewPart implements ReviewDataListener {
 		startAction.setEnabled(false);
 		startAction.setText("Start");
 		startAction.setToolTipText("Start");
-		startAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(org.eclipse.ui.ide.IDE.SharedImages.IMG_OBJS_TASK_TSK));
-
-		syncAction = new Action() {
-			public void run() {
-				ReviewFacadeFactory.getFacade().syncGuide();
-
-			}
-		};
-		syncAction.setEnabled(false);
-		syncAction.setText("Select current step");
-		syncAction.setToolTipText("Select current step");
-		syncAction.setImageDescriptor(getImage(ISharedImages.IMG_ELCL_SYNCED));
+		startAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(org.eclipse.ui.ide.IDE.SharedImages.IMG_OBJS_TASK_TSK));		
 
 		stepBack = new Action() {
 			public void run() {
@@ -281,14 +270,12 @@ public class ReviewGuide extends ViewPart implements ReviewDataListener {
 	}
 
 	@Override
-	public void update() {
+	public void update(Object object) {
 		Review selectedReview = facade.getSelectedReview();
 		if(selectedReview != null) {
 			ReviewProgress progress = selectedReview.getProgress();
 			
-			if (progress != null) {
-				
-								
+			if (progress != null) {								
 				
 				if(progress.getCurrentCheckpointIndex() == -1) {
 					startAction.setEnabled(true);
@@ -304,8 +291,7 @@ public class ReviewGuide extends ViewPart implements ReviewDataListener {
 					stepBackFile.setEnabled(!(progress.isFirst() && progress.isFirstFile()));					
 					stepForwardFile.setEnabled(!(progress.isLast() && progress.isLastFile()));
 					stepForward.setEnabled(!progress.isLast());
-				}
-				
+				}				
 			}
 			
 			

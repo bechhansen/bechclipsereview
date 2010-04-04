@@ -66,19 +66,16 @@ public class ReviewFacadeImpl implements ReviewFacade {
 		Collection<Collection<ReviewDataListener>> values = listeners.values();
 		for (Collection<ReviewDataListener> collection : values) {
 			for (ReviewDataListener reviewDataListener : collection) {
-				reviewDataListener.update();
+				reviewDataListener.update(null);
 			}
 		}
-
-	}
-	
-	
+	}	
 
 	private void fireUpdate(Object object) {
 		Collection<ReviewDataListener> collection = listeners.get(object.getClass());
 		if (collection != null) {
 			for (ReviewDataListener reviewDataListener : collection) {
-				reviewDataListener.update();
+				reviewDataListener.update(object);
 			}
 		}
 	}	
@@ -184,12 +181,4 @@ public class ReviewFacadeImpl implements ReviewFacade {
 		progress.stepForward();
 		fireUpdate(progress);		
 	}
-
-	@Override
-	public void syncGuide() {
-		ReviewProgress progress = ReviewFacadeFactory.getFacade().getSelectedReview().getProgress();
-		fireUpdate(progress);
-	}
-
-	
 }
