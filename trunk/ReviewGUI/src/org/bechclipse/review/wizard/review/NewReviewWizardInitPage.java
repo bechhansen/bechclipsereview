@@ -1,11 +1,9 @@
 package org.bechclipse.review.wizard.review;
 
+import org.bechclipse.review.model.Review;
 import org.eclipse.jface.dialogs.IDialogPage;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -16,14 +14,19 @@ public class NewReviewWizardInitPage extends WizardPage {
 
 	private Text nameText;
 	private Text descriptionText;
-	
-	public NewReviewWizardInitPage(IStructuredSelection selection) {
-		super("NewReview");
-		setTitle("Code Review");
-		setDescription("This wizard creates a new Coderevew for the project");
+
+	public NewReviewWizardInitPage() {
+		super("CodeReviewInformation");
+		setTitle("Code Review information");
+		setDescription("Set name and description for the review");
 	}
 
-	
+	public NewReviewWizardInitPage(Review review) {
+		this();
+		descriptionText.setText(review.getDescription());
+		nameText.setText(review.getName());
+	}
+
 	/**
 	 * @see IDialogPage#createControl(Composite)
 	 */
@@ -39,46 +42,22 @@ public class NewReviewWizardInitPage extends WizardPage {
 		nameText = new Text(container, SWT.BORDER | SWT.SINGLE);
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		nameText.setLayoutData(gd);
-		nameText.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				dialogChanged();
-			}
-		});
 
-		
 		label = new Label(container, SWT.NULL);
 		label.setText("&Description:");
 
 		descriptionText = new Text(container, SWT.BORDER | SWT.MULTI);
 		gd = new GridData(GridData.FILL_BOTH);
 		descriptionText.setLayoutData(gd);
-		descriptionText.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				dialogChanged();
-			}
-		});
-		initialize();
-		dialogChanged();
+
 		setControl(container);
 	}
 
-	/**
-	 * Tests if the current workbench selection is a suitable container to use.
-	 */
-
-	private void initialize() {		
-		
-	}
-
-	private void dialogChanged() {
-	}
-	
 	public String getName() {
 		return nameText.getText();
 	}
-	
+
 	public String getDescriptionText() {
 		return descriptionText.getText();
 	}
-
 }

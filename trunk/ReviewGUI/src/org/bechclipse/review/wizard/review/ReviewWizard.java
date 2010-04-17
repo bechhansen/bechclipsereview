@@ -13,29 +13,43 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 
-public class NewReviewWizard extends Wizard implements INewWizard {
+public class ReviewWizard extends Wizard implements INewWizard {
 
-	private IStructuredSelection selection;
 	private NewReviewWizardInitPage initPage;
-	private NewReviewWizardReviewersPage reviewsPage;
+	private NewReviewWizardTeamPage reviewsPage;
 	private NewReviewWizardFilesPage filesPage;
-	private final IProject project;
+	private IProject project = null;
+	private Review review;
 
-	public NewReviewWizard(IProject project) {
+	public ReviewWizard(IProject project) {
 		super();
 		this.project = project;
 		setNeedsProgressMonitor(true);
-		setWindowTitle("Opret nyt Code Review");
+		setWindowTitle("Create new code review");
+	}
+
+	public ReviewWizard(Review review) {
+		super();
+		this.review = review;
+		this.project = review.getProject();
+		setNeedsProgressMonitor(true);
+		setWindowTitle("Edit existing code review");
 	}
 
 	public void addPages() {
-		initPage = new NewReviewWizardInitPage(selection);
+
+		if (review != null) {
+			initPage = new NewReviewWizardInitPage(review);
+			reviewsPage = new NewReviewWizardTeamPage(review);
+			filesPage = new NewReviewWizardFilesPage(review);
+		} else {
+			initPage = new NewReviewWizardInitPage();
+			reviewsPage = new NewReviewWizardTeamPage();
+			filesPage = new NewReviewWizardFilesPage();
+		}
+
 		addPage(initPage);
-
-		reviewsPage = new NewReviewWizardReviewersPage(selection);
 		addPage(reviewsPage);
-
-		filesPage = new NewReviewWizardFilesPage(selection);
 		addPage(filesPage);
 	}
 
@@ -70,8 +84,7 @@ public class NewReviewWizard extends Wizard implements INewWizard {
 		 */
 	}
 
-	private void doFinish(/* IProgressMonitor monitor, */String name,
-			String description, Set<IFile> selectedFiles) throws CoreException {
+	private void doFinish(/* IProgressMonitor monitor, */String name, String description, Set<IFile> selectedFiles) throws CoreException {
 
 		// monitor.beginTask("Creating review", 2);
 		// IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
@@ -122,7 +135,6 @@ public class NewReviewWizard extends Wizard implements INewWizard {
 
 	@Override
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
-		this.selection = selection;
-	}
 
+	}
 }
