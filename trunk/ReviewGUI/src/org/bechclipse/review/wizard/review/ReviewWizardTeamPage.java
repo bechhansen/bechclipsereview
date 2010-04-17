@@ -19,7 +19,7 @@ import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 
-public class NewReviewWizardTeamPage extends WizardPage {
+public class ReviewWizardTeamPage extends WizardPage {
 
 	private Text leaderText;
 	private Text recorderText;
@@ -27,39 +27,17 @@ public class NewReviewWizardTeamPage extends WizardPage {
 	private Text reviewerText;
 	private List reviewers;
 	private List readers;
+	private Review review;
 
-	public NewReviewWizardTeamPage() {
+	public ReviewWizardTeamPage() {
 		super("Reviewers");
 		setTitle("Code Review team");
 		setDescription("Specify the review team members");
 	}
 
-	public NewReviewWizardTeamPage(Review review) {
+	public ReviewWizardTeamPage(Review review) {
 		this();
-
-		java.util.List<String> reviewersList = review.getReviewers();
-		if (reviewersList != null) {
-			for (String string : reviewersList) {
-				reviewers.add(string);
-			}
-		}
-
-		java.util.List<String> readersList = review.getReaders();
-		if (readersList != null) {
-			for (String string : reviewersList) {
-				readers.add(string);
-			}
-		}
-
-		String leader = review.getLeader();
-		if (leader != null) {
-			leaderText.setText(leader);
-		}
-
-		String recorder = review.getRecorder();
-		if (leader != null) {
-			recorderText.setText(recorder);
-		}
+		this.review = review;
 	}
 
 	/**
@@ -86,6 +64,32 @@ public class NewReviewWizardTeamPage extends WizardPage {
 		recorderText.setLayoutData(gd);
 
 		addSouthPanel(container);
+
+		if (review != null) {
+			java.util.List<String> reviewersList = review.getReviewers();
+			if (reviewersList != null) {
+				for (String string : reviewersList) {
+					reviewers.add(string);
+				}
+			}
+
+			java.util.List<String> readersList = review.getReaders();
+			if (readersList != null) {
+				for (String string : reviewersList) {
+					readers.add(string);
+				}
+			}
+
+			String leader = review.getLeader();
+			if (leader != null) {
+				leaderText.setText(leader);
+			}
+
+			String recorder = review.getRecorder();
+			if (leader != null) {
+				recorderText.setText(recorder);
+			}
+		}
 
 		setControl(container);
 	}

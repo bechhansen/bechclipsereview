@@ -29,7 +29,7 @@ public class ReviewGuideFilesLabelProvider extends DecoratingLabelProvider imple
 				}
 			}
 		}
-		return JFaceResources.getFontRegistry().get("GUIDEFILES");
+		return JFaceResources.getFontRegistry().get("GUIDEFILES");		
 	}
 
 }

@@ -67,6 +67,18 @@
                
                relative="org.eclipse.ui.views.ProblemView">
          </view>
+         <view
+               id="EclipseCodeReview.ReviewGuide"
+               minimized="false"
+               relationship="stack"
+               relative="org.eclipse.ui.views.ProblemView">
+         </view>
+         <view
+               id="EclipseCodeReview.ReviewChecklist"
+               minimized="false"
+               relationship="stack"
+               relative="EclipseCodeReview.ReviewList">
+         </view>
       </perspectiveExtension>
       
    </extension>
@@ -150,24 +162,17 @@
             id="EclipseCodeReview.objectContribution2"
             objectClass="org.eclipse.core.resources.IFile">
          <action
-               class="org.bechclipse.review.action.AddFileToReview"
-               icon="icons/sample2.gif"
-               id="EclipseCodeReview.action4"
-               label="Add file to review"
-               menubarPath="additions">
-         </action>
-         <action
                class="org.bechclipse.review.action.AddReviewRemarkFromGuide"
                icon="icons/sample2.gif"
                id="EclipseCodeReview.actionfrom"
-               label="Create reviewcomment from guide"
+               label="Create review comment from guide"
                menubarPath="additions">
          </action>
          <action
                class="org.bechclipse.review.action.AddReviewRemark"
                icon="icons/sample2.gif"
                id="EclipseCodeReview.action1"
-               label="Create reviewcomment"
+               label="Create review comment"
                menubarPath="additions">
          </action>         
       </objectContribution>

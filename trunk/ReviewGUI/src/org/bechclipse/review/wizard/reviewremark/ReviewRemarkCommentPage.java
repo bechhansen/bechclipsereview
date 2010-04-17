@@ -12,13 +12,13 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-public class NewReviewRemarkCommentPage extends WizardPage {
+public class ReviewRemarkCommentPage extends WizardPage {
 
 	private Text description;
 	private Text solution;
 	private final ReviewProgress progress;
 
-	public NewReviewRemarkCommentPage(ReviewProgress progress) {
+	public ReviewRemarkCommentPage(ReviewProgress progress) {
 		super("Comment");
 		this.progress = progress;
 		setTitle("Review comment");
@@ -52,19 +52,18 @@ public class NewReviewRemarkCommentPage extends WizardPage {
 		solution = new Text(container, SWT.BORDER | SWT.MULTI);
 		gd = new GridData(GridData.FILL_BOTH);
 		solution.setLayoutData(gd);
-		/*solution.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				// dialogChanged();
-			}
-		});*/
+		/*
+		 * solution.addModifyListener(new ModifyListener() { public void
+		 * modifyText(ModifyEvent e) { // dialogChanged(); } });
+		 */
 		// initialize();
 		// dialogChanged();
 
-		if(progress != null && progress.getCurrentCheckpoint() != null) {
+		if (progress != null && progress.getCurrentCheckpoint() != null) {
 			description.setText(progress.getCurrentCheckpoint().getProblem());
 			solution.setText(progress.getCurrentCheckpoint().getSolution());
 		}
-		
+
 		setControl(container);
 	}
 

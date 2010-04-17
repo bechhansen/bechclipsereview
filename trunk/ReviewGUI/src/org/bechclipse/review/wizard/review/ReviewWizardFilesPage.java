@@ -29,7 +29,7 @@ import org.eclipse.ui.ResourceWorkingSetFilter;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
-public class NewReviewWizardFilesPage extends WizardPage {
+public class ReviewWizardFilesPage extends WizardPage {
 
 	private TreeViewer resourceViewer;
 	private TreeViewer selectedFilesViewer;
@@ -38,19 +38,18 @@ public class NewReviewWizardFilesPage extends WizardPage {
 
 	private ResourceWorkingSetFilter workingSetFilter = new ResourceWorkingSetFilter();
 
-	public NewReviewWizardFilesPage() {
+	public ReviewWizardFilesPage() {
 		super("Files");
 		setTitle("Files for review");
 		setDescription("Select the files to review");
 	}
 
-	public NewReviewWizardFilesPage(Review review) {
+	public ReviewWizardFilesPage(Review review) {
 		this();
 
 		Set<IFile> files = review.getFiles();
 		if (files != null) {
-			selectedFiles.addAll(files);
-			selectedFilesViewer.refresh();
+			selectedFiles.addAll(files);			
 		}
 	}
 
