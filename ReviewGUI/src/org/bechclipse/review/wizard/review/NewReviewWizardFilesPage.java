@@ -3,6 +3,7 @@ package org.bechclipse.review.wizard.review;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.bechclipse.review.model.Review;
 import org.bechclipse.review.view.contentprovider.SelectedFilesContentProvider;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -17,11 +18,12 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.swt.widgets.ToolItem;
+import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ResourceWorkingSetFilter;
 import org.eclipse.ui.model.WorkbenchContentProvider;
@@ -34,16 +36,22 @@ public class NewReviewWizardFilesPage extends WizardPage {
 
 	private Set<IFile> selectedFiles = new HashSet<IFile>();
 
-	private Button removeButton;
-	private Button addButton;
-
-	//private ResourcePatternFilter patternFilter = new ResourcePatternFilter();
 	private ResourceWorkingSetFilter workingSetFilter = new ResourceWorkingSetFilter();
 
-	public NewReviewWizardFilesPage(IStructuredSelection selection) {
+	public NewReviewWizardFilesPage() {
 		super("Files");
-		setTitle("Files");
+		setTitle("Files for review");
 		setDescription("Select the files to review");
+	}
+
+	public NewReviewWizardFilesPage(Review review) {
+		this();
+
+		Set<IFile> files = review.getFiles();
+		if (files != null) {
+			selectedFiles.addAll(files);
+			selectedFilesViewer.refresh();
+		}
 	}
 
 	/**
@@ -68,18 +76,14 @@ public class NewReviewWizardFilesPage extends WizardPage {
 		gridData.verticalAlignment = GridData.FILL;
 		resourceViewer.getControl().setLayoutData(gridData);
 
-		RowLayout buttonLayout = new RowLayout(SWT.VERTICAL);
-		buttonLayout.fill = true;
-		Composite buttonComposite = new Composite(container, SWT.NULL);
-		buttonComposite.setLayout(buttonLayout);
+		ToolBar toolBar = new ToolBar(container, SWT.VERTICAL);
 
-		addButton = new Button(buttonComposite, SWT.NONE);
-		addButton.setText("Add");
-		addButton.addListener(SWT.Selection, new Listener() {
+		ToolItem addReader = new ToolItem(toolBar, SWT.PUSH);
+		addReader.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_ADD));
+		addReader.addListener(SWT.Selection, new Listener() {
 			@Override
 			public void handleEvent(Event event) {
-				IStructuredSelection selection = (IStructuredSelection) resourceViewer
-						.getSelection();
+				IStructuredSelection selection = (IStructuredSelection) resourceViewer.getSelection();
 				Object obj = selection.getFirstElement();
 
 				if (obj instanceof IFile) {
@@ -88,13 +92,11 @@ public class NewReviewWizardFilesPage extends WizardPage {
 			}
 		});
 
-		removeButton = new Button(buttonComposite, SWT.NONE);
-		removeButton.setText("Remove");
-		removeButton.addListener(SWT.Selection, new Listener() {
+		ToolItem removeReader = new ToolItem(toolBar, SWT.PUSH);
+		removeReader.addListener(SWT.Selection, new Listener() {
 			@Override
 			public void handleEvent(Event event) {
-				IStructuredSelection selection = (IStructuredSelection) selectedFilesViewer
-						.getSelection();
+				IStructuredSelection selection = (IStructuredSelection) selectedFilesViewer.getSelection();
 				Object obj = selection.getFirstElement();
 
 				if (obj instanceof IFile) {
@@ -102,6 +104,7 @@ public class NewReviewWizardFilesPage extends WizardPage {
 				}
 			}
 		});
+		removeReader.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_ETOOL_DELETE));
 
 		selectedFilesViewer = createSelectedViewer(container);
 		selectedFilesViewer.getControl().setLayoutData(gridData);
@@ -117,8 +120,7 @@ public class NewReviewWizardFilesPage extends WizardPage {
 	 * @since 2.0
 	 */
 	protected TreeViewer createResourceViewer(Composite parent) {
-		TreeViewer viewer = new TreeViewer(parent, SWT.SINGLE | SWT.H_SCROLL
-				| SWT.V_SCROLL);
+		TreeViewer viewer = new TreeViewer(parent, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
 		viewer.setUseHashlookup(true);
 		initContentProvider(viewer);
 		initLabelProvider(viewer);
@@ -136,11 +138,9 @@ public class NewReviewWizardFilesPage extends WizardPage {
 	}
 
 	protected TreeViewer createSelectedViewer(Composite parent) {
-		TreeViewer viewer = new TreeViewer(parent, SWT.SINGLE | SWT.H_SCROLL
-				| SWT.V_SCROLL);
+		TreeViewer viewer = new TreeViewer(parent, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
 		viewer.setUseHashlookup(false);
-		viewer.setContentProvider(new SelectedFilesContentProvider(
-				getSelectedFiles()));
+		viewer.setContentProvider(new SelectedFilesContentProvider(getSelectedFiles()));
 		initLabelProvider(viewer);
 
 		viewer.addDoubleClickListener(new IDoubleClickListener() {
@@ -155,8 +155,7 @@ public class NewReviewWizardFilesPage extends WizardPage {
 	}
 
 	protected void handleResourceDoubleClick(DoubleClickEvent event) {
-		IStructuredSelection selection = (IStructuredSelection) event
-				.getSelection();
+		IStructuredSelection selection = (IStructuredSelection) event.getSelection();
 		Object obj = selection.getFirstElement();
 
 		if (obj instanceof IFile) {
@@ -165,8 +164,7 @@ public class NewReviewWizardFilesPage extends WizardPage {
 	}
 
 	protected void handleSelectedDoubleClick(DoubleClickEvent event) {
-		IStructuredSelection selection = (IStructuredSelection) event
-				.getSelection();
+		IStructuredSelection selection = (IStructuredSelection) event.getSelection();
 		Object obj = selection.getFirstElement();
 
 		if (obj instanceof IFile) {
@@ -185,7 +183,7 @@ public class NewReviewWizardFilesPage extends WizardPage {
 	}
 
 	protected void initFilters(TreeViewer viewer) {
-		//viewer.addFilter(patternFilter);
+		// viewer.addFilter(patternFilter);
 		viewer.addFilter(workingSetFilter);
 	}
 
@@ -194,9 +192,7 @@ public class NewReviewWizardFilesPage extends WizardPage {
 	}
 
 	protected void initLabelProvider(TreeViewer viewer) {
-		viewer.setLabelProvider(new DecoratingLabelProvider(
-				new WorkbenchLabelProvider(), PlatformUI.getWorkbench()
-						.getDecoratorManager().getLabelDecorator()));
+		viewer.setLabelProvider(new DecoratingLabelProvider(new WorkbenchLabelProvider(), PlatformUI.getWorkbench().getDecoratorManager().getLabelDecorator()));
 	}
 
 	public Set<IFile> getSelectedFiles() {
