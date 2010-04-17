@@ -6,6 +6,7 @@ import org.bechclipse.review.facade.ReviewFacadeFactory;
 import org.bechclipse.review.model.IReview;
 import org.bechclipse.review.model.Review;
 import org.bechclipse.review.model.ReviewState;
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.ITableFontProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -16,7 +17,11 @@ import org.eclipse.ui.PlatformUI;
 public class ReviewLabelProvider extends LabelProvider implements ITableLabelProvider, ITableFontProvider {
 
 	public String getColumnText(Object obj, int index) {
-		return getText(obj);
+		
+		IReview review = (IReview) obj;
+		
+		//return review.getName() + " (" + review.getProject().getName() + ")";
+		return review.getProject().getName() + "/" + review.getName();
 	}
 
 	public Image getColumnImage(Object obj, int index) {
@@ -52,9 +57,9 @@ public class ReviewLabelProvider extends LabelProvider implements ITableLabelPro
 		Review selectedReview = ReviewFacadeFactory.getFacade().getSelectedReview();
 		
 		if(selectedReview != null && selectedReview.equals(element)) {
-			
+			return JFaceResources.getFontRegistry().getBold("REVIEWFONT");
 		}
-		return null;
+		return JFaceResources.getFontRegistry().get("REVIEWFONT");		
 		
 	}
 

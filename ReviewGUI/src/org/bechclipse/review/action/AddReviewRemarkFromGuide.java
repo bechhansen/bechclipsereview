@@ -2,7 +2,7 @@ package org.bechclipse.review.action;
 
 import org.bechclipse.review.facade.ReviewFacadeFactory;
 import org.bechclipse.review.model.Review;
-import org.bechclipse.review.wizard.reviewremark.NewReviewRemarkWizard;
+import org.bechclipse.review.wizard.reviewremark.ReviewRemarkWizard;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.text.ITextSelection;
@@ -45,7 +45,7 @@ public class AddReviewRemarkFromGuide implements IObjectActionDelegate {
 			Review selectedReview = ReviewFacadeFactory.getFacade().getSelectedReview();
 			if(selectedReview != null) {
 			
-				NewReviewRemarkWizard wizard = new NewReviewRemarkWizard(file, textSelection, selectedReview.getProgress());
+				ReviewRemarkWizard wizard = new ReviewRemarkWizard(file, textSelection, selectedReview.getProgress());
 				WizardDialog dialog = new WizardDialog(shell, wizard);
 				dialog.open();
 		}

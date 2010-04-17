@@ -10,21 +10,21 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-public class NewReviewWizardInitPage extends WizardPage {
+public class ReviewWizardInitPage extends WizardPage {
 
 	private Text nameText;
 	private Text descriptionText;
+	private Review review;
 
-	public NewReviewWizardInitPage() {
+	public ReviewWizardInitPage() {
 		super("CodeReviewInformation");
 		setTitle("Code Review information");
 		setDescription("Set name and description for the review");
 	}
 
-	public NewReviewWizardInitPage(Review review) {
+	public ReviewWizardInitPage(Review review) {
 		this();
-		descriptionText.setText(review.getDescription());
-		nameText.setText(review.getName());
+		this.review = review;
 	}
 
 	/**
@@ -49,6 +49,11 @@ public class NewReviewWizardInitPage extends WizardPage {
 		descriptionText = new Text(container, SWT.BORDER | SWT.MULTI);
 		gd = new GridData(GridData.FILL_BOTH);
 		descriptionText.setLayoutData(gd);
+
+		if (review != null) {
+			descriptionText.setText(review.getDescription());
+			nameText.setText(review.getName());
+		}
 
 		setControl(container);
 	}

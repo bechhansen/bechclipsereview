@@ -91,6 +91,24 @@ public class ReviewFacadeImpl implements ReviewFacade {
 			MessageDialog.openError(null, "Error adding review", e.getMessage());
 		}
 	}
+	
+	@Override
+	public void updateReview(Review review) {
+		fireUpdate(review);
+		
+	}
+
+	@Override
+	public void deleteReview(Review review) {
+		try {
+			pFacade.deleteReview(review);
+			// reviewmodel.removeReview(review);
+			fireUpdate(review);
+
+		} catch (Exception e) {
+			MessageDialog.openError(null, "Error deleting", e.getMessage());
+		}
+	}
 
 	@Override
 	public void addReviewRemark(IFile file, ITextSelection textSelection, ReviewRemarkType type, ReviewRemarkSeverityType severity, String description, String solution, ReviewRemarkScope scope) {
@@ -105,20 +123,8 @@ public class ReviewFacadeImpl implements ReviewFacade {
 		} catch (Exception e) {
 			MessageDialog.openError(null, "Error adding review remark", e.getMessage());
 		}
-
 	}
-
-	@Override
-	public void deleteReview(Review review) {
-		try {
-			pFacade.deleteReview(review);
-			// reviewmodel.removeReview(review);
-			fireUpdate(review);
-
-		} catch (Exception e) {
-			MessageDialog.openError(null, "Error deleting", e.getMessage());
-		}
-	}
+	
 
 	@Override
 	public void reload(IProject project) {
@@ -180,5 +186,5 @@ public class ReviewFacadeImpl implements ReviewFacade {
 		ReviewProgress progress = ReviewFacadeFactory.getFacade().getSelectedReview().getProgress();
 		progress.stepForward();
 		fireUpdate(progress);		
-	}
+	}	
 }

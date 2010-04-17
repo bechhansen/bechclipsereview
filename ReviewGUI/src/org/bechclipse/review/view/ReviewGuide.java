@@ -115,6 +115,8 @@ public class ReviewGuide extends ViewPart implements ReviewDataListener {
 
 		facade.addDataListener(ReviewProgress.class, this);
 		facade.addDataListener(Review.class, this);
+		
+		update(null);
 	}
 
 	@Override
@@ -292,9 +294,7 @@ public class ReviewGuide extends ViewPart implements ReviewDataListener {
 					stepForwardFile.setEnabled(!(progress.isLast() && progress.isLastFile()));
 					stepForward.setEnabled(!progress.isLast());
 				}				
-			}
-			
-			
+			}			
 			
 			if (progress != null && progress.getCurrentCheckpoint() != null) {
 				Checkpoint checkpoint = progress.getCurrentCheckpoint();

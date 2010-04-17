@@ -1,6 +1,6 @@
 package org.bechclipse.review.action;
 
-import org.bechclipse.review.wizard.review.NewReviewWizard;
+import org.bechclipse.review.wizard.review.ReviewWizard;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
@@ -35,9 +35,7 @@ public class ReviewAddAction implements IViewActionDelegate {
 	/**
 	 * @see IActionDelegate#run(IAction)
 	 */
-	public void run(IAction action) {
-		
-		
+	public void run(IAction action) {		
 
 		if (selection instanceof IStructuredSelection) {
 			IStructuredSelection sSelection = (IStructuredSelection) selection;
@@ -45,7 +43,7 @@ public class ReviewAddAction implements IViewActionDelegate {
 			Object firstElement = sSelection.getFirstElement();
 			
 			if (firstElement instanceof IProject) {
-				NewReviewWizard wizard = new NewReviewWizard((IProject)firstElement);
+				ReviewWizard wizard = new ReviewWizard((IProject)firstElement);
 
 				// Create the wizard dialog
 				WizardDialog dialog = new WizardDialog(shell, wizard);

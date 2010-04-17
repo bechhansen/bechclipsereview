@@ -44,8 +44,7 @@ public class ReviewRemarks extends ViewPart {
 		viewer.setLabelProvider(new ReviewRemarkLabelProvider());
 		viewer.setSorter(new TreePathViewerSorter());
 		
-		viewer.addOpenListener(new IOpenListener() {
-		
+		viewer.addOpenListener(new IOpenListener() {		
 
 			@Override
 			public void open(OpenEvent event) {

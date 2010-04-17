@@ -171,4 +171,19 @@ public class Review implements IReview, IActionFilter {
 	public ReviewProgress getProgress() {
 		return progress;
 	}
+
+	public String getLeader() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<String> getReaders() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getRecorder() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -1,6 +1,7 @@
 package org.bechclipse.review.wizard.reviewremark;
 
 import org.bechclipse.review.model.ReviewProgress;
+import org.bechclipse.review.model.ReviewRemarkCategory;
 import org.bechclipse.review.model.ReviewRemarkScope;
 import org.bechclipse.review.model.ReviewRemarkSeverityType;
 import org.bechclipse.review.model.ReviewRemarkType;
@@ -8,8 +9,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.dialogs.IDialogPage;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
@@ -20,10 +19,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-public class NewReviewRemarkInitPage extends WizardPage {
+public class ReviewRemarkInitPage extends WizardPage {
 
 	private Text fileName;
 	private Combo type;
+	private Combo category;
 	private final IFile file;
 	private Combo severity;
 	private Button classButton;
@@ -32,7 +32,7 @@ public class NewReviewRemarkInitPage extends WizardPage {
 	private Button generelButton;
 	private final ReviewProgress progress;
 
-	public NewReviewRemarkInitPage(IFile file, ReviewProgress progress) {
+	public ReviewRemarkInitPage(IFile file, ReviewProgress progress) {
 		super("New Review remark");
 		this.file = file;
 		this.progress = progress;
@@ -72,12 +72,21 @@ public class NewReviewRemarkInitPage extends WizardPage {
 		type.setFocus();
 
 		gd = new GridData(GridData.FILL_HORIZONTAL);
-		type.setLayoutData(gd);
-		type.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				dialogChanged();
-			}
-		});
+		type.setLayoutData(gd);		
+		
+		label = new Label(container, SWT.NULL);
+		label.setText("&Category:");
+
+		category = new Combo(container, SWT.BORDER | SWT.MULTI);
+
+		category.add(ReviewRemarkCategory.WRONG.toString());
+		category.add(ReviewRemarkCategory.MISSING.toString());
+		category.add(ReviewRemarkCategory.EXTRA.toString());
+		
+		category.select(0);		
+
+		gd = new GridData(GridData.FILL_HORIZONTAL);
+		category.setLayoutData(gd);		
 
 		label = new Label(container, SWT.NULL);
 		label.setText("&Severity:");
@@ -90,12 +99,7 @@ public class NewReviewRemarkInitPage extends WizardPage {
 		severity.select(0);
 
 		gd = new GridData(GridData.FILL_HORIZONTAL);
-		severity.setLayoutData(gd);
-		severity.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				dialogChanged();
-			}
-		});
+		severity.setLayoutData(gd);		
 
 		label = new Label(container, SWT.NULL);
 		label.setText("&Scope:");
@@ -171,6 +175,25 @@ public class NewReviewRemarkInitPage extends WizardPage {
 
 		case 3:
 			return ReviewRemarkType.STRUCTURE;
+
+		default:
+			return null;
+		}
+	}
+	
+	public ReviewRemarkCategory getCategory() {
+		int selectionIndex = type.getSelectionIndex();
+		switch (selectionIndex) {
+		case 0:
+			return ReviewRemarkCategory.WRONG;
+
+		case 1:
+			return ReviewRemarkCategory.MISSING;
+
+		case 2:
+			return ReviewRemarkCategory.EXTRA;
+
+		case 3:			
 
 		default:
 			return null;

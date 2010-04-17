@@ -14,16 +14,16 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 
-public class NewReviewRemarkWizard extends Wizard implements INewWizard {
+public class ReviewRemarkWizard extends Wizard implements INewWizard {
 
-	private NewReviewRemarkInitPage initPage;
-	private NewReviewRemarkCommentPage commentPage;
+	private ReviewRemarkInitPage initPage;
+	private ReviewRemarkCommentPage commentPage;
 
 	private final IFile file;
 	private final ITextSelection textSelection;
 	private ReviewProgress progress;
 
-	public NewReviewRemarkWizard(IFile file, ITextSelection textSelection) {
+	public ReviewRemarkWizard(IFile file, ITextSelection textSelection) {
 		super();
 		this.file = file;
 		this.textSelection = textSelection;
@@ -31,16 +31,16 @@ public class NewReviewRemarkWizard extends Wizard implements INewWizard {
 		setWindowTitle("Create review comment");
 	}
 
-	public NewReviewRemarkWizard(IFile file, ITextSelection textSelection, ReviewProgress progress) {
+	public ReviewRemarkWizard(IFile file, ITextSelection textSelection, ReviewProgress progress) {
 		this(file, textSelection);
 		this.progress = progress;
 	}
 
 	public void addPages() {
-		initPage = new NewReviewRemarkInitPage(file, progress);
+		initPage = new ReviewRemarkInitPage(file, progress);
 		addPage(initPage);
 
-		commentPage = new NewReviewRemarkCommentPage(progress);
+		commentPage = new ReviewRemarkCommentPage(progress);
 		addPage(commentPage);
 	}
 
@@ -51,7 +51,7 @@ public class NewReviewRemarkWizard extends Wizard implements INewWizard {
 		final ReviewRemarkScope scope = initPage.getScope();
 		final String reviewDescription = commentPage.getReviewDescription();
 		final String reviewSolution = commentPage.getReviewSolution();
-				
+
 		try {
 			doFinish(ReviewRemarkScope.GENEREL.equals(scope) ? null : file, textSelection, type, severity, reviewDescription, reviewSolution, scope);
 		} catch (CoreException e) {

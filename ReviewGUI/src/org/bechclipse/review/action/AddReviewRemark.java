@@ -1,6 +1,6 @@
 package org.bechclipse.review.action;
 
-import org.bechclipse.review.wizard.reviewremark.NewReviewRemarkWizard;
+import org.bechclipse.review.wizard.reviewremark.ReviewRemarkWizard;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.text.ITextSelection;
@@ -39,7 +39,7 @@ public class AddReviewRemark implements IObjectActionDelegate {
 		if (firstElement != null && firstElement instanceof IFile) {
 			IFile file = (IFile) firstElement;
 
-			NewReviewRemarkWizard wizard = new NewReviewRemarkWizard(file, textSelection);
+			ReviewRemarkWizard wizard = new ReviewRemarkWizard(file, textSelection);
 			WizardDialog dialog = new WizardDialog(shell, wizard);
 			dialog.open();
 
