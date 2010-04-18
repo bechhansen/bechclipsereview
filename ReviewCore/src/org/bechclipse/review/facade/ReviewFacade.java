@@ -46,4 +46,7 @@ public interface ReviewFacade {
 
 	public void updateReview(Review review);
 
+	void updateReviewRemark(ReviewRemark remark);
+
+	void deleteReviewRemark(ReviewRemark remark);
 }

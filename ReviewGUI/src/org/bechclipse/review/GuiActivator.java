@@ -4,9 +4,12 @@ package org.bechclipse.review;
 import org.bechclipse.review.annotation.EditorTracker;
 import org.bechclipse.review.facade.ReviewFacadeFactory;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResourceChangeEvent;
+import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -23,7 +26,8 @@ public class GuiActivator extends AbstractUIPlugin {
 
 	private EditorTracker editorTracker;
 	
-	private ProjectResourceListener prl = new ProjectResourceListener();
+	private IResourceChangeListener prl;
+	private IResourceChangeListener prul;
 
 	/**
 	 * The constructor
@@ -37,7 +41,13 @@ public class GuiActivator extends AbstractUIPlugin {
 
 		editorTracker = new EditorTracker(getWorkbench());
 		
-		ResourcesPlugin.getWorkspace().addResourceChangeListener(prl);
+		Display display = getWorkbench().getDisplay();
+		
+		prl = new ProjectResourceListener(display);
+		prul = new ProjectResourceUpdateListener(display);
+		
+		ResourcesPlugin.getWorkspace().addResourceChangeListener(prl, IResourceChangeEvent.POST_CHANGE);		
+		ResourcesPlugin.getWorkspace().addResourceChangeListener(prul, IResourceChangeEvent.PRE_REFRESH);
 		
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		
@@ -50,7 +60,7 @@ public class GuiActivator extends AbstractUIPlugin {
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
 		
-		ResourcesPlugin.getWorkspace().addResourceChangeListener(prl);
+		ResourcesPlugin.getWorkspace().removeResourceChangeListener(prl);
 		editorTracker.dispose();
 		super.stop(context);
 	}

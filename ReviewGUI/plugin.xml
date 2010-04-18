@@ -121,7 +121,8 @@
                class="org.bechclipse.review.action.ReviewDeleteAction"
                icon="icons/delete_edit.gif"
                id="EclipseCodeReview.DeleteReviewAction"
-               label="Slet">
+               label="Slet"
+               menubarPath="additions">
          </action>
          <action
                class="org.bechclipse.review.action.ReviewEndAction"
@@ -157,9 +158,30 @@
             </enablement>
          </action>
       </objectContribution>
+      
+      
+      
       <objectContribution
             adaptable="true"
-            id="EclipseCodeReview.objectContribution2"
+            id="EclipseCodeReview.ReviewRemark"
+            objectClass="org.bechclipse.review.model.ReviewRemark">
+         <action
+               class="org.bechclipse.review.action.DeleteReviewRemarkAction"
+               icon="icons/delete_edit.gif"
+               id="EclipseCodeReview.DeleteReviewRemark"
+               label="Slet"
+               menubarPath="additions"
+               state="true"
+               style="push">
+         </action>         
+      </objectContribution>
+      
+      
+      
+      
+      <objectContribution
+            adaptable="true"
+            id="EclipseCodeReview.ReviewRemarkAdd"
             objectClass="org.eclipse.core.resources.IFile">
          <action
                class="org.bechclipse.review.action.AddReviewRemarkFromGuide"
