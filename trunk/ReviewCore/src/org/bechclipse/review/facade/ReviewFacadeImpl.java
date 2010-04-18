@@ -94,8 +94,13 @@ public class ReviewFacadeImpl implements ReviewFacade {
 	
 	@Override
 	public void updateReview(Review review) {
-		fireUpdate(review);
-		
+		try {
+			
+			fireUpdate(review);
+
+		} catch (Exception e) {
+			MessageDialog.openError(null, "Error updating", e.getMessage());
+		}		
 	}
 
 	@Override
@@ -123,6 +128,28 @@ public class ReviewFacadeImpl implements ReviewFacade {
 		} catch (Exception e) {
 			MessageDialog.openError(null, "Error adding review remark", e.getMessage());
 		}
+	}
+	
+	@Override
+	public void updateReviewRemark(ReviewRemark remark) {
+		try {
+			
+			fireUpdate(remark);
+
+		} catch (Exception e) {
+			MessageDialog.openError(null, "Error updating", e.getMessage());
+		}		
+	}
+
+	@Override
+	public void deleteReviewRemark(ReviewRemark remark) {
+		try {
+			
+			fireUpdate(remark);
+
+		} catch (Exception e) {
+			MessageDialog.openError(null, "Error deleting", e.getMessage());
+		}	
 	}
 	
 

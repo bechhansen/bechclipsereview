@@ -1,44 +1,71 @@
 package org.bechclipse.review;
 
 import org.bechclipse.review.facade.ReviewFacadeFactory;
-import org.bechclipse.review.model.Constants;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IResourceDelta;
-import org.eclipse.core.resources.IResourceDeltaVisitor;
-import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.swt.widgets.Display;
 
 public class ProjectResourceListener implements IResourceChangeListener {
 
-	private IProject project;
-	
+	private final Display display;
+
+	public ProjectResourceListener(Display display) {
+		this.display = display;
+	}
+
 	@Override
 	public void resourceChanged(IResourceChangeEvent event) {
 
 		try {
-			if (event.getType() == IResourceChangeEvent.POST_CHANGE) {
-				event.getDelta().accept(new IResourceDeltaVisitor() {
 
+			IResourceDelta delta = event.getDelta();
 
-					public boolean visit(IResourceDelta delta) throws CoreException {
+			if (delta != null && delta.getResource() != null && delta.getResource() instanceof IWorkspaceRoot) {
+
+				if (event.getType() == IResourceChangeEvent.POST_CHANGE && delta.getKind() == IResourceDelta.CHANGED) {
+
+					IResourceDelta[] affectedChildren = delta.getAffectedChildren();
+					for (IResourceDelta iResourceDelta : affectedChildren) {
 						
-						
-						final IResource resource = delta.getResource();
-						
-						if (resource instanceof IProject) {
-							project = (IProject)resource;
-						
-						} else if (resource.getName().equals(Constants.rootFolderName)) {
-							ReviewFacadeFactory.getFacade().reload(project);
-							return false;							
+						if (iResourceDelta != null && iResourceDelta.getResource() instanceof IProject && (iResourceDelta.getKind() == IResourceDelta.CHANGED || iResourceDelta.getKind() == IResourceDelta.ADDED) && (iResourceDelta.getFlags() == IResourceDelta.OPEN || iResourceDelta.getFlags() == IResourceDelta.ADDED)) {
+							
+							IProject project = (IProject) iResourceDelta.getResource();  
+							if(project.isOpen()) {
+								final IProject p = project;
+
+								display.syncExec(new Runnable() {
+									public void run() {
+										ReviewFacadeFactory.getFacade().reload(p);
+									}
+								}); 
+							}							
 						}
-						return true;
 					}
-				});
+
+					/*
+					 * delta.accept(new IResourceDeltaVisitor() {
+					 * 
+					 * public boolean visit(IResourceDelta delta) throws
+					 * CoreException {
+					 * 
+					 * final IResource resource = delta.getResource(); //
+					 * System.out.println(resource.getFullPath());
+					 * 
+					 * if (resource instanceof IProject) { IProject project =
+					 * (IProject) resource;
+					 * ReviewFacadeFactory.getFacade().reload(project); return
+					 * false; } return true;
+					 * 
+					 * } });
+					 */
+				}
+
 			}
-		} catch (CoreException e) {
+
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

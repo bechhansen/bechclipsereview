@@ -7,6 +7,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.IOpenListener;
 import org.eclipse.jface.viewers.ISelection;
@@ -17,10 +18,12 @@ import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jface.viewers.TreePathViewerSorter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchPartSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.part.ViewPart;
@@ -43,6 +46,8 @@ public class ReviewRemarks extends ViewPart {
 		viewer.setContentProvider(new ReviewRemarkContentProvider());
 		viewer.setLabelProvider(new ReviewRemarkLabelProvider());
 		viewer.setSorter(new TreePathViewerSorter());
+		
+		hookContextMenu();
 		
 		viewer.addOpenListener(new IOpenListener() {		
 
@@ -125,6 +130,16 @@ public class ReviewRemarks extends ViewPart {
 		// viewer.setCellModifier(cellModifier);
 		viewer.setInput(getViewSite());
 
+	}
+	
+	private void hookContextMenu() {
+		MenuManager menuMgr = new MenuManager("#PopupMenu");
+		Menu menu = menuMgr.createContextMenu(viewer.getControl());
+		viewer.getControl().setMenu(menu);
+		IWorkbenchPartSite site = getSite();
+		if (site != null) {
+			site.registerContextMenu(menuMgr, viewer);
+		}
 	}
 
 	/**

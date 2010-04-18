@@ -27,6 +27,8 @@ public class ReviewChecklist extends ViewPart {
 		viewer.setLabelProvider(new ReviewChecklistLabelProvider());	
 		viewer.setInput(getViewSite());
 		
+		viewer.expandAll();
+		
 		JFaceResources.getFontRegistry().put("CHECKLIST", viewer.getControl().getFont().getFontData());
 	}
 
