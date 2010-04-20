@@ -85,7 +85,7 @@ public class ReviewWizard extends Wizard implements INewWizard {
 		}
 	}
 
-	private void populateReview(Review review2, Set<IFile> selectedFiles) {
+	private void populateReview(Review review, Set<IFile> selectedFiles) {
 		review.setFiles(selectedFiles);
 	}
 

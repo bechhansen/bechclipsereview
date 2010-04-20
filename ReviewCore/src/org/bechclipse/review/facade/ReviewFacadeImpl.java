@@ -84,7 +84,7 @@ public class ReviewFacadeImpl implements ReviewFacade {
 	public void addReview(Review review) {
 		try {
 			pFacade.persistReview(review);
-			// reviewmodel.addReview(review);
+			reviewmodel.addReview(review);
 			fireUpdate(review);
 
 		} catch (Exception e) {
@@ -96,7 +96,9 @@ public class ReviewFacadeImpl implements ReviewFacade {
 	public void updateReview(Review review) {
 		try {
 			
+			reviewmodel.updateReview(review);
 			fireUpdate(review);
+			pFacade.persistReview(review);
 
 		} catch (Exception e) {
 			MessageDialog.openError(null, "Error updating", e.getMessage());
@@ -107,7 +109,7 @@ public class ReviewFacadeImpl implements ReviewFacade {
 	public void deleteReview(Review review) {
 		try {
 			pFacade.deleteReview(review);
-			// reviewmodel.removeReview(review);
+			reviewmodel.removeReview(review);
 			fireUpdate(review);
 
 		} catch (Exception e) {
@@ -117,11 +119,14 @@ public class ReviewFacadeImpl implements ReviewFacade {
 
 	@Override
 	public void addReviewRemark(IFile file, ITextSelection textSelection, ReviewRemarkType type, ReviewRemarkSeverityType severity, String description, String solution, ReviewRemarkScope scope) {
-
+		
+		if(getSelectedReview() == null) {
+			return;
+		}
 		try {
 			String username = System.getenv("USERNAME");
 
-			ReviewRemark remark = new ReviewRemark(type, severity, description, solution, scope, username, file != null ? file.getProjectRelativePath().toString() : null, textSelection.getOffset(), textSelection.getLength());
+			ReviewRemark remark = new ReviewRemark(getSelectedReview(), type, severity, description, solution, scope, username, file != null ? file.getProjectRelativePath().toString() : null, textSelection.getOffset(), textSelection.getLength());
 			getReviewModel().getReviewRemarks().add(remark);
 			pFacade.persistReviewRemark(remark);
 			fireUpdate(remark);
@@ -132,9 +137,9 @@ public class ReviewFacadeImpl implements ReviewFacade {
 	
 	@Override
 	public void updateReviewRemark(ReviewRemark remark) {
-		try {
-			
+		try {			
 			fireUpdate(remark);
+			pFacade.persistReviewRemark(remark);
 
 		} catch (Exception e) {
 			MessageDialog.openError(null, "Error updating", e.getMessage());
@@ -143,8 +148,9 @@ public class ReviewFacadeImpl implements ReviewFacade {
 
 	@Override
 	public void deleteReviewRemark(ReviewRemark remark) {
-		try {
-			
+		try {			
+			pFacade.deleteReviewRemark(remark);
+			reviewmodel.removeReviewRemark(remark);			
 			fireUpdate(remark);
 
 		} catch (Exception e) {

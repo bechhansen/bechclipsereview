@@ -1,28 +1,44 @@
 package org.bechclipse.review.model;
 
+import javax.xml.bind.annotation.XmlTransient;
+
 public class ReviewRemark {
 
-	private final ReviewRemarkType type;
-	private final ReviewRemarkSeverityType severity;
-	private final String description;
-	private final String file;
-	private final int length;
-	private final int offset;
-	private final String solution;
-	private final String user;
-	private final ReviewRemarkScope scope;
+	private ReviewRemarkType type;
+	private ReviewRemarkSeverityType severity;
+	private String description;
+	private String file;
+	private int length;
+	private int offset;
+	private String solution;
+	private String user;
+	private ReviewRemarkScope scope;
 	private Review parent;
+	private Long id;
+	
+	public ReviewRemark() {
+		
+	}
 
-	public ReviewRemark(ReviewRemarkType type, ReviewRemarkSeverityType severity, String description, String solution, ReviewRemarkScope scope, String user, String file, int offset, int length) {
-		this.type = type;
-		this.severity = severity;
-		this.description = description;
-		this.solution = solution;
-		this.user = user;
-		this.file = file;
-		this.offset = offset;
-		this.length = length;
-		this.scope = scope;
+	public ReviewRemark(Review parent, ReviewRemarkType type, ReviewRemarkSeverityType severity, String description, String solution, ReviewRemarkScope scope, String user, String file, int offset, int length) {		
+		this.setParent(parent);
+		this.setType(type);
+		this.setSeverity(severity);
+		this.setDescription(description);
+		this.setSolution(solution);
+		this.setUser(user);
+		this.setFile(file);
+		this.setOffset(offset);
+		this.setLength(length);
+		this.setScope(scope);
+	}
+	
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getId() {
+		return id;
 	}
 
 	public ReviewRemarkType getType() {
@@ -49,23 +65,61 @@ public class ReviewRemark {
 		return offset;
 	}
 
-	public int getLenght() {
-		return length;
-	}
-
+	
 	public String getFile() {
 		return file;
 	}
 
 	public ReviewRemarkScope getScope() {
 		return scope;
+	}	
+
+	@XmlTransient
+	public Review getParent() {
+		return parent;
+	}
+
+	public void setType(ReviewRemarkType type) {
+		this.type = type;
+	}
+
+	public void setSeverity(ReviewRemarkSeverityType severity) {
+		this.severity = severity;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setFile(String file) {
+		this.file = file;
+	}
+
+	public void setLength(int length) {
+		this.length = length;
+	}
+
+	public int getLength() {
+		return length;
+	}
+	
+	public void setOffset(int offset) {
+		this.offset = offset;
+	}
+
+	public void setSolution(String solution) {
+		this.solution = solution;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
+	}
+
+	public void setScope(ReviewRemarkScope scope) {
+		this.scope = scope;
 	}
 
 	public void setParent(Review parent) {
 		this.parent = parent;
-	}
-
-	public Review getParent() {
-		return parent;
 	}
 }
