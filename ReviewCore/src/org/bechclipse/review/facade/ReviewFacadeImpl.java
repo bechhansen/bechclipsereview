@@ -85,6 +85,7 @@ public class ReviewFacadeImpl implements ReviewFacade {
 		try {
 			pFacade.persistReview(review);
 			reviewmodel.addReview(review);
+				
 			fireUpdate(review);
 
 		} catch (Exception e) {
@@ -94,9 +95,7 @@ public class ReviewFacadeImpl implements ReviewFacade {
 
 	@Override
 	public void updateReview(Review review) {
-		try {
-
-			reviewmodel.updateReview(review);
+		try {			
 			fireUpdate(review);
 			pFacade.persistReview(review);
 

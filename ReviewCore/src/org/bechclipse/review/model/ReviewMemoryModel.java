@@ -35,12 +35,11 @@ public class ReviewMemoryModel {
 		}
 		col.add(review);
 		reviewsMap.put(review.getProject(), col);
-	}
-	
-	public void updateReview(Review review) {
-		// TODO Auto-generated method stub
-	}
-	
+		
+		ReviewProgress rp = new ReviewProgress();
+		review.setProgress(rp);
+	}	
+		
 	public void removeReview(IReview review) {
 		Collection<Review> col = reviewsMap.get(review.getProject());
 		
