@@ -20,7 +20,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.text.ITextSelection;
 
-public class ReviewFacadeImpl implements ReviewFacade {	
+public class ReviewFacadeImpl implements ReviewFacade {
 
 	private PersistenceFacade pFacade = new PersistenceFacadeImpl();
 	private ReviewMemoryModel reviewmodel;
@@ -38,7 +38,7 @@ public class ReviewFacadeImpl implements ReviewFacade {
 	}
 
 	private ReviewMemoryModel getReviewModel() {
-		if (reviewmodel == null) {			
+		if (reviewmodel == null) {
 			reviewmodel = new ReviewMemoryModel();
 		}
 		return reviewmodel;
@@ -60,7 +60,7 @@ public class ReviewFacadeImpl implements ReviewFacade {
 		if (collection != null) {
 			collection.remove(dataListener);
 		}
-	}	
+	}
 
 	private void fireUpdate() {
 		Collection<Collection<ReviewDataListener>> values = listeners.values();
@@ -69,7 +69,7 @@ public class ReviewFacadeImpl implements ReviewFacade {
 				reviewDataListener.update(null);
 			}
 		}
-	}	
+	}
 
 	private void fireUpdate(Object object) {
 		Collection<ReviewDataListener> collection = listeners.get(object.getClass());
@@ -78,7 +78,7 @@ public class ReviewFacadeImpl implements ReviewFacade {
 				reviewDataListener.update(object);
 			}
 		}
-	}	
+	}
 
 	@Override
 	public void addReview(Review review) {
@@ -91,18 +91,18 @@ public class ReviewFacadeImpl implements ReviewFacade {
 			MessageDialog.openError(null, "Error adding review", e.getMessage());
 		}
 	}
-	
+
 	@Override
 	public void updateReview(Review review) {
 		try {
-			
+
 			reviewmodel.updateReview(review);
 			fireUpdate(review);
 			pFacade.persistReview(review);
 
 		} catch (Exception e) {
 			MessageDialog.openError(null, "Error updating", e.getMessage());
-		}		
+		}
 	}
 
 	@Override
@@ -119,8 +119,8 @@ public class ReviewFacadeImpl implements ReviewFacade {
 
 	@Override
 	public void addReviewRemark(IFile file, ITextSelection textSelection, ReviewRemarkType type, ReviewRemarkSeverityType severity, String description, String solution, ReviewRemarkScope scope) {
-		
-		if(getSelectedReview() == null) {
+
+		if (getSelectedReview() == null) {
 			return;
 		}
 		try {
@@ -134,30 +134,29 @@ public class ReviewFacadeImpl implements ReviewFacade {
 			MessageDialog.openError(null, "Error adding review remark", e.getMessage());
 		}
 	}
-	
+
 	@Override
 	public void updateReviewRemark(ReviewRemark remark) {
-		try {			
+		try {
 			fireUpdate(remark);
 			pFacade.persistReviewRemark(remark);
 
 		} catch (Exception e) {
 			MessageDialog.openError(null, "Error updating", e.getMessage());
-		}		
+		}
 	}
 
 	@Override
 	public void deleteReviewRemark(ReviewRemark remark) {
-		try {			
+		try {
 			pFacade.deleteReviewRemark(remark);
-			reviewmodel.removeReviewRemark(remark);			
+			reviewmodel.removeReviewRemark(remark);
 			fireUpdate(remark);
 
 		} catch (Exception e) {
 			MessageDialog.openError(null, "Error deleting", e.getMessage());
-		}	
+		}
 	}
-	
 
 	@Override
 	public void reload(IProject project) {
@@ -179,45 +178,76 @@ public class ReviewFacadeImpl implements ReviewFacade {
 		getReviewModel().selectReview(review);
 		fireUpdate(review);
 	}
-	
+
 	public Review getSelectedReview() {
 		return getReviewModel().getSelectedReview();
 	}
-	
+
 	@Override
 	public void startGuide() {
-		ReviewProgress progress = ReviewFacadeFactory.getFacade().getSelectedReview().getProgress();
-		progress.start();
-		fireUpdate(progress);
-		
+		try {
+			ReviewProgress progress = ReviewFacadeFactory.getFacade().getSelectedReview().getProgress();
+			progress.start();
+			fireUpdate(progress);
+			pFacade.persistProgress(progress);
+		} catch (Exception e) {
+			MessageDialog.openError(null, "Error starting guide", e.getMessage());
+			e.printStackTrace();
+		}
+
 	}
 
 	@Override
 	public void stepGuideForwardFile() {
-		ReviewProgress progress = ReviewFacadeFactory.getFacade().getSelectedReview().getProgress();
-		progress.stepForwardFile();
-		fireUpdate(progress);
+		try {
+			ReviewProgress progress = ReviewFacadeFactory.getFacade().getSelectedReview().getProgress();
+			progress.stepForwardFile();
+			fireUpdate(progress);
+			pFacade.persistProgress(progress);
+		} catch (Exception e) {
+			MessageDialog.openError(null, "Error starting guide", e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public void stepGuideBackwards() {
-		ReviewProgress progress = ReviewFacadeFactory.getFacade().getSelectedReview().getProgress();
-		progress.stepBackwards();
-		fireUpdate(progress);
-		
+		try {
+			ReviewProgress progress = ReviewFacadeFactory.getFacade().getSelectedReview().getProgress();
+			progress.stepBackwards();
+			fireUpdate(progress);
+			pFacade.persistProgress(progress);
+		} catch (Exception e) {
+			MessageDialog.openError(null, "Error starting guide", e.getMessage());
+			e.printStackTrace();
+		}
+
 	}
 
 	@Override
 	public void stepGuideBackwardsFile() {
-		ReviewProgress progress = ReviewFacadeFactory.getFacade().getSelectedReview().getProgress();
-		progress.stepBackwardsFile();
-		fireUpdate(progress);		
+		try {
+			ReviewProgress progress = ReviewFacadeFactory.getFacade().getSelectedReview().getProgress();
+			progress.stepBackwardsFile();
+			fireUpdate(progress);
+
+			pFacade.persistProgress(progress);
+		} catch (Exception e) {
+			MessageDialog.openError(null, "Error starting guide", e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public void stepGuideForward() {
-		ReviewProgress progress = ReviewFacadeFactory.getFacade().getSelectedReview().getProgress();
-		progress.stepForward();
-		fireUpdate(progress);		
-	}	
+		try {
+			ReviewProgress progress = ReviewFacadeFactory.getFacade().getSelectedReview().getProgress();
+			progress.stepForward();
+			fireUpdate(progress);
+			pFacade.persistProgress(progress);
+		} catch (Exception e) {
+			MessageDialog.openError(null, "Error starting guide", e.getMessage());
+			e.printStackTrace();
+		}
+	}
 }

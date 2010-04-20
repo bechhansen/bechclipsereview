@@ -168,6 +168,7 @@ public class Review implements IReview, IActionFilter {
 	}
 
 	public void setProgress(ReviewProgress progress) {
+		progress.setReview(this);
 		this.progress = progress;
 	}
 

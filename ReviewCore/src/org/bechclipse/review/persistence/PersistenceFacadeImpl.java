@@ -15,6 +15,7 @@ import javax.xml.bind.Unmarshaller;
 import org.bechclipse.review.model.Constants;
 import org.bechclipse.review.model.Review;
 import org.bechclipse.review.model.ReviewChecklist;
+import org.bechclipse.review.model.ReviewProgress;
 import org.bechclipse.review.model.ReviewRemark;
 import org.bechclipse.review.model.ReviewRemarkList;
 import org.bechclipse.review.model.checklist.Checklist;
@@ -63,20 +64,15 @@ public class PersistenceFacadeImpl implements PersistenceFacade {
 							}
 						}
 						
-						/*File progressFile = new File(f.getAbsolutePath() + "\\" + fileName + "\\" + Constants.progressFileName);
+						File progressFile = new File(f.getAbsolutePath() + "\\" + fileName + "\\" + Constants.progressFileName);
 						if (progressFile.exists()) {
 							
 							JAXBContext progressJc = JAXBContext.newInstance(ReviewProgress.class);
 							Unmarshaller progressUm = progressJc.createUnmarshaller();
-
-							try {
-								JAXBElement<ReviewProgress> element = (JAXBElement<ReviewProgress>) progressUm.unmarshal(progressFile);
-								ReviewProgress value = element.getValue();
-								review.setProgress(value);
-							} catch (JAXBException e) {
-
-							}
-						}*/
+							
+							ReviewProgress progress = (ReviewProgress) progressUm.unmarshal(progressFile);
+							review.setProgress(progress);							
+						}
 						
 						JAXBContext remarkJc = JAXBContext.newInstance(ReviewRemarkList.class);
 						Unmarshaller remarkUm = remarkJc.createUnmarshaller();
@@ -123,7 +119,6 @@ public class PersistenceFacadeImpl implements PersistenceFacade {
 		}
 
 		try {
-
 			IFolder folder = review.getProject().getFolder(Constants.rootFolderName);
 			if (!folder.exists()) {
 				folder.create(true, true, null);
@@ -232,6 +227,29 @@ public class PersistenceFacadeImpl implements PersistenceFacade {
 			e.printStackTrace();
 			throw new Exception("Unable to delete remark XML");
 		}		
+	}
+
+	@Override
+	public void persistProgress(ReviewProgress progress) throws Exception {
+		try {
+			JAXBContext jc = JAXBContext.newInstance(ReviewProgress.class);
+			Marshaller m = jc.createMarshaller();
+
+			Review review = progress.getParent();
+
+			IFolder folder = review.getProject().getFolder(Constants.rootFolderName);
+			IFolder reviewFoler = folder.getFolder(String.valueOf(review.getId()));
+			if (!reviewFoler.exists()) {
+				reviewFoler.create(true, true, null);
+			}
+
+			File xmlFile = new File(reviewFoler.getLocationURI());
+			m.marshal(progress, new File(xmlFile.getAbsolutePath() + "\\" + Constants.progressFileName));
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new Exception("Unable to save review XML");
+		}
+		
 	}	
 	
 }
