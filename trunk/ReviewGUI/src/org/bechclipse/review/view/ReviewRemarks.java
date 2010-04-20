@@ -79,7 +79,7 @@ public class ReviewRemarks extends ViewPart {
 
 								if (editor instanceof AbstractTextEditor) {
 									AbstractTextEditor ate = (AbstractTextEditor) editor;
-									ate.selectAndReveal(rRemark.getOffset(), rRemark.getLenght());
+									ate.selectAndReveal(rRemark.getOffset(), rRemark.getLength());
 								}
 								//
 

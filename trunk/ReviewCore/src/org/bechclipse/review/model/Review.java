@@ -1,5 +1,7 @@
 package org.bechclipse.review.model;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -10,7 +12,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -20,7 +21,6 @@ import org.eclipse.ui.IActionFilter;
 
 @XmlRootElement(name = "Review", namespace = "http://core.review.bechclipse.org")
 @XmlAccessorType(XmlAccessType.PROPERTY)
-@XmlType(name = "review")
 public class Review implements IReview, IActionFilter {
 
 	private Long id;
@@ -32,6 +32,10 @@ public class Review implements IReview, IActionFilter {
 	private Set<String> files;
 	private ReviewChecklist checklist;
 	private ReviewProgress progress;
+
+	private Collection<ReviewRemark> reviewRemarks = new ArrayList<ReviewRemark>();
+	private String leader;
+	private String recorder;
 
 	public Review() {
 	}
@@ -172,18 +176,32 @@ public class Review implements IReview, IActionFilter {
 		return progress;
 	}
 
-	public String getLeader() {
-		// TODO Auto-generated method stub
+	public List<String> getReaders() {
 		return null;
 	}
 
-	public List<String> getReaders() {
-		// TODO Auto-generated method stub
-		return null;
+	public void setReviewRemarks(Collection<ReviewRemark> reviewRemarks) {
+		this.reviewRemarks = reviewRemarks;
+	}
+
+	@XmlTransient
+	public Collection<ReviewRemark> getReviewRemarks() {
+		return reviewRemarks;
+	}
+
+	public void setLeader(String leader) {
+		this.leader = leader;
+	}
+
+	public String getLeader() {
+		return leader;
+	}
+
+	public void setRecorder(String recorder) {
+		this.recorder = recorder;
 	}
 
 	public String getRecorder() {
-		// TODO Auto-generated method stub
-		return null;
+		return recorder;
 	}
 }

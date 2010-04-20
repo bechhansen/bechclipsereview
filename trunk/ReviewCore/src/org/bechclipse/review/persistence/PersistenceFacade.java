@@ -16,4 +16,6 @@ public interface PersistenceFacade {
 
 	public void deleteReview(Review review) throws Exception;
 
+	public void deleteReviewRemark(ReviewRemark remark) throws Exception;
+
 }

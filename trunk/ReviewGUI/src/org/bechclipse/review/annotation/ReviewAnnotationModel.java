@@ -172,7 +172,7 @@ public class ReviewAnnotationModel implements IAnnotationModel, ReviewDataListen
 
 				if (reviewRemark.getFile() != null && reviewRemark.getFile().equalsIgnoreCase(fileName)) {
 
-					list.add(new ReviewAnnotation(reviewRemark.getOffset(), reviewRemark.getLenght()));
+					list.add(new ReviewAnnotation(reviewRemark.getOffset(), reviewRemark.getLength()));
 				}
 			}
 		}

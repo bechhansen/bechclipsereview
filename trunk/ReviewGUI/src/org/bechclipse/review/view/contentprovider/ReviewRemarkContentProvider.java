@@ -3,6 +3,7 @@ package org.bechclipse.review.view.contentprovider;
 import org.bechclipse.review.facade.ReviewDataListener;
 import org.bechclipse.review.facade.ReviewFacade;
 import org.bechclipse.review.facade.ReviewFacadeFactory;
+import org.bechclipse.review.model.Review;
 import org.bechclipse.review.model.ReviewRemark;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
@@ -15,6 +16,7 @@ public class ReviewRemarkContentProvider implements ITreeContentProvider, Review
 
 	public ReviewRemarkContentProvider() {
 		facade.addDataListener(ReviewRemark.class, this);
+		facade.addDataListener(Review.class, this);
 	}
 
 	@Override

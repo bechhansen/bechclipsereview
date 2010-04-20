@@ -2,6 +2,7 @@ package org.bechclipse.review.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,22 +12,21 @@ public class ReviewMemoryModel {
 
 	private Map<IProject, Collection<Review>> reviewsMap = new HashMap<IProject, Collection<Review>>();
 	
-	private Collection<ReviewRemark> reviewRemark = new ArrayList<ReviewRemark>();
-
 	private Review selectedReview;
 
 	public ReviewMemoryModel() {
 		
 	}
 
+	@SuppressWarnings("unchecked")
 	public Collection<ReviewRemark> getReviewRemarks() {
-		return reviewRemark;
+		
+		if(selectedReview == null) {
+			return Collections.EMPTY_LIST;
+		}
+		return selectedReview.getReviewRemarks();
 	}
-
-	public void setReviewRemarks(Collection<ReviewRemark> reviewRemark) {
-		this.reviewRemark = reviewRemark;
-	}
-
+	
 	public void addReview(Review review) {
 		Collection<Review> col = reviewsMap.get(review.getProject());
 		
@@ -35,6 +35,18 @@ public class ReviewMemoryModel {
 		}
 		col.add(review);
 		reviewsMap.put(review.getProject(), col);
+	}
+	
+	public void updateReview(Review review) {
+		// TODO Auto-generated method stub
+	}
+	
+	public void removeReview(IReview review) {
+		Collection<Review> col = reviewsMap.get(review.getProject());
+		
+		if (col != null) {
+			col.remove(review);
+		}		
 	}
 
 	public Collection<IReview> getReviews() {
@@ -45,25 +57,19 @@ public class ReviewMemoryModel {
 			result.addAll(reviewCollection);
 		}
 		return result;
-	}
-
-	public void removeReview(IReview review) {
-		Collection<Review> col = reviewsMap.get(review.getProject());
-		
-		if (col != null) {
-			col.remove(review);
-		}		
-	}
+	}	
 
 	public void setReviewsForProject(IProject project, Collection<Review> reviews) {
-		reviewsMap.put(project, reviews);
+		reviewsMap.put(project, reviews);	
 		
 		for (Review review : reviews) {
 			ReviewProgress rp = new ReviewProgress(review);
-			review.setProgress(rp);		
-		}
-		
-		
+			review.setProgress(rp);	
+			
+			if (selectedReview != null && selectedReview.getId().equals(review.getId())) {
+				selectedReview = review;
+			}
+		}	
 	}
 
 	public void selectReview(Review review) {
@@ -73,4 +79,11 @@ public class ReviewMemoryModel {
 	public Review getSelectedReview() {
 		return selectedReview;
 	}
+
+	public void removeReviewRemark(ReviewRemark remark) {
+		 Review parent = remark.getParent();		 
+		 Collection<ReviewRemark> reviewRemarks = parent.getReviewRemarks();
+		 reviewRemarks.remove(remark);
+		
+	}	
 }

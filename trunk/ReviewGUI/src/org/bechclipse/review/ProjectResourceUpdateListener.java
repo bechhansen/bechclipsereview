@@ -21,7 +21,7 @@ public class ProjectResourceUpdateListener implements IResourceChangeListener {
 		try {
 
 			IResource resource = event.getResource();
-			System.out.println("Update caled " + resource);
+			//System.out.println("Update caled " + resource);
 
 			if (resource instanceof IProject) {
 				final IProject project = (IProject) resource;
