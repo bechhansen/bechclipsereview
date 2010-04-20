@@ -314,8 +314,10 @@ public class ReviewGuide extends ViewPart implements ReviewDataListener {
 				problemText.setText(checkpoint.getProblem());
 				
 				try {					
-					IWorkbenchPage page = getSite().getPage();
-					IDE.openEditor(page, progress.getCurrentFile(), true);					
+					if(progress.getCurrentFile() != null) {					
+						IWorkbenchPage page = getSite().getPage();
+						IDE.openEditor(page, progress.getCurrentFile(), true);
+					}
 				} catch (PartInitException e) {
 					MessageDialog.openError(null, "Unable to open file", e.getMessage());
 				}

@@ -63,8 +63,11 @@ public class ReviewMemoryModel {
 		reviewsMap.put(project, reviews);	
 		
 		for (Review review : reviews) {
-			ReviewProgress rp = new ReviewProgress(review);
-			review.setProgress(rp);	
+			
+			if(review.getProgress() == null) {
+				ReviewProgress rp = new ReviewProgress();
+				review.setProgress(rp);					
+			}			
 			
 			if (selectedReview != null && selectedReview.getId().equals(review.getId())) {
 				selectedReview = review;
