@@ -1,5 +1,6 @@
 package org.bechclipse.review.wizard.review;
 
+import java.util.List;
 import java.util.Set;
 
 import org.bechclipse.review.facade.ReviewFacadeFactory;
@@ -16,7 +17,7 @@ import org.eclipse.ui.IWorkbench;
 public class ReviewWizard extends Wizard implements INewWizard {
 
 	private ReviewWizardInitPage initPage;
-	private ReviewWizardTeamPage reviewsPage;
+	private ReviewWizardTeamPage reviewTeamPage;
 	private ReviewWizardFilesPage filesPage;
 	private IProject project = null;
 	private Review review;
@@ -40,16 +41,16 @@ public class ReviewWizard extends Wizard implements INewWizard {
 
 		if (review != null) {
 			initPage = new ReviewWizardInitPage(review);
-			reviewsPage = new ReviewWizardTeamPage(review);
+			reviewTeamPage = new ReviewWizardTeamPage(review);
 			filesPage = new ReviewWizardFilesPage(review);
 		} else {
 			initPage = new ReviewWizardInitPage();
-			reviewsPage = new ReviewWizardTeamPage();
+			reviewTeamPage = new ReviewWizardTeamPage();
 			filesPage = new ReviewWizardFilesPage();
 		}
 
 		addPage(initPage);
-		addPage(reviewsPage);
+		addPage(reviewTeamPage);
 		addPage(filesPage);
 	}
 
@@ -58,9 +59,14 @@ public class ReviewWizard extends Wizard implements INewWizard {
 		final String name = initPage.getName();
 		final String description = initPage.getDescriptionText();
 		final Set<IFile> selectedFiles = filesPage.getSelectedFiles();
+		
+		String leader = reviewTeamPage.getLeader();
+		List<String> readers = reviewTeamPage.getReaders();
+		String recorder = reviewTeamPage.getRecorder();
+		List<String> reviewers = reviewTeamPage.getReviewers();
 
 		try {
-			doFinish(name, description, selectedFiles);
+			doFinish(name, description, selectedFiles, leader, recorder, readers, reviewers);
 		} catch (CoreException e) {
 
 			MessageDialog.openError(getShell(), "Error", e.getMessage());
@@ -71,22 +77,26 @@ public class ReviewWizard extends Wizard implements INewWizard {
 
 	}
 
-	private void doFinish(/* IProgressMonitor monitor, */String name, String description, Set<IFile> selectedFiles) throws CoreException {
+	private void doFinish(/* IProgressMonitor monitor, */String name, String description, Set<IFile> selectedFiles, String leader, String recorder, List<String> readers, List<String> reviewers) throws CoreException {
 
 		if (this.review == null) {
 
 			Review review = new Review(name, description);
 			review.setProject(project);
-			populateReview(review, selectedFiles);
+			populateReview(review, selectedFiles, leader, recorder, readers, reviewers);
 			ReviewFacadeFactory.getFacade().addReview(review);
 		} else {
-			populateReview(this.review, selectedFiles);
+			populateReview(this.review, selectedFiles, leader, recorder, readers, reviewers);
 			ReviewFacadeFactory.getFacade().updateReview(this.review);
 		}
 	}
 
-	private void populateReview(Review review, Set<IFile> selectedFiles) {
+	private void populateReview(Review review, Set<IFile> selectedFiles, String leader, String recorder, List<String> readers, List<String> reviewers) {
 		review.setFiles(selectedFiles);
+		review.setLeader(leader);
+		review.setReaders(readers);
+		review.setRecorder(recorder);
+		review.setReviewers(reviewers);
 	}
 
 	@Override

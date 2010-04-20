@@ -27,6 +27,7 @@ public class Review implements IReview, IActionFilter {
 	private IProject project;
 	private String name;
 	private List<String> reviewers;
+	private List<String> readers;
 	private String description;
 	private ReviewState reviewState;
 	private Set<String> files;
@@ -36,6 +37,7 @@ public class Review implements IReview, IActionFilter {
 	private Collection<ReviewRemark> reviewRemarks = new ArrayList<ReviewRemark>();
 	private String leader;
 	private String recorder;
+	
 
 	public Review() {
 	}
@@ -64,6 +66,7 @@ public class Review implements IReview, IActionFilter {
 	}
 
 	@XmlElementWrapper(name = "Reviewers")
+	@XmlElement(name="Reviewer")
 	public List<String> getReviewers() {
 		return reviewers;
 	}
@@ -177,8 +180,14 @@ public class Review implements IReview, IActionFilter {
 		return progress;
 	}
 
+	@XmlElementWrapper(name = "Readers")
+	@XmlElement(name="Reader")
 	public List<String> getReaders() {
-		return null;
+		return readers;
+	}
+	
+	public void setReaders(List<String> readers) {
+		this.readers = readers;
 	}
 
 	public void setReviewRemarks(Collection<ReviewRemark> reviewRemarks) {
@@ -204,5 +213,5 @@ public class Review implements IReview, IActionFilter {
 
 	public String getRecorder() {
 		return recorder;
-	}
+	}	
 }
