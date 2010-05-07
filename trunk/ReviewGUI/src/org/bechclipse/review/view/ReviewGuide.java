@@ -1,5 +1,9 @@
 package org.bechclipse.review.view;
 
+import java.util.regex.MatchResult;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.bechclipse.review.facade.ReviewDataListener;
 import org.bechclipse.review.facade.ReviewFacade;
 import org.bechclipse.review.facade.ReviewFacadeFactory;
@@ -24,7 +28,10 @@ import org.eclipse.jface.viewers.OpenEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.LineStyleEvent;
+import org.eclipse.swt.custom.LineStyleListener;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -269,6 +276,28 @@ public class ReviewGuide extends ViewPart implements ReviewDataListener {
 		gridData.verticalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		problemText.setLayoutData(gridData);
+		
+		/*problemText.addLineStyleListener(new LineStyleListener() {
+			
+			@Override
+			public void lineGetStyle(LineStyleEvent event) {
+				
+								
+				
+				
+				
+				event.styles = new StyleRange[1]; 
+				
+				StyleRange styleRange = new StyleRange ();		 
+			   
+				styleRange.underlineStyle = SWT.UNDERLINE_LINK; 
+				styleRange.data = 
+			 
+				event.styles [0] = styleRange;
+				
+			}
+		});*/
+		
 	}
 
 	@Override
