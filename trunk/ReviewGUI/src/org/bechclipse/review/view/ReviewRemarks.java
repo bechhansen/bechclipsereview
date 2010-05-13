@@ -42,14 +42,14 @@ public class ReviewRemarks extends ViewPart {
 
 		viewer = new TableViewer(createTable(parent));
 		viewer.getTable().setHeaderVisible(true);
-		
+
 		viewer.setContentProvider(new ReviewRemarkContentProvider());
 		viewer.setLabelProvider(new ReviewRemarkLabelProvider());
 		viewer.setSorter(new TreePathViewerSorter());
-		
+
 		hookContextMenu();
-		
-		viewer.addOpenListener(new IOpenListener() {		
+
+		viewer.addOpenListener(new IOpenListener() {
 
 			@Override
 			public void open(OpenEvent event) {
@@ -60,35 +60,30 @@ public class ReviewRemarks extends ViewPart {
 					StructuredSelection sSelection = (StructuredSelection) selection;
 
 					ReviewRemark rRemark = (ReviewRemark) sSelection.getFirstElement();
-					
-					if(rRemark.getFile() == null) {
+
+					if (rRemark.getFile() == null) {
 						return;
 					}
 
 					IWorkbenchPage page = getSite().getPage();
+					//IWorkspace root = ResourcesPlugin.getWorkspace();
+					//IProject[] projects = root.getRoot().getProjects();
 
-					IWorkspace root = ResourcesPlugin.getWorkspace();
-					IProject[] projects = root.getRoot().getProjects();
+					IFile file = rRemark.getParent().getProject().getFile(rRemark.getFile());
+					if (file != null) {
+						try {
+							IEditorPart editor = IDE.openEditor(page, file, true);
 
-					for (int i = 0; i < projects.length; i++) {
-
-						IFile file = projects[i].getFile(rRemark.getFile());
-						if (file != null) {
-							try {
-								IEditorPart editor = IDE.openEditor(page, file, true);
-
-								if (editor instanceof AbstractTextEditor) {
-									AbstractTextEditor ate = (AbstractTextEditor) editor;
-									ate.selectAndReveal(rRemark.getOffset(), rRemark.getLength());
-								}
-								//
-
-								break;
-							} catch (PartInitException e) {
-								e.printStackTrace();
+							if (editor instanceof AbstractTextEditor) {
+								AbstractTextEditor ate = (AbstractTextEditor) editor;
+								ate.selectAndReveal(rRemark.getOffset(), rRemark.getLength());
 							}
+							
+						} catch (PartInitException e) {
+							e.printStackTrace();
 						}
 					}
+
 				}
 			}
 		});
@@ -96,7 +91,7 @@ public class ReviewRemarks extends ViewPart {
 		TableColumn tc1 = new TableColumn(viewer.getTable(), SWT.LEFT, 0);
 		tc1.setText("Type");
 		tc1.setWidth(100);
-		
+
 		viewer.getTable().setSortColumn(tc1);
 
 		TableColumn tc2 = new TableColumn(viewer.getTable(), SWT.LEFT, 1);
@@ -131,7 +126,7 @@ public class ReviewRemarks extends ViewPart {
 		viewer.setInput(getViewSite());
 
 	}
-	
+
 	private void hookContextMenu() {
 		MenuManager menuMgr = new MenuManager("#PopupMenu");
 		Menu menu = menuMgr.createContextMenu(viewer.getControl());
