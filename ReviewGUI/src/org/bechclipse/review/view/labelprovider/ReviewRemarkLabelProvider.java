@@ -14,12 +14,24 @@ public class ReviewRemarkLabelProvider implements ITableLabelProvider {
 		
 		switch (columnIndex) {
 		case 0:
+			
+			if(remark.getType() == null) {
+				return "-";
+			}
+			
 			return remark.getType().toString();
 			
 		case 1:
+			
+			if(remark.getScope() == null) {
+				return "-";
+			}
+			
 			return remark.getScope().toString();
 			
-		case 2:
+		case 2:	
+			
+			
 			return remark.getFile();			
 			
 		case 3:
@@ -34,6 +46,11 @@ public class ReviewRemarkLabelProvider implements ITableLabelProvider {
 			
 			
 		case 6:
+			
+			if(remark.getSeverity() == null) {
+				return "-";
+			}
+			
 			return remark.getSeverity().toString();
 			
 			
