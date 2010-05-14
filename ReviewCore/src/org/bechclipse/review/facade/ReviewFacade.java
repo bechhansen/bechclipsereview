@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.bechclipse.review.model.IReview;
 import org.bechclipse.review.model.Review;
 import org.bechclipse.review.model.ReviewRemark;
+import org.bechclipse.review.model.ReviewRemarkCategory;
 import org.bechclipse.review.model.ReviewRemarkScope;
 import org.bechclipse.review.model.ReviewRemarkSeverityType;
 import org.bechclipse.review.model.ReviewRemarkType;
@@ -15,7 +16,7 @@ import org.eclipse.jface.text.ITextSelection;
 
 public interface ReviewFacade {
 
-	public void addReviewRemark(IFile file, ITextSelection textSelection, ReviewRemarkType type, ReviewRemarkSeverityType severity, String reviewDescription, String reviewSolution, ReviewRemarkScope scope);	
+	public void addReviewRemark(IFile file, ITextSelection textSelection, ReviewRemarkType type, ReviewRemarkSeverityType severity, String reviewDescription, String reviewSolution, ReviewRemarkScope scope, ReviewRemarkCategory category);	
 	
 	public Collection<ReviewRemark> getReviewRemarks();
 

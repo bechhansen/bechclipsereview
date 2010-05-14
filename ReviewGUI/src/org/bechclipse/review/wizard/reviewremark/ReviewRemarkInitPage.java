@@ -62,7 +62,7 @@ public class ReviewRemarkInitPage extends WizardPage {
 		label = new Label(container, SWT.NULL);
 		label.setText("&Type:");
 
-		type = new Combo(container, SWT.BORDER | SWT.MULTI);
+		type = new Combo(container, SWT.BORDER | SWT.MULTI | SWT.READ_ONLY);
 
 		type.add(ReviewRemarkType.CODESTYLE.toString());
 		type.add(ReviewRemarkType.NULLPOINTER.toString());
@@ -72,26 +72,26 @@ public class ReviewRemarkInitPage extends WizardPage {
 		type.setFocus();
 
 		gd = new GridData(GridData.FILL_HORIZONTAL);
-		type.setLayoutData(gd);		
-		
+		type.setLayoutData(gd);
+
 		label = new Label(container, SWT.NULL);
 		label.setText("&Category:");
 
-		category = new Combo(container, SWT.BORDER | SWT.MULTI);
+		category = new Combo(container, SWT.BORDER | SWT.MULTI | SWT.READ_ONLY);
 
 		category.add(ReviewRemarkCategory.WRONG.toString());
 		category.add(ReviewRemarkCategory.MISSING.toString());
 		category.add(ReviewRemarkCategory.EXTRA.toString());
-		
-		category.select(0);		
+
+		category.select(0);
 
 		gd = new GridData(GridData.FILL_HORIZONTAL);
-		category.setLayoutData(gd);		
+		category.setLayoutData(gd);
 
 		label = new Label(container, SWT.NULL);
 		label.setText("&Severity:");
 
-		severity = new Combo(container, SWT.BORDER | SWT.MULTI);
+		severity = new Combo(container, SWT.BORDER | SWT.MULTI | SWT.READ_ONLY);
 
 		severity.add(ReviewRemarkSeverityType.HIGH.toString());
 		severity.add(ReviewRemarkSeverityType.MEDIUM.toString());
@@ -99,7 +99,7 @@ public class ReviewRemarkInitPage extends WizardPage {
 		severity.select(0);
 
 		gd = new GridData(GridData.FILL_HORIZONTAL);
-		severity.setLayoutData(gd);		
+		severity.setLayoutData(gd);
 
 		label = new Label(container, SWT.NULL);
 		label.setText("&Scope:");
@@ -110,24 +110,23 @@ public class ReviewRemarkInitPage extends WizardPage {
 		buttonLayout.numColumns = 1;
 		buttonLayout.verticalSpacing = 9;
 
-		
 		SelectionListener buttonSelectionListener = new SelectionListener() {
-			
+
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				Object source = e.getSource();				
+				Object source = e.getSource();
 				if (source == generelButton) {
 					fileName.setText("");
 				} else {
 					fileName.setText(file.getProjectRelativePath().toString());
 				}
 			}
-			
+
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 			}
 		};
-		
+
 		classButton = new Button(buttonContainer, SWT.RADIO);
 		classButton.setText(ReviewRemarkScope.CLASS.toString());
 		classButton.setSelection(true);
@@ -140,9 +139,9 @@ public class ReviewRemarkInitPage extends WizardPage {
 		selectionButton = new Button(buttonContainer, SWT.RADIO);
 		selectionButton.setText(ReviewRemarkScope.SELECTION.toString());
 		selectionButton.addSelectionListener(buttonSelectionListener);
-		
+
 		generelButton = new Button(buttonContainer, SWT.RADIO);
-		generelButton.setText(ReviewRemarkScope.GENEREL.toString());		
+		generelButton.setText(ReviewRemarkScope.GENEREL.toString());
 		generelButton.addSelectionListener(buttonSelectionListener);
 
 		initialize();
@@ -180,7 +179,7 @@ public class ReviewRemarkInitPage extends WizardPage {
 			return null;
 		}
 	}
-	
+
 	public ReviewRemarkCategory getCategory() {
 		int selectionIndex = type.getSelectionIndex();
 		switch (selectionIndex) {
@@ -193,7 +192,7 @@ public class ReviewRemarkInitPage extends WizardPage {
 		case 2:
 			return ReviewRemarkCategory.EXTRA;
 
-		case 3:			
+		case 3:
 
 		default:
 			return null;

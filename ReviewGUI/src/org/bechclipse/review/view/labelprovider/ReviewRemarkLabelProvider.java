@@ -34,18 +34,23 @@ public class ReviewRemarkLabelProvider implements ITableLabelProvider {
 			
 			return remark.getFile();			
 			
+		//case 3:			return remark.getDescription();
+			
+			
+		//case 4:			return remark.getSolution();
+			
 		case 3:
-			return remark.getDescription();
-			
-			
-		case 4:
-			return remark.getSolution();
-			
-		case 5:
 			return remark.getUser();
 			
+		case 4:
 			
-		case 6:
+			if(remark.getCategory() == null) {
+				return "-";
+			}
+			return remark.getCategory().toString();
+			
+			
+		case 5:
 			
 			if(remark.getSeverity() == null) {
 				return "-";
@@ -53,7 +58,7 @@ public class ReviewRemarkLabelProvider implements ITableLabelProvider {
 			
 			return remark.getSeverity().toString();
 			
-		case 7:
+		case 6:
 			
 			if(remark.getStatusContext() == null) {
 				return "-";

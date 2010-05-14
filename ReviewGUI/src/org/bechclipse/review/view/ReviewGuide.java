@@ -45,7 +45,7 @@ import org.eclipse.ui.part.ViewPart;
 public class ReviewGuide extends ViewPart implements ReviewDataListener {
 
 	public static final String ID = "EclipseCodeReview.ReviewGuide";
-	private Composite top = null;
+	//private Composite top = null;
 	private SashForm sashForm = null;
 	private Table table = null;
 	private Composite composite = null;
@@ -76,9 +76,9 @@ public class ReviewGuide extends ViewPart implements ReviewDataListener {
 
 	@Override
 	public void createPartControl(Composite parent) {
-		top = new Composite(parent, SWT.NONE);
+		Composite top = new Composite(parent, SWT.NONE);
 		top.setLayout(new FillLayout());
-		createSashForm();
+		createSashForm(top);
 
 		makeActions();
 		contributeToActionBars();
@@ -200,9 +200,10 @@ public class ReviewGuide extends ViewPart implements ReviewDataListener {
 
 	/**
 	 * This method initializes sashForm
+	 * @param top 
 	 * 
 	 */
-	private void createSashForm() {
+	private void createSashForm(Composite top) {
 		sashForm = new SashForm(top, SWT.NONE);
 
 		createComposite();
