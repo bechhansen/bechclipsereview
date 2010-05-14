@@ -4,9 +4,6 @@ import org.bechclipse.review.model.ReviewRemark;
 import org.bechclipse.review.view.contentprovider.ReviewRemarkContentProvider;
 import org.bechclipse.review.view.labelprovider.ReviewRemarkLabelProvider;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.IOpenListener;
@@ -45,7 +42,7 @@ public class ReviewRemarks extends ViewPart {
 
 		viewer.setContentProvider(new ReviewRemarkContentProvider());
 		viewer.setLabelProvider(new ReviewRemarkLabelProvider());
-		viewer.setSorter(new TreePathViewerSorter());
+		viewer.setSorter(new TreePathViewerSorter());		
 
 		hookContextMenu();
 
@@ -117,6 +114,10 @@ public class ReviewRemarks extends ViewPart {
 		TableColumn tc7 = new TableColumn(viewer.getTable(), SWT.LEFT, 6);
 		tc7.setText("Severity");
 		tc7.setWidth(100);
+		
+		TableColumn tc8 = new TableColumn(viewer.getTable(), SWT.LEFT, 7);
+		tc8.setText("Status");
+		tc8.setWidth(100);
 
 		CellEditor cellEditors[] = new CellEditor[viewer.getTable().getColumnCount()];
 		CellEditor descriptionCellEditor = new TextCellEditor(viewer.getTable());

@@ -53,6 +53,13 @@ public class ReviewRemarkLabelProvider implements ITableLabelProvider {
 			
 			return remark.getSeverity().toString();
 			
+		case 7:
+			
+			if(remark.getStatusContext() == null) {
+				return "-";
+			}
+			
+			return remark.getStatusContext().getStatus().getName();			
 			
 			
 

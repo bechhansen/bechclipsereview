@@ -173,6 +173,15 @@
                menubarPath="additions"
                state="true"
                style="push">
+         </action>
+         <action
+               class="org.bechclipse.review.action.ReviewRemarkChangeStatus"
+               enablesFor="1"
+               id="EclipseCodeReview.ReviewRemarkChangeStatus"
+               label="Change status"
+               menubarPath="additions"
+               state="true"
+               style="push">
          </action>         
       </objectContribution>
       

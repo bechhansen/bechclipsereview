@@ -75,7 +75,7 @@ public class ReviewWizardTeamPage extends WizardPage {
 
 			java.util.List<String> readersList = review.getReaders();
 			if (readersList != null) {
-				for (String string : reviewersList) {
+				for (String string : readersList) {
 					readers.add(string);
 				}
 			}
