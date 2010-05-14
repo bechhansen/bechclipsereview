@@ -13,6 +13,7 @@ import org.bechclipse.review.model.ReviewRemark;
 import org.bechclipse.review.model.ReviewRemarkScope;
 import org.bechclipse.review.model.ReviewRemarkSeverityType;
 import org.bechclipse.review.model.ReviewRemarkType;
+import org.bechclipse.review.model.remarkstatus.ReviewRemarkStatusType;
 import org.bechclipse.review.persistence.PersistenceFacade;
 import org.bechclipse.review.persistence.PersistenceFacadeImpl;
 import org.eclipse.core.resources.IFile;
@@ -248,5 +249,13 @@ public class ReviewFacadeImpl implements ReviewFacade {
 			MessageDialog.openError(null, "Error starting guide", e.getMessage());
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void changeReviewRemarkStatus(ReviewRemark remark, ReviewRemarkStatusType status, String comment) {
+		String username = System.getenv("USERNAME");
+		
+		remark.changeStatus(status, comment, username);		
+		updateReviewRemark(remark);
 	}
 }

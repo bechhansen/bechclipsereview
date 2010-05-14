@@ -47,10 +47,13 @@ public class PersistenceFacadeImpl implements PersistenceFacade {
 				for (String fileName : files) {
 					File file = new File(f.getAbsolutePath() + "\\" + fileName + "\\" + Constants.REVIEWFILENAME);
 					if (file.exists()) {
+						
+						//Read review
 						Review review = (Review) reviewUm.unmarshal(file);
 						review.setProject(project);
 						result.add(review);
 
+						//Read checkliste
 						File checklistFile = new File(f.getAbsolutePath() + "\\" + fileName + "\\" + Constants.CHECKLISTFILENAME);
 						if (checklistFile.exists()) {
 
@@ -65,6 +68,7 @@ public class PersistenceFacadeImpl implements PersistenceFacade {
 							}
 						}
 
+						//Read progress
 						String username = System.getenv("USERNAME").toLowerCase();
 						File progressFile = new File(f.getAbsolutePath() + "\\" + fileName + "\\" + Constants.PROGRESSFILE_PREFIX + username + ".xml");
 						if (progressFile.exists()) {
@@ -76,6 +80,7 @@ public class PersistenceFacadeImpl implements PersistenceFacade {
 							review.setProgress(progress);
 						}
 
+						//Read remarks
 						JAXBContext remarkJc = JAXBContext.newInstance(ReviewRemarkList.class);
 						Unmarshaller remarkUm = remarkJc.createUnmarshaller();
 
@@ -135,7 +140,7 @@ public class PersistenceFacadeImpl implements PersistenceFacade {
 			File reviewDir = new File(reviewFolder.getLocationURI());
 
 			if (isNew) {
-				String username = System.getenv("USERNAME");
+				//String username = System.getenv("USERNAME");
 				InputStream in = getClass().getResourceAsStream("/xml/" + Constants.CHECKLISTFILENAME);
 				File checklisteFile = new File(reviewDir.getAbsolutePath() + "\\" + Constants.CHECKLISTFILENAME);
 				FileOutputStream fos = new FileOutputStream(checklisteFile);

@@ -1,7 +1,19 @@
 package org.bechclipse.review.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.bechclipse.review.model.remarkstatus.ReviewRemarkStatusContext;
+import org.bechclipse.review.model.remarkstatus.ReviewRemarkStatusInspection;
+import org.bechclipse.review.model.remarkstatus.ReviewRemarkStatusType;
+
+@XmlAccessorType(XmlAccessType.PROPERTY)
 public class ReviewRemark {
 
 	private ReviewRemarkType type;
@@ -15,12 +27,18 @@ public class ReviewRemark {
 	private ReviewRemarkScope scope;
 	private Review parent;
 	private Long id;
-	
+	private ReviewRemarkStatusContext statusContext;
+	private List<ReviewRemarkStatus> remarkStatus = new ArrayList<ReviewRemarkStatus>();
+
 	public ReviewRemark() {
-		
 	}
 
-	public ReviewRemark(Review parent, ReviewRemarkType type, ReviewRemarkSeverityType severity, String description, String solution, ReviewRemarkScope scope, String user, String file, int offset, int length) {		
+	public ReviewRemark(Review parent, ReviewRemarkType type, ReviewRemarkSeverityType severity, String description, String solution, ReviewRemarkScope scope, String user, String file, int offset, int length) {
+
+		statusContext = new ReviewRemarkStatusContext(ReviewRemarkStatusInspection.getInstance());
+		ReviewRemarkStatus rrs = new ReviewRemarkStatus(statusContext.getStatus(), "Initial", user);
+		remarkStatus.add(rrs);
+
 		this.setParent(parent);
 		this.setType(type);
 		this.setSeverity(severity);
@@ -32,7 +50,7 @@ public class ReviewRemark {
 		this.setLength(length);
 		this.setScope(scope);
 	}
-	
+
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -65,14 +83,13 @@ public class ReviewRemark {
 		return offset;
 	}
 
-	
 	public String getFile() {
 		return file;
 	}
 
 	public ReviewRemarkScope getScope() {
 		return scope;
-	}	
+	}
 
 	@XmlTransient
 	public Review getParent() {
@@ -102,7 +119,7 @@ public class ReviewRemark {
 	public int getLength() {
 		return length;
 	}
-	
+
 	public void setOffset(int offset) {
 		this.offset = offset;
 	}
@@ -121,5 +138,33 @@ public class ReviewRemark {
 
 	public void setParent(Review parent) {
 		this.parent = parent;
+	}
+
+	@XmlTransient
+	public ReviewRemarkStatusContext getStatusContext() {
+		if (statusContext == null) {
+			ReviewRemarkStatus status = remarkStatus.get(remarkStatus.size() - 1);
+			if (status != null) {
+				statusContext = new ReviewRemarkStatusContext(status.getStatus());
+			}
+		}
+
+		return statusContext;
+	}
+
+	public void changeStatus(ReviewRemarkStatusType status, String comment, String user) {
+		ReviewRemarkStatus rrs = new ReviewRemarkStatus(status, comment, user);
+		remarkStatus.add(rrs);
+		statusContext.getStatus().changeStatus(statusContext, status);
+	}
+
+	public void setRemarkStatus(List<ReviewRemarkStatus> col) {
+		this.remarkStatus = col;
+	}
+
+	@XmlElement(name = "RemarkStatus")
+	@XmlElementWrapper(name = "RemarkStatusList")
+	public List<ReviewRemarkStatus> getRemarkStatus() {
+		return remarkStatus;
 	}
 }

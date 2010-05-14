@@ -18,4 +18,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: org.bechclipse.review.facade,
  org.bechclipse.review.model;uses:="org.eclipse.ui",
- org.bechclipse.review.model.checklist
+ org.bechclipse.review.model.checklist,
+ org.bechclipse.review.model.remarkstatus

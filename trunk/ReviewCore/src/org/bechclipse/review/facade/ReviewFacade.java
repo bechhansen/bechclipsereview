@@ -8,6 +8,7 @@ import org.bechclipse.review.model.ReviewRemark;
 import org.bechclipse.review.model.ReviewRemarkScope;
 import org.bechclipse.review.model.ReviewRemarkSeverityType;
 import org.bechclipse.review.model.ReviewRemarkType;
+import org.bechclipse.review.model.remarkstatus.ReviewRemarkStatusType;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.text.ITextSelection;
@@ -49,4 +50,7 @@ public interface ReviewFacade {
 	void updateReviewRemark(ReviewRemark remark);
 
 	void deleteReviewRemark(ReviewRemark remark);
+
+	public void changeReviewRemarkStatus(ReviewRemark remark, ReviewRemarkStatusType status, String comment);
+	 
 }
