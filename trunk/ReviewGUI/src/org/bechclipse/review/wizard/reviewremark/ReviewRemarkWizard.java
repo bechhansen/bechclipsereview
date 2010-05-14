@@ -2,6 +2,7 @@ package org.bechclipse.review.wizard.reviewremark;
 
 import org.bechclipse.review.facade.ReviewFacadeFactory;
 import org.bechclipse.review.model.ReviewProgress;
+import org.bechclipse.review.model.ReviewRemarkCategory;
 import org.bechclipse.review.model.ReviewRemarkScope;
 import org.bechclipse.review.model.ReviewRemarkSeverityType;
 import org.bechclipse.review.model.ReviewRemarkType;
@@ -47,13 +48,14 @@ public class ReviewRemarkWizard extends Wizard implements INewWizard {
 	@Override
 	public boolean performFinish() {
 		final ReviewRemarkType type = initPage.getType();
+		final ReviewRemarkCategory category = initPage.getCategory();
 		final ReviewRemarkSeverityType severity = initPage.getSeverity();
 		final ReviewRemarkScope scope = initPage.getScope();
 		final String reviewDescription = commentPage.getReviewDescription();
 		final String reviewSolution = commentPage.getReviewSolution();
 
 		try {
-			doFinish(ReviewRemarkScope.GENEREL.equals(scope) ? null : file, textSelection, type, severity, reviewDescription, reviewSolution, scope);
+			doFinish(ReviewRemarkScope.GENEREL.equals(scope) ? null : file, textSelection, type, severity, reviewDescription, reviewSolution, scope, category);
 		} catch (CoreException e) {
 
 			MessageDialog.openError(getShell(), "Error", e.getMessage());
@@ -77,11 +79,11 @@ public class ReviewRemarkWizard extends Wizard implements INewWizard {
 		 */
 	}
 
-	private void doFinish(IFile file, ITextSelection textSelection, ReviewRemarkType type, ReviewRemarkSeverityType severity, String reviewDescription, String reviewSolution, ReviewRemarkScope scope) throws CoreException {
+	private void doFinish(IFile file, ITextSelection textSelection, ReviewRemarkType type, ReviewRemarkSeverityType severity, String reviewDescription, String reviewSolution, ReviewRemarkScope scope, ReviewRemarkCategory category) throws CoreException {
 
 		// monitor.beginTask("Creating review", 2);
 
-		ReviewFacadeFactory.getFacade().addReviewRemark(file, textSelection, type, severity, reviewDescription, reviewSolution, scope);
+		ReviewFacadeFactory.getFacade().addReviewRemark(file, textSelection, type, severity, reviewDescription, reviewSolution, scope, category);
 
 		/*
 		 * String folderName = ".review"; IFolder folder =

@@ -25,6 +25,7 @@ public class ReviewRemark {
 	private String solution;
 	private String user;
 	private ReviewRemarkScope scope;
+	private ReviewRemarkCategory category;
 	private Review parent;
 	private Long id;
 	private ReviewRemarkStatusContext statusContext;
@@ -33,7 +34,7 @@ public class ReviewRemark {
 	public ReviewRemark() {
 	}
 
-	public ReviewRemark(Review parent, ReviewRemarkType type, ReviewRemarkSeverityType severity, String description, String solution, ReviewRemarkScope scope, String user, String file, int offset, int length) {
+	public ReviewRemark(Review parent, ReviewRemarkType type, ReviewRemarkSeverityType severity, String description, String solution, ReviewRemarkScope scope, ReviewRemarkCategory category, String user, String file, int offset, int length) {
 
 		statusContext = new ReviewRemarkStatusContext(ReviewRemarkStatusInspection.getInstance());
 		ReviewRemarkStatus rrs = new ReviewRemarkStatus(statusContext.getStatus(), "Initial", user);
@@ -49,6 +50,7 @@ public class ReviewRemark {
 		this.setOffset(offset);
 		this.setLength(length);
 		this.setScope(scope);
+		this.setCategory(category);
 	}
 
 	public void setId(Long id) {
@@ -167,4 +169,12 @@ public class ReviewRemark {
 	public List<ReviewRemarkStatus> getRemarkStatus() {
 		return remarkStatus;
 	}
+
+	public void setCategory(ReviewRemarkCategory category) {
+		this.category = category;
+	}
+
+	public ReviewRemarkCategory getCategory() {
+		return category;
+	}	
 }

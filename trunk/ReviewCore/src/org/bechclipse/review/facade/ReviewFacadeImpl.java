@@ -10,6 +10,7 @@ import org.bechclipse.review.model.Review;
 import org.bechclipse.review.model.ReviewMemoryModel;
 import org.bechclipse.review.model.ReviewProgress;
 import org.bechclipse.review.model.ReviewRemark;
+import org.bechclipse.review.model.ReviewRemarkCategory;
 import org.bechclipse.review.model.ReviewRemarkScope;
 import org.bechclipse.review.model.ReviewRemarkSeverityType;
 import org.bechclipse.review.model.ReviewRemarkType;
@@ -118,7 +119,7 @@ public class ReviewFacadeImpl implements ReviewFacade {
 	}
 
 	@Override
-	public void addReviewRemark(IFile file, ITextSelection textSelection, ReviewRemarkType type, ReviewRemarkSeverityType severity, String description, String solution, ReviewRemarkScope scope) {
+	public void addReviewRemark(IFile file, ITextSelection textSelection, ReviewRemarkType type, ReviewRemarkSeverityType severity, String description, String solution, ReviewRemarkScope scope, ReviewRemarkCategory category) {
 
 		if (getSelectedReview() == null) {
 			return;
@@ -126,7 +127,7 @@ public class ReviewFacadeImpl implements ReviewFacade {
 		try {
 			String username = System.getenv("USERNAME");
 
-			ReviewRemark remark = new ReviewRemark(getSelectedReview(), type, severity, description, solution, scope, username, file != null ? file.getProjectRelativePath().toString() : null, textSelection.getOffset(), textSelection.getLength());
+			ReviewRemark remark = new ReviewRemark(getSelectedReview(), type, severity, description, solution, scope, category, username, file != null ? file.getProjectRelativePath().toString() : null, textSelection.getOffset(), textSelection.getLength());
 			getReviewModel().getReviewRemarks().add(remark);
 			pFacade.persistReviewRemark(remark);
 			fireUpdate(remark);
