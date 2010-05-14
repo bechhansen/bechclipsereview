@@ -181,7 +181,7 @@ public class ReviewRemarkInitPage extends WizardPage {
 	}
 
 	public ReviewRemarkCategory getCategory() {
-		int selectionIndex = type.getSelectionIndex();
+		int selectionIndex = category.getSelectionIndex();
 		switch (selectionIndex) {
 		case 0:
 			return ReviewRemarkCategory.WRONG;
