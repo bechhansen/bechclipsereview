@@ -14,8 +14,10 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
-import org.eclipse.jface.viewers.TreePathViewerSorter;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -53,10 +55,13 @@ public class ReviewRemarks extends ViewPart {
 		Table table = createTable(parent);
 		viewer = new TableViewer(table);
 		viewer.getTable().setHeaderVisible(true);
+		
 
+		ReviewRemarksTableSorter sorter = new ReviewRemarksTableSorter();
+		
 		viewer.setContentProvider(new ReviewRemarkContentProvider());
 		viewer.setLabelProvider(new ReviewRemarkLabelProvider());
-		viewer.setSorter(new TreePathViewerSorter());
+		viewer.setComparator(sorter);
 
 		GridData gd = new GridData();
 		gd.horizontalSpan = 2;
@@ -148,46 +153,40 @@ public class ReviewRemarks extends ViewPart {
 		TableColumn tc1 = new TableColumn(viewer.getTable(), SWT.LEFT, 0);
 		tc1.setText("Type");
 		tc1.setWidth(80);
+		tc1.addSelectionListener(new ColumnSelectionListener(tc1, sorter, 0 ));
 
-		viewer.getTable().setSortColumn(tc1);
+		
 
 		TableColumn tc2 = new TableColumn(viewer.getTable(), SWT.LEFT, 1);
 		tc2.setText("Scope");
 		tc2.setWidth(70);
+		tc2.addSelectionListener(new ColumnSelectionListener(tc2, sorter, 1));
 
 		TableColumn tc3 = new TableColumn(viewer.getTable(), SWT.LEFT, 2);
 		tc3.setText("File");
 		tc3.setWidth(300);
-
-		/*
-		 * TableColumn tc4 = new TableColumn(viewer.getTable(), SWT.LEFT, 3);
-		 * tc4.setText("Description"); tc4.setWidth(150);
-		 * 
-		 * TableColumn tc5 = new TableColumn(viewer.getTable(), SWT.LEFT, 4);
-		 * tc5.setText("Solution"); tc5.setWidth(165);
-		 */
-
+		tc3.addSelectionListener(new ColumnSelectionListener(tc3, sorter, 2));
+		
 		TableColumn tc4 = new TableColumn(viewer.getTable(), SWT.LEFT, 3);
 		tc4.setText("User");
 		tc4.setWidth(80);
+		tc4.addSelectionListener(new ColumnSelectionListener(tc4, sorter, 3));
 
 		TableColumn tc5 = new TableColumn(viewer.getTable(), SWT.LEFT, 4);
 		tc5.setText("Category");
 		tc5.setWidth(60);
+		tc5.addSelectionListener(new ColumnSelectionListener(tc5, sorter, 4));
 
-		TableColumn tc7 = new TableColumn(viewer.getTable(), SWT.LEFT, 5);
-		tc7.setText("Severity");
-		tc7.setWidth(70);
+		TableColumn tc6 = new TableColumn(viewer.getTable(), SWT.LEFT, 5);
+		tc6.setText("Severity");
+		tc6.setWidth(70);
+		tc6.addSelectionListener(new ColumnSelectionListener(tc6, sorter, 5));
 
-		TableColumn tc8 = new TableColumn(viewer.getTable(), SWT.LEFT, 6);
-		tc8.setText("Status");
-		tc8.setWidth(110);
+		TableColumn tc7 = new TableColumn(viewer.getTable(), SWT.LEFT, 6);
+		tc7.setText("Status");
+		tc7.setWidth(110);
+		tc7.addSelectionListener(new ColumnSelectionListener(tc7, sorter, 6));
 
-		CellEditor cellEditors[] = new CellEditor[viewer.getTable().getColumnCount()];
-		CellEditor descriptionCellEditor = new TextCellEditor(viewer.getTable());
-		cellEditors[0] = descriptionCellEditor;
-		// viewer.setCellEditors(cellEditors);
-		// viewer.setCellModifier(cellModifier);
 		viewer.setInput(getViewSite());
 
 	}
@@ -217,5 +216,33 @@ public class ReviewRemarks extends ViewPart {
 	@Override
 	public void setFocus() {
 		viewer.getControl().setFocus();
+	}
+	
+	class ColumnSelectionListener extends SelectionAdapter {
+		
+		private final TableColumn column;
+		private final ReviewRemarksTableSorter sorter;
+		private final int i;
+
+		public ColumnSelectionListener(TableColumn column, ReviewRemarksTableSorter sorter, int i) {
+			this.column = column;
+			this.sorter = sorter;
+			this.i = i;			
+		}
+		
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			sorter.setColumn(i);	
+			int dir = viewer.getTable().getSortDirection();
+			if (viewer.getTable().getSortColumn() == column) {
+				dir = dir == SWT.UP ? SWT.DOWN : SWT.UP;
+			} else {
+
+				dir = SWT.DOWN;
+			}
+			viewer.getTable().setSortDirection(dir);
+			viewer.getTable().setSortColumn(column);
+			viewer.refresh();
+		}
 	}
 }
