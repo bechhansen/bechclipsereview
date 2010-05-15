@@ -1,11 +1,13 @@
 package org.bechclipse.review.wizard.reviewremark;
 
+import org.bechclipse.review.model.ReviewChecklist;
 import org.bechclipse.review.model.ReviewProgress;
 import org.bechclipse.review.model.ReviewRemarkCategory;
 import org.bechclipse.review.model.ReviewRemarkScope;
 import org.bechclipse.review.model.ReviewRemarkSeverityType;
 import org.bechclipse.review.model.ReviewRemarkType;
 import org.bechclipse.review.model.checklist.Category;
+import org.bechclipse.review.model.checklist.Scope;
 import org.bechclipse.review.model.checklist.Severity;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.dialogs.IDialogPage;
@@ -114,8 +116,7 @@ public class ReviewRemarkInitPage extends WizardPage {
 		};
 
 		classButton = new Button(buttonContainer, SWT.RADIO);
-		classButton.setText(ReviewRemarkScope.CLASS.toString());
-		classButton.setSelection(true);
+		classButton.setText(ReviewRemarkScope.CLASS.toString());		
 		classButton.addSelectionListener(buttonSelectionListener);
 
 		methodButton = new Button(buttonContainer, SWT.RADIO);
@@ -140,10 +141,14 @@ public class ReviewRemarkInitPage extends WizardPage {
 
 	private void initialize() {
 				
-		type.add(ReviewRemarkType.CODESTYLE.toString());
-		type.add(ReviewRemarkType.NULLPOINTER.toString());
-		type.add(ReviewRemarkType.SECURITY.toString());
-		type.add(ReviewRemarkType.STRUCTURE.toString());
+		type.add(ReviewRemarkType.LOGIC.toString());
+		type.add(ReviewRemarkType.TESTABILITY.toString());
+		type.add(ReviewRemarkType.MAINTAINABLILITY.toString());
+		type.add(ReviewRemarkType.USEABILITY.toString());
+		type.add(ReviewRemarkType.CODE_COMMENT.toString());
+		type.add(ReviewRemarkType.PERFORMANCE.toString());
+		type.add(ReviewRemarkType.DESIGN_ERROR.toString());
+		type.add(ReviewRemarkType.OTHER.toString());		
 		type.select(0);
 		
 		category.add(ReviewRemarkCategory.WRONG.toString());
@@ -177,8 +182,26 @@ public class ReviewRemarkInitPage extends WizardPage {
 			} else {
 				severity.select(0);
 			}
+			
+			ReviewChecklist checklist = progress.getParent().getChecklist();
+			Object feature = checklist.getParent(progress.getCurrentCheckpoint());
+			Scope parent = (Scope) checklist.getParent(feature);
+			String scopeName = parent.getName();
+			
+			if("Class".equalsIgnoreCase(scopeName)) {
+				classButton.setSelection(true);
+			} else if("Method".equalsIgnoreCase(scopeName)) {
+				methodButton.setSelection(true);
+			} else if("Generel".equalsIgnoreCase(scopeName)) {
+				generelButton.setSelection(true);
+			} else {
+				classButton.setSelection(true);
+			}			
+		} else {
+			severity.select(0);
+			category.select(0);
+			classButton.setSelection(true);
 		}
-
 	}
 	
 
@@ -186,16 +209,28 @@ public class ReviewRemarkInitPage extends WizardPage {
 		int selectionIndex = type.getSelectionIndex();
 		switch (selectionIndex) {
 		case 0:
-			return ReviewRemarkType.CODESTYLE;
+			return ReviewRemarkType.LOGIC;
 
 		case 1:
-			return ReviewRemarkType.NULLPOINTER;
+			return ReviewRemarkType.TESTABILITY;
 
 		case 2:
-			return ReviewRemarkType.SECURITY;
+			return ReviewRemarkType.MAINTAINABLILITY;
 
 		case 3:
-			return ReviewRemarkType.STRUCTURE;
+			return ReviewRemarkType.USEABILITY;
+			
+		case 4:
+			return ReviewRemarkType.CODE_COMMENT;
+			
+		case 5:
+			return ReviewRemarkType.PERFORMANCE;
+			
+		case 6:
+			return ReviewRemarkType.DESIGN_ERROR;
+			
+		case 7:
+			return ReviewRemarkType.OTHER;
 
 		default:
 			return null;
