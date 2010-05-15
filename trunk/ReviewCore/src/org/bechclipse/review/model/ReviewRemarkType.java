@@ -2,20 +2,29 @@ package org.bechclipse.review.model;
 
 public enum ReviewRemarkType {
 
-	SECURITY, NULLPOINTER, CODESTYLE, STRUCTURE;
-	
-	
+	LOGIC, TESTABILITY, MAINTAINABLILITY, USEABILITY, CODE_COMMENT, PERFORMANCE, DESIGN_ERROR, OTHER;
+
 	public String toString() {
 
-		if (this.equals(SECURITY)) {
-			return "Security";
-		} else if (this.equals(NULLPOINTER)) {
-			return "NullPointer";
-		} else if (this.equals(CODESTYLE)) {
-			return "Code style";
-		} else if (this.equals(STRUCTURE)) {
-			return "Structual";
-		}
-		throw new UnsupportedOperationException();
+		switch (this.ordinal()) {
+		case 0:
+			return "Logic";
+		case 1:
+			return "Testability";
+		case 2:
+			return "Maintainability";
+		case 3:
+			return "Useability";
+		case 4:
+			return "Code comments";
+		case 5:
+			return "Performance";
+		case 6:
+			return "Design error";
+		case 7:
+			return "Other";
+		default:
+			throw new UnsupportedOperationException();	
+		}		
 	}
 }
