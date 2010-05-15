@@ -26,7 +26,7 @@
 			<element name="problem" type="string"></element>
 			<element name="solution" type="string"></element>
 			<element name="severity" type="review:Severity"></element>
-			<element name="type" type="review:Type"></element>
+			<element name="category" type="review:Category"></element>
 		</sequence>
 		<attribute name="extension" type="string" use="optional"></attribute>
 	</complexType>
@@ -45,11 +45,11 @@
 		</restriction>
 	</simpleType>
 
-	<simpleType name="Type">
+	<simpleType name="Category">
 		<restriction base="string">
 			<enumeration value="MISSING"></enumeration>
-			<enumeration value="INCORRECT"></enumeration>
-			<enumeration value="SUPERFLUOUES"></enumeration>
+			<enumeration value="WRONG"></enumeration>
+			<enumeration value="EXTRA"></enumeration>
 		</restriction>
 	</simpleType>
 </schema>
