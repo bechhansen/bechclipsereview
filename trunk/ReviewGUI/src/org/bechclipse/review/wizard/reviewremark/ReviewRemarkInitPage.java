@@ -5,6 +5,8 @@ import org.bechclipse.review.model.ReviewRemarkCategory;
 import org.bechclipse.review.model.ReviewRemarkScope;
 import org.bechclipse.review.model.ReviewRemarkSeverityType;
 import org.bechclipse.review.model.ReviewRemarkType;
+import org.bechclipse.review.model.checklist.Category;
+import org.bechclipse.review.model.checklist.Severity;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.dialogs.IDialogPage;
 import org.eclipse.jface.wizard.WizardPage;
@@ -63,12 +65,7 @@ public class ReviewRemarkInitPage extends WizardPage {
 		label.setText("&Type:");
 
 		type = new Combo(container, SWT.BORDER | SWT.MULTI | SWT.READ_ONLY);
-
-		type.add(ReviewRemarkType.CODESTYLE.toString());
-		type.add(ReviewRemarkType.NULLPOINTER.toString());
-		type.add(ReviewRemarkType.SECURITY.toString());
-		type.add(ReviewRemarkType.STRUCTURE.toString());
-		type.select(0);
+		
 		type.setFocus();
 
 		gd = new GridData(GridData.FILL_HORIZONTAL);
@@ -77,13 +74,7 @@ public class ReviewRemarkInitPage extends WizardPage {
 		label = new Label(container, SWT.NULL);
 		label.setText("&Category:");
 
-		category = new Combo(container, SWT.BORDER | SWT.MULTI | SWT.READ_ONLY);
-
-		category.add(ReviewRemarkCategory.WRONG.toString());
-		category.add(ReviewRemarkCategory.MISSING.toString());
-		category.add(ReviewRemarkCategory.EXTRA.toString());
-
-		category.select(0);
+		category = new Combo(container, SWT.BORDER | SWT.MULTI | SWT.READ_ONLY);		
 
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		category.setLayoutData(gd);
@@ -91,12 +82,7 @@ public class ReviewRemarkInitPage extends WizardPage {
 		label = new Label(container, SWT.NULL);
 		label.setText("&Severity:");
 
-		severity = new Combo(container, SWT.BORDER | SWT.MULTI | SWT.READ_ONLY);
-
-		severity.add(ReviewRemarkSeverityType.HIGH.toString());
-		severity.add(ReviewRemarkSeverityType.MEDIUM.toString());
-		severity.add(ReviewRemarkSeverityType.LOW.toString());
-		severity.select(0);
+		severity = new Combo(container, SWT.BORDER | SWT.MULTI | SWT.READ_ONLY);	
 
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		severity.setLayoutData(gd);
@@ -143,9 +129,8 @@ public class ReviewRemarkInitPage extends WizardPage {
 		generelButton = new Button(buttonContainer, SWT.RADIO);
 		generelButton.setText(ReviewRemarkScope.GENEREL.toString());
 		generelButton.addSelectionListener(buttonSelectionListener);
-
-		initialize();
-		dialogChanged();
+		
+		initialize();		
 		setControl(container);
 	}
 
@@ -154,11 +139,48 @@ public class ReviewRemarkInitPage extends WizardPage {
 	 */
 
 	private void initialize() {
+				
+		type.add(ReviewRemarkType.CODESTYLE.toString());
+		type.add(ReviewRemarkType.NULLPOINTER.toString());
+		type.add(ReviewRemarkType.SECURITY.toString());
+		type.add(ReviewRemarkType.STRUCTURE.toString());
+		type.select(0);
+		
+		category.add(ReviewRemarkCategory.WRONG.toString());
+		category.add(ReviewRemarkCategory.MISSING.toString());
+		category.add(ReviewRemarkCategory.EXTRA.toString());		
+		
+		severity.add(ReviewRemarkSeverityType.HIGH.toString());
+		severity.add(ReviewRemarkSeverityType.MEDIUM.toString());
+		severity.add(ReviewRemarkSeverityType.LOW.toString());		
+		
+		if (progress != null && progress.getCurrentCheckpoint() != null) {
+			Category checkListCategory = progress.getCurrentCheckpoint().getCategory();
+			Severity checkListSeverity = progress.getCurrentCheckpoint().getSeverity();
+			
+			if(Category.WRONG.equals(checkListCategory)) {
+				category.select(0);
+			} else if(Category.MISSING.equals(checkListCategory)) {
+				category.select(1);
+			} else if(Category.EXTRA.equals(checkListCategory)) {
+				category.select(2);
+			} else {
+				category.select(0);
+			}
+			
+			if(Severity.HIGH.equals(checkListSeverity)) {
+				severity.select(0);				
+			} else if(Severity.MEDIUM.equals(checkListSeverity)) {
+				severity.select(1);
+			} else if(Severity.LOW.equals(checkListSeverity)) {
+				severity.select(2);
+			} else {
+				severity.select(0);
+			}
+		}
 
 	}
-
-	private void dialogChanged() {
-	}
+	
 
 	public ReviewRemarkType getType() {
 		int selectionIndex = type.getSelectionIndex();

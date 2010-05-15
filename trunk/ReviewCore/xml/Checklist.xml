@@ -8,7 +8,7 @@
 				<problem>Problem</problem>
 				<solution>Make sure that something something</solution>
 				<severity>HIGH</severity>
-				<type>MISSING</type>
+				<category>MISSING</category>
 			</checkpoint>
 
 			<checkpoint>
@@ -16,7 +16,7 @@
 				<problem>Problem is that</problem>
 				<solution>Make sure that something something</solution>
 				<severity>HIGH</severity>
-				<type>MISSING</type>
+				<category>MISSING</category>
 			</checkpoint>
 		</feature>
 
@@ -26,7 +26,7 @@
 				<problem>Problem</problem>
 				<solution>Make sure that something something</solution>
 				<severity>HIGH</severity>
-				<type>MISSING</type>
+				<category>MISSING</category>
 			</checkpoint>
 			
 			<checkpoint>
@@ -34,7 +34,7 @@
 				<problem>Not every constructor calls supers constructor</problem>
 				<solution>Make sure every super constructor is called</solution>
 				<severity>HIGH</severity>
-				<type>MISSING</type>
+				<category>MISSING</category>
 			</checkpoint>
 
 		</feature>
@@ -48,7 +48,7 @@
 				<problem>Not every parameter from the method is used</problem>
 				<solution>If method parameters are not used the should bee removed from the method signatur</solution>
 				<severity>HIGH</severity>
-				<type>MISSING</type>
+				<category>MISSING</category>
 			</checkpoint>
 			
 			<checkpoint>
@@ -56,7 +56,7 @@
 				<problem>Not every parameter from the method is used</problem>
 				<solution>If method parameters are not used the should bee removed from the method signatur</solution>
 				<severity>HIGH</severity>
-				<type>MISSING</type>
+				<category>MISSING</category>
 			</checkpoint>
 
 		</feature>
