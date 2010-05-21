@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checklist xmlns="http://review.bechclipse.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://review.bechclipse.org Checklist.xsd ">
+	<scope name="Class">
+		<feature name="Inheritance">
+			<checkpoint>
+				<question>Is all the inheritance required by the design implemented	in the class?</question>
+				<problem>Problem</problem>
+				<solution>Make sure that something something</solution>
+				<severity>HIGH</severity>
+				<category>MISSING</category>
+			</checkpoint>
+
+			<checkpoint>
+				<question>Is the inheritance appropriate?</question>
+				<problem>Problem is that</problem>
+				<solution>Make sure that something something</solution>
+				<severity>HIGH</severity>
+				<category>MISSING</category>
+			</checkpoint>
+		</feature>
+
+		<feature name="Class constructor">
+			<checkpoint>
+				<question>Are all instance variables initialized with meaningful values?</question>
+				<problem>Problem</problem>
+				<solution>Make sure that something something</solution>
+				<severity>HIGH</severity>
+				<category>MISSING</category>
+			</checkpoint>
+			
+			<checkpoint>
+				<question>If a call to super is required in the constructor, is it present?</question>
+				<problem>Not every constructor calls supers constructor</problem>
+				<solution>Make sure every super constructor is called</solution>
+				<severity>HIGH</severity>
+				<category>MISSING</category>
+			</checkpoint>
+
+		</feature>
+
+	</scope>
+	
+	<scope name="Method">
+		<feature name="Data referencing">
+			<checkpoint>
+				<question>Are all parameters used within a method?</question>
+				<problem>Not every parameter from the method is used</problem>
+				<solution>If method parameters are not used the should bee removed from the method signatur</solution>
+				<severity>HIGH</severity>
+				<category>MISSING</category>
+			</checkpoint>
+			
+			<checkpoint>
+				<question>Are the correct class constants used?</question>
+				<problem>Not every parameter from the method is used</problem>
+				<solution>If method parameters are not used the should bee removed from the method signatur</solution>
+				<severity>HIGH</severity>
+				<category>MISSING</category>
+			</checkpoint>
+
+		</feature>
+
+	</scope>
+</checklist>

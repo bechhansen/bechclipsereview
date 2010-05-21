@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: BechClipse Review Coreplugin
+Bundle-SymbolicName: org.bechclipse.review.core;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.bechclipse.review.CoreActivator
+Bundle-Vendor: Peer Bech Hansen
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources;bundle-version="3.5.1",
+ org.eclipse.ui.ide;bundle-version="3.5.1",
+ org.eclipse.ui.editors,
+ org.eclipse.jdt;bundle-version="3.5.1",
+ org.eclipse.jdt.core;bundle-version="3.5.1",
+ org.eclipse.jface.text;bundle-version="3.5.1", 
+ javax.xml;bundle-version="1.3.4"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Export-Package: org.bechclipse.review.facade,
+ org.bechclipse.review.model;uses:="org.eclipse.ui",
+ org.bechclipse.review.model.checklist,
+ org.bechclipse.review.model.remarkstatus
