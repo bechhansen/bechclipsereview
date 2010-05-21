@@ -1,0 +1,29 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: BechClipse Review GUI
+Bundle-SymbolicName: org.bechclipse.review.gui;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.bechclipse.review.GuiActivator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources;bundle-version="3.5.1",
+ org.eclipse.ui.ide;bundle-version="3.5.1",
+ org.eclipse.ui.editors,
+ org.eclipse.jdt;bundle-version="3.5.1",
+ org.eclipse.jdt.core;bundle-version="3.5.1",
+ org.eclipse.jface.text;bundle-version="3.5.1",
+ org.bechclipse.review.core;bundle-version="1.0.0",
+ org.eclipse.ui.console,
+ org.eclipse.jdt.ui
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-Vendor: Peer Bech Hansen
+Export-Package: org.bechclipse.review,
+ org.bechclipse.review.action,
+ org.bechclipse.review.annotation,
+ org.bechclipse.review.view,
+ org.bechclipse.review.view.contentprovider,
+ org.bechclipse.review.view.labelprovider,
+ org.bechclipse.review.wizard.export,
+ org.bechclipse.review.wizard.review,
+ org.bechclipse.review.wizard.reviewremark
