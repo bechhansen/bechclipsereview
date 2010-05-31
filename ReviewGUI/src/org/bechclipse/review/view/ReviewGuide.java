@@ -67,12 +67,16 @@ public class ReviewGuide extends ViewPart implements ReviewDataListener {
 
 	private Label stepProgressLabel = null;
 	private Text stepProgressText = null;
+	
+	private Label problemLabel;
+	private Label questionLabel;
 
 	private Text questionText = null;
 
 	StyledText problemText = null;
 
 	private ReviewFacade facade = ReviewFacadeFactory.getFacade();
+	
 
 	@Override
 	public void createPartControl(Composite parent) {
@@ -86,7 +90,6 @@ public class ReviewGuide extends ViewPart implements ReviewDataListener {
 		TableViewer viewer = new TableViewer(table);
 
 		viewer.setContentProvider(new ReviewGuideFilesContentProvider());
-		//viewer.setLabelProvider(new DecoratingLabelProvider(new WorkbenchLabelProvider(), PlatformUI.getWorkbench().getDecoratorManager().getLabelDecorator()));
 		viewer.setLabelProvider(new ReviewGuideFilesLabelProvider());
 		JFaceResources.getFontRegistry().put("GUIDEFILES", viewer.getControl().getFont().getFontData());
 
@@ -241,19 +244,28 @@ public class ReviewGuide extends ViewPart implements ReviewDataListener {
 		stepProgressLabel.setText("  Step:");
 		stepProgressText = new Text(composite, SWT.BORDER | SWT.READ_ONLY);
 
+		questionLabel = new Label(composite, SWT.NONE);
+		questionLabel.setText("Question:");
 		questionText = new Text(composite, SWT.BORDER | SWT.READ_ONLY);
-		problemText = new StyledText(composite, SWT.BORDER | SWT.READ_ONLY);
 		
+		problemLabel = new Label(composite, SWT.NONE);
+		problemLabel.setText("Problem:");
+		problemText = new StyledText(composite, SWT.BORDER | SWT.READ_ONLY);
+				
 		GridData gridData = new GridData();		
-		gridData.widthHint = 100;
+		gridData.widthHint = 150;
 		featureText.setLayoutData(gridData);
 		
 		gridData = new GridData();		
-		gridData.widthHint = 25;
+		gridData.widthHint = 70;
+		scopeText.setLayoutData(gridData);
+		
+		gridData = new GridData();		
+		gridData.widthHint = 50;
 		progressText.setLayoutData(gridData);
 		
 		gridData = new GridData();		
-		gridData.widthHint = 25;
+		gridData.widthHint = 50;		
 		stepProgressText.setLayoutData(gridData);
 
 		gridData = new GridData();
@@ -261,6 +273,7 @@ public class ReviewGuide extends ViewPart implements ReviewDataListener {
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		questionText.setLayoutData(gridData);
+		problemLabel.setLayoutData(gridData);
 
 		gridData = new GridData();
 		gridData.horizontalSpan = 8;
@@ -270,6 +283,14 @@ public class ReviewGuide extends ViewPart implements ReviewDataListener {
 		gridData.verticalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		problemText.setLayoutData(gridData);
+		
+		gridData = new GridData();
+		gridData.horizontalSpan = 8;	
+		problemLabel.setLayoutData(gridData);
+		
+		gridData = new GridData();
+		gridData.horizontalSpan = 8;	
+		questionLabel.setLayoutData(gridData);
 		
 		/*problemText.addLineStyleListener(new LineStyleListener() {
 			
