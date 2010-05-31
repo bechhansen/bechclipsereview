@@ -121,7 +121,7 @@
                class="org.bechclipse.review.action.ReviewDeleteAction"
                icon="icons/delete_edit.gif"
                id="EclipseCodeReview.DeleteReviewAction"
-               label="Slet"
+               label="Delete"
                menubarPath="additions">
          </action>         
                  
@@ -135,7 +135,7 @@
                class="org.bechclipse.review.action.DeleteReviewRemarkAction"
                icon="icons/delete_edit.gif"
                id="EclipseCodeReview.DeleteReviewRemark"
-               label="Slet"
+               label="Delete"
                menubarPath="additions"
                state="true"
                style="push">
