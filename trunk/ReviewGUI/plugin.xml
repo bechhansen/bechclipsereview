@@ -123,43 +123,9 @@
                id="EclipseCodeReview.DeleteReviewAction"
                label="Slet"
                menubarPath="additions">
-         </action>
-         <action
-               class="org.bechclipse.review.action.ReviewEndAction"
-               enablesFor="1"
-               icon="icons/taskmrk_tsk.gif"
-               id="EclipseCodeReview.EndReviewAction"
-               label="Afslut">
-               <enablement>
-               <objectState
-                     name="startable"
-                     value="true">
-               </objectState>
-            </enablement>
-         </action>
-         <action
-               class="org.bechclipse.review.action.ReviewStopAction"
-               enablesFor="1"
-               icon="icons/stop.gif"
-               id="EclipseCodeReview.StopReviewAction"
-               label="Stop">
-         </action>
-         <action
-               class="org.bechclipse.review.action.ReviewStartAction"
-               enablesFor="1"
-               icon="icons/nav_go.gif"
-               id="EclipseCodeReview.StartReviewAction"
-               label="Start">
-            <enablement>
-               <objectState
-                     name="startable"
-                     value="true">
-               </objectState>
-            </enablement>
-         </action>
-      </objectContribution>
-      
-      
+         </action>         
+                 
+      </objectContribution>      
       
       <objectContribution
             adaptable="true"
