@@ -30,6 +30,7 @@ public class ReviewRemarkStatusRework extends AbstractReviewRemarkStatus {
 		if (transitions == null) {
 			transitions = new ArrayList<ReviewRemarkStatusType>();
 			transitions.add(ReviewRemarkStatusFollowUp.getInstance());
+			transitions.add(ReviewRemarkStatusIgnore.getInstance());
 		}
 		return transitions;
 	}
